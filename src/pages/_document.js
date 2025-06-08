@@ -27,4 +27,5 @@ export default class MyDocument extends Document {
     }
   }
 }
-console.error('Error fetching bookings:', error);
+
+// 🚫 Removed the invalid console.error line
