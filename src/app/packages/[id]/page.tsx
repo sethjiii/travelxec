@@ -225,10 +225,10 @@ const TravelPackageDisplay = () => {
               <span className="text-xl">⏱</span>
               <span className="text-sm md:text-base sm:font-medium">{packageData.duration}</span>
             </div>
-            <div className="flex items-center gap-2 sm:px-5 sm:py-2 px-2 py-0 bg-gradient-to-br from-green-500/30 to-green-800/30 text-white border border-white/20 backdrop-blur-md rounded-full shadow-md transition-transform hover:scale-105 hover:shadow-lg">
+            {/* <div className="flex items-center gap-2 sm:px-5 sm:py-2 px-2 py-0 bg-gradient-to-br from-green-500/30 to-green-800/30 text-white border border-white/20 backdrop-blur-md rounded-full shadow-md transition-transform hover:scale-105 hover:shadow-lg">
               <span className="text-xl">💰</span>
               <span className="text-sm md:text-base font-medium">Rs. {packageData.price}</span>
-            </div>
+            </div> */}
           </div>
         </div>
 

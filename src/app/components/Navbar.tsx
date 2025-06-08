@@ -5,11 +5,13 @@ import Link from "next/link";
 import { MapPin, Globe, Menu, X, User, Phone, LogOut, Settings, Heart, Search } from "lucide-react";
 import { useAuth } from "../../Auth/AuthProvider";
 import Image from "next/image";
+import LoginButton from "@/ui/LoginButton";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // ✅ ADD THIS
 
   const { isAuthenticated, logout, user } = useAuth();
 
@@ -17,23 +19,35 @@ const Navbar = () => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
   const handleLogout = () => {
     logout();
     setIsProfileMenuOpen(false);
   };
 
   const menuItems = [
-    { name: "Destinations", icon: <MapPin className="w-4 h-4" /> },
-    { name: "Packages", icon: <MapPin className="w-4 h-4" /> },
-    { name: "Contact us", icon: <Phone className="w-4 h-4" /> },
-    { name: "About us", icon: <Search className="w-4 h-4" /> },
+    { name: "Destinations" },
+    { name: "Packages" },
+    { name: "Contact us" },
+    { name: "About us" },
   ];
+
+
+
 
   const renderProfileMenu = () => (
     <div
-      className={`absolute z-50 top-16 divide-y ml-1 divide-gray-500 right-5 w-48 bg-white shadow-2xl rounded-xl mt-2 overflow-hidden transition-all duration-300 ${
-        isProfileMenuOpen ? "block" : "hidden"
-      }`}
+      className={`absolute z-50 top-16 divide-y ml-1 divide-gray-500 right-5 w-48 bg-white shadow-2xl rounded-xl mt-2 overflow-hidden transition-all duration-300 ${isProfileMenuOpen ? "block" : "hidden"
+        }`}
     >
       {/* Profile Header */}
       <div className="flex items-center gap-2 ml-2 p-1 divide-gray-200   text-gray-700">
@@ -49,10 +63,10 @@ const Navbar = () => {
           {/* <p className="text-sm opacity-90">View Profile</p> */}
         </div>
       </div>
-  
+
       {/* Menu Options */}
       <div className="flex flex-col divide-y ml-1 divide-gray-200 text-gray-800 text-sm bg-white">
-        {user?.role=='admin'&&<Link
+        {user?.role == 'admin' && <Link
           href="/dashboard"
           className="flex items-center gap-3 px-2 py-2 hover:bg-gray-50 transition"
           onClick={() => setIsProfileMenuOpen(false)}
@@ -60,7 +74,7 @@ const Navbar = () => {
           <Settings className="h-4 w-4 text-blue-600" />
           Dashboard
         </Link>}
-  
+
         <Link
           href={`/my-trips/${user?._id}`}
           className="flex items-center gap-3 px-2 py-2 hover:bg-gray-50 transition"
@@ -69,7 +83,7 @@ const Navbar = () => {
           <MapPin className="h-4 w-4 text-green-600" />
           My Trips
         </Link>
-  
+
         <Link
           href="/wishlist"
           className="flex items-center gap-3 px-2 py-2 hover:bg-gray-50 transition"
@@ -78,16 +92,9 @@ const Navbar = () => {
           <Heart className="h-4 w-4 text-pink-500" />
           Wishlist
         </Link>
-  
-        <Link
-          href="/settings"
-          className="flex items-center gap-3 px-2 py-2 hover:bg-gray-50 transition"
-          onClick={() => setIsProfileMenuOpen(false)}
-        >
-          <Settings className="h-4 w-4 text-gray-600" />
-          Settings
-        </Link>
-  
+
+
+
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-2 py-2 text-red-600 hover:bg-gray-50 transition w-full text-left"
@@ -98,19 +105,30 @@ const Navbar = () => {
       </div>
     </div>
   );
-  
+
 
   if (!mounted) return null;
 
   return (
-    <nav className="bg-white shadow-lg  relative">
+    <nav
+      className={`fixed top-0 w-full z-50 transition-colors duration-300 shadow-lg border-b border-[#186663]/10 ${isScrolled
+        ? "bg-[rgba(0,45,55,0.3)] backdrop-blur-3xl"
+        : "bg-[rgba(0,45,55,0.8)] backdrop-blur-lg"
+        }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <Link href={user?.role === "admin" ? "/admin" : "/"}>
             <div className="flex items-center space-x-2 cursor-pointer">
-              <Globe className="h-8 w-8 text-blue-600" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
-                TravelEase
+              {/* <Image
+                src="/logo.png"
+                alt="Logo"
+                width={40}
+                height={40}
+                className="rounded-full"
+                loading="lazy" */}
+              <span className="text-2xl font-bold bg-white bg-clip-text text-transparent">
+                TravelXec
               </span>
             </div>
           </Link>
@@ -120,13 +138,13 @@ const Navbar = () => {
             {menuItems.map((item) => (
               <Link
                 key={item.name}
-                href={`/${item.name.toLowerCase()}`}
-                className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                href={`/${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                className="playfair text-[#D2AF94] hover:text-[#A6B5B4] transition-colors duration-200 font-medium px-2 py-2 rounded-md"
               >
-                {item.icon}
-                <span>{item.name}</span>
+                {item.name}
               </Link>
             ))}
+
 
             {isAuthenticated ? (
               <div className="relative">
@@ -148,10 +166,10 @@ const Navbar = () => {
             ) : (
               <Link
                 href="/auth/login"
-                className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors duration-200"
+                className="flex items-center space-x-2 bg-[#A6B5B4] text-white px-6 py-2 rounded-full hover:bg-[#D2AF94] transition-colors duration-200"
               >
-                <User className="h-5 w-5" />
-                <span>Login</span>
+                <User className="h-5 w-5 text-[#002D37] " />
+                <span className="text-[#002D37]">Login</span>
               </Link>
             )}
           </div>
@@ -174,11 +192,9 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 href={`/${item.name.toLowerCase()}`}
-                className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
-              >
-                {item.icon}
-                <span>{item.name}</span>
-              </Link>
+                className="playfair flex items-center space-x-2 text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
+              />
+
             ))}
 
             {isAuthenticated ? (

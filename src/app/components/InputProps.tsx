@@ -1,6 +1,6 @@
 // components/Input.tsx
 interface InputProps {
-    icon: React.ElementType;
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     type: string;
     placeholder: string;
     value: string;

@@ -47,14 +47,14 @@ const travelPackageSchema = new mongoose.Schema(
         ],
       },
     ],
-    price: {
-      type: Number, // Cost of the travel package
-      required: true,
-    },
-    currency: {
-      type: String, // Currency for the price, e.g., 'USD', 'INR'
-      default: 'USD',
-    },
+    // price: {
+    //   type: Number, // Cost of the travel package
+    //   required: true,
+    // },
+    // currency: {
+    //   type: String, // Currency for the price, e.g., 'USD', 'INR'
+    //   default: 'USD',
+    // },
     duration: {
       type: String, // Total duration of the trip, e.g., '14 days, 13 nights'
     },

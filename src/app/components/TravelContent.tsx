@@ -14,6 +14,8 @@ import {
   IndianRupee,
   StarHalf,
   StarOff,
+  Lamp,
+  Castle,
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -21,8 +23,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
 import { Navigation, Pagination } from 'swiper/modules';
+import ExploreButton from "@/ui/ExploreButton";
+import ViewPackagesButton from "@/ui/ViewPackagesButton";
+import Squares from "@/ui/Squares";
+import { motion } from "motion/react";
+
+
+
+
+
+
 
 interface TravelPackage {
   _id: number;
@@ -75,9 +86,14 @@ const testimonials: Testimonial[] = [
   }
 ];
 
+
+
+
+
+
 const TravelContent = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [priceRange, setPriceRange] = useState<string>("all");
+  //const [priceRange, setPriceRange] = useState<string>("all");
   const [packages, setPackages] = useState<TravelPackage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -108,26 +124,26 @@ const TravelContent = () => {
     fetchPackages();
   }, []);
 
-       // ⭐ Star rendering logic
-      const renderStars = (rating = 4.5) => {
-        const fullStars = Math.floor(rating);
-        const hasHalf = rating % 1 >= 0.5;
-        const stars = [];
-    
-        for (let i = 0; i < fullStars; i++) {
-          stars.push(<Star key={`star-${i}`} className="text-yellow-400 w-4 h-4" fill="currentColor" />);
-        }
-    
-        if (hasHalf && fullStars < 5) {
-          stars.push(<StarHalf key="half" className="text-yellow-400 w-4 h-4" fill="currentColor" />);
-        }
-    
-        while (stars.length < 5) {
-          stars.push(<StarOff key={`off-${stars.length}`} className="text-yellow-400 w-4 h-4" />);
-        }
-    
-        return stars;
-      };
+  // ⭐ Star rendering logic
+  const renderStars = (rating = 4.5) => {
+    const fullStars = Math.floor(rating);
+    const hasHalf = rating % 1 >= 0.5;
+    const stars = [];
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<Star key={`star-${i}`} className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+    }
+
+    if (hasHalf && fullStars < 5) {
+      stars.push(<StarHalf key="half" className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+    }
+
+    while (stars.length < 5) {
+      stars.push(<StarOff key={`off-${stars.length}`} className="text-yellow-400 w-4 h-4" />);
+    }
+
+    return stars;
+  };
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -163,18 +179,19 @@ const TravelContent = () => {
           highlight.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
-      let matchesPrice = true;
-      if (priceRange !== "all") {
-        const [min, max] = priceRange.split("-").map(Number);
-        matchesPrice = pkg.price >= min && (max ? pkg.price <= max : true);
-      }
+      // let matchesPrice = true;
+      // if (priceRange !== "all") {
+      //   const [min, max] = priceRange.split("-").map(Number);
+      //   matchesPrice = pkg.price >= min && (max ? pkg.price <= max : true);
+      // }
 
-      return matchesSearch && matchesPrice;
+      return matchesSearch
     });
   };
 
   const popularPackages = [...packages].sort((a, b) => b.likes - a.likes).slice(0, 6);
   const featuredPackages = filterPackages(packages).slice(0, 6);
+
 
   if (loading) return <div className="text-center py-8">Loading...</div>;
   if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
@@ -183,277 +200,223 @@ const TravelContent = () => {
     <div className="max-w-7xl mx-auto">
       {/* Enhanced Hero Section */}
       <section className="relative h-[600px] overflow-hidden">
-        <img
-          src="11.jpeg"
-          alt="Travel Hero"
-          className="w-full h-full object-cover"
+        <video
+          src="/hero-section.mp4"  // put the video inside /public
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute top-0 left-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center">
           <div className="text-white px-8 md:px-16 max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Discover Your Next Adventure
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-[#D2AF94] playfair font-sans">
+              The Connoisseur's Compass
             </h1>
-            <p className="text-lg md:text-xl mb-8">
-              Explore curated travel experiences tailored to your preferences
+            <p className="text-lg md:text-xl mb-8 text-[#8c7361] playfair font-sans">
+              "True Luxury isn't thread count, but the thread that weaves unforgrttable stories"
             </p>
-            <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors">
-                Explore Now
-              </button>
-              <Link
-                href="/packages"
-                className="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-100 transition-colors"
-              >
-                View Packages
-              </Link>
+            <div className="flex gap-5">
+              <ExploreButton />
+              <ViewPackagesButton />
             </div>
           </div>
         </div>
       </section>
 
- 
+
+
+
+
 
       {/* Featured Packages Section */}
-      <section className="py-10 bg-gradient-to-b from-blue-200 to-blue-50 px-5">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-12">
-            <h2 className=" text-xl sm:text-4xl tracking-wide  font-bold text-blue-700">
+      <section className="py-16 bg-gradient-to-b from-[#186663]/10 to-[#A6B5B4]/10 px-4">
+
+
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#186663] font-serif tracking-wide">
               Featured Packages
             </h2>
             <Link
               href="/packages"
-              className="flex items-center gap-2 text-blue-500 hover:text-blue-700 font-semibold"
+              className="flex items-center gap-1 text-[#186663] hover:text-[#0a3c3a] font-semibold transition-colors group"
             >
-              View All <ArrowRight className="h-5 w-5" />
+              <span className="border-b border-transparent group-hover:border-[#186663] transition-all">
+                View All Packages
+              </span>
+              <ArrowRight className="h-4 w-4 mt-0.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Enhanced Search and Filter Bar */}
-          <div className="mb-4 bg-white p-1 rounded-lg shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-1">
-              {/* Search Input */}
-              <div className="relative col-span-2">
+          {/* Search and Filter Bar */}
+          <div className="mb-8 bg-white p-3 rounded-xl shadow-md">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="relative md:col-span-2">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
                 <input
                   type="text"
                   placeholder="Search destinations or packages..."
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg bg-gray-50
+                      hover:border-[#186663] focus:outline-none focus:ring-2 focus:ring-[#186663]/50
+                      transition-all text-gray-700"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
               </div>
 
-              {/* Price Range Filter */}
               <select
-                className="py-3 px-4 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-600"
-                value={priceRange}
-                onChange={(e) => setPriceRange(e.target.value)}
-              >
-                <option value="all">All Prices</option>
-                <option value="0-1000">Under $1,000</option>
-                <option value="1001-2000">$1,001 - $2,000</option>
-                <option value="2001-3000">$2,001 - $3,000</option>
-                <option value="3001">Above $3,000</option>
-              </select>
-
-              {/* Sort By */}
-              <select
-                className="py-3 px-2 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-600"
+                className="py-3 px-4 border border-gray-200 rounded-lg bg-gray-50 
+                    focus:outline-none focus:ring-2 focus:ring-[#186663]/50 text-gray-700"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
                 <option value="popularity">Sort by Popularity</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="duration">Duration</option>
+                <option value="duration">Sort by Duration</option>
               </select>
             </div>
-
-            {/* Active Filters */}
-            {/* <div className="mt-4 flex flex-wrap gap-2">
-              {searchQuery && (
-                <span className="px-1 py-1 bg-blue-100 text-blue-700 rounded-full text-sm flex items-center gap-2">
-                  Search: {searchQuery}
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="hover:text-blue-900"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
-              {priceRange !== "all" && (
-                <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm flex items-center gap-2">
-                  Price: {priceRange}
-                  <button
-                    onClick={() => setPriceRange("all")}
-                    className="hover:text-blue-900"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
-            </div> */}
           </div>
 
           <Swiper
             modules={[Navigation, Pagination]}
-            autoplay={{ delay: 300 }}
             navigation
             pagination={{ clickable: true }}
-            spaceBetween={20}
-            slidesPerView={3}
-            scrollbar={{ draggable: true }}
-            centeredSlides={true}
-            loop={true}
-            speed={500}
-            // Responsive breakpoints
+            spaceBetween={30}
+            slidesPerView={1}
             breakpoints={{
-              320: {
-                slidesPerView: 1,
-              },
-              640: {
-                slidesPerView: 1,
-              },
-              768: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1280: { slidesPerView: 4 }
             }}
-            className="mySwiper"
+            className="featured-packages-swiper"
           >
             {featuredPackages.map((pkg) => (
               <SwiperSlide key={pkg._id}>
-                <div
-
-              className="overflow-hidden pb-10 shadow-l text-gray-800  hover:shadow-2xl  transition-shadow duration-300"
-            >
-              <div className="relative h-64">
-                <img
-                  src={pkg.images[0]}
-                  alt={pkg.name}
-                  width={200}
-                  height={300}
-                  className="w-full h-full object-fill"
-                />
-              </div>
-              <div className="p-4">
-                <h6 className="text-sm text-gray-500 tracking-wide">{pkg.duration}</h6>
-                <div className="flex">
-                  <div className="flex justify-between items-end w-full mt-auto pt-1">
-                    <h2 className="text-2xl  font-semibold font-sans tracking-wider">{pkg.name}</h2>
-
-                    <div className="flex items-center text-yellow-600  text-2xl font-bold tracking-wide">
-                      <IndianRupee className="text-xl" />
-                      <span>{pkg.price}</span>
+                <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+                  <div className="relative aspect-video">
+                    <img
+                      src={pkg.images[0]}
+                      alt={pkg.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-4 right-4 bg-[#186663] text-[#A6B5B4] py-1 px-3 rounded-lg 
+                            text-sm font-medium z-10 shadow-md">
+                      {pkg.duration}
                     </div>
                   </div>
 
-                </div>
-                <div className="flex flex-wrap text-xs text-gray-500 mt-2 mb-2">
+                  <div className="p-5 flex-1 flex flex-col">
+                    <div className="mb-3">
+                      <h3 className="text-lg text-[#186663] mb-1 playfair">{pkg.name}</h3>
+                      <div className="flex flex-wrap text-sm text-gray-500 gap-5">
+                        {pkg.places.split("-").map((place, index, arr) => (
+                          <span key={index} className="flex items-center">
+                            {place}
+                            {index < arr.length - 1 && <ArrowRight className="mx-1 w-3 h-3 opacity-50" />}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
 
-                  {pkg.places.split("-").map((place, index, arr) => (
-                    <span key={index} className="flex items-center tracking-wide">
-                      <span>{place}</span>
-                      {index < arr.length - 1 && <ArrowRight className="mx-1 w-4 h-6 opacity-25" />}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex  flex-wrap gap-6 mt-4 items-center">
-                {/* ⭐ Star Rating Section */}
-                  <div className="flex items-center gap-1 mr-auto">
-                    {renderStars(pkg.rating)}
-                    <span className="text-sm font-bold  text-gray-900 tracking-widest ">
-                      {(pkg.rating ?? 4.5).toFixed(1)}
-                    </span>
+                    <div className="mt-auto pt-4">
+                      <div className="flex flex-wrap gap-2">
+                        <Link
+                          href={`/packages/${pkg._id}`}
+                          className="flex-1 min-w-[12px] text-center bg-[#186663] hover:bg-[#0a3c3a] text-white 
+                              py-2 px-2 rounded-lg font-medium transition-colors"
+                        >
+                          Explore Now
+                        </Link>
+                        <button
+                          className="flex-1 min-w-[12px] border border-[#186663] text-[#186663] hover:bg-[#186663]/5
+                              py-2 px-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-1"
+                        >
+                          <Bookmark className="w-4 h-4" />
+                          <span>Save</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-6 ml-4 sm:gap-2">
-                  <Link
-                    href={`/packages/${pkg._id}`}
-                    className="w-fit min-w-[120px] rounded-md hover:bg-blue-700 flex items-center justify-center gap-1 border border-blue-500 text-blue-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
-                  >
-                    Explore Now
-                  </Link>
-                  <button
-                    className="w-fit min-w-[120px] rounded-md hover:bg-green-700 flex items-center justify-center gap-1 border border-green-500 text-green-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
-                  >
-                    <Bookmark className="w-4 h-4" />
-                    Wishlist
-                  </button>
                 </div>
-                </div>
-              </div>
-            </div>
               </SwiperSlide>
             ))}
           </Swiper>
-
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-blue-100 to-white px-5">
-        <div className="container mx-auto px-4">
+      <section className="relative py-10 px-10 overflow-hidden">
+        {/* Squares Background */}
+        <div className="absolute inset-0 z-0">
+          <Squares
+            speed={0.2}
+            squareSize={50}
+            direction='down'
+            hoverFillColor='#D2AF94'
+            borderColor="#D2AF94"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="container mx-auto px-4 relative z-20">
           {/* Header */}
           <div className="flex justify-between items-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800">Popular Destinations</h2>
+            <h2 className="text-4xl font-bold text-white drop-shadow-md playfair font-sans">
+              Popular Destinations
+            </h2>
             <Link
-              href="/packages"
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+              href="/destinations"
+              className="flex items-center gap-2 text-white hover:text-blue-200 font-semibold"
             >
               Explore All <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
 
           {/* Destination Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {popularPackages.map((pkg) => (
               <div
                 key={pkg._id}
-                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+                className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden border border-[#D2AF94]/20 hover:border-[#D2AF94] hover:bg-white"
               >
                 {/* Image Section */}
                 <div className="relative">
                   <img
                     src={pkg.images[0]}
                     alt={pkg.title}
-                    className="w-full h-36 object-cover"
+                    className="w-full h-40 object-cover"
                   />
-                  <button className="absolute top-2 right-2 p-1 bg-white/80 rounded-full shadow hover:bg-white transition-all">
+                  <button className="absolute top-3 right-3 p-2 bg-white/80 rounded-full shadow hover:bg-white transition-all">
                     <Heart className="h-4 w-4 text-red-500" />
                   </button>
                 </div>
 
                 {/* Content Section */}
                 <div className="p-4">
-                  {/* Title */}
-                  <h3 className="text-sm font-bold text-gray-800 mb-1 truncate">
+                  <h3 className="text-md font-bold text-[#d2af94]-800 mb-1 playfair font-sans">
                     {pkg.name}
                   </h3>
 
-                  {/* Destination */}
-                  <p className="flex items-center gap-1 text-gray-600 text-xs mb-2">
-                    <MapPin className="h-3 w-3 text-blue-500" />
+                  <p className="flex items-center gap-1 text-gray-600 text-sm mb-2">
+                    <MapPin className="h-4 w-4 text-blue-500" />
                     {pkg.highlights[0]}
                   </p>
 
-                  {/* Price */}
-                  <div className="flex items-center justify-between text-gray-800 mb-2">
-                    <span className="text-blue-600 font-bold text-sm">
-                      ${pkg.price}
-                    </span>
+                  <div className="flex items-center justify-between text-gray-800 mb-3">
                     <span className="flex items-center gap-1 text-xs text-gray-500">
                       <Clock className="h-4 w-4 text-gray-400" />
                       {pkg.duration}
                     </span>
+                    {/* <span className="text-blue-600 font-bold text-sm">
+                ${pkg.price}
+              </span> */}
                   </div>
 
-                  {/* View Details Button */}
                   <Link
-                    href={`/packages/${pkg._id}`}
-                    className="block w-full text-center bg-blue-600 text-white text-xs py-1 rounded-md hover:bg-blue-700 transition-colors"
+                    href={`/destinations/${pkg._id}`}
+                    className="block w-full text-center bg-blue-600 text-white text-sm py-2 rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     View Details
                   </Link>
@@ -461,45 +424,46 @@ const TravelContent = () => {
               </div>
             ))}
           </div>
-
         </div>
       </section>
 
-     {/* Why Choose Us Section */}
-     <section className="py-20 bg-gradient-to-b from-blue-200 to-blue-50">
+      {/* Why Choose Us Section */}
+  <section
+    className="py-20"
+    style={{
+      background: "linear-gradient(to bottom, #002D37, #186663)",
+      minHeight: "100vh"
+    }}
+  >
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-gray-800">
-            Why Travel With Us
+          <h2 className="text-4xl font-bold text-center mb-16 text-[#D2AF94] playfair font-sans">
+            Why Travel With TravelXec
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 playfair">
             {[
               {
-                icon: <Award className="h-8 w-8" />,
-                title: "Best Price Guarantee",
-                description: "We offer unbeatable prices for premium travel experiences"
+                icon: <Award className="h-8 w-8 stroke-[#002D37]" />,
+                title: "Curated Destinations",
+                description: "We don’t just pick places — we handcraft journeys to India’s most coveted gems, offering privileged access to destinations that remain untouched by mass tourism"
               },
               {
-                icon: <Compass className="h-8 w-8" />,
-                title: "Expert Guides",
-                description: "Professional local guides to enhance your journey"
+                icon: <Castle className="h-8 w-8 text-[#002D37]" />,
+                title: "Exceptional Stays",
+                description: "From royal palaces and boutique heritage retreats to ultra-luxury eco-resorts, every accommodation is meticulously selected for its charm, comfort, and distinction"
               },
               {
-                icon: <PhoneCall className="h-8 w-8" />,
-                title: "24/7 Support",
-                description: "Round-the-clock assistance for peace of mind"
+                icon: <Star className="h-8 w-8 text-[#002D37]" />,
+                title: "Luxury with Purpose",
+                description: "We believe true luxury respects the planet. Our journeys uplift local artisans, preserve cultural legacies, and minimize environmental impact — all while delivering a seamless, world-class experience"
               },
-              {
-                icon: <Star className="h-8 w-8" />,
-                title: "Curated Experiences",
-                description: "Handpicked destinations and activities"
-              }
+
             ].map((item, index) => (
-              <div key={index} className="text-center p-6 bg-blue-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div key={index} className="text-center p-6 bg-[#A6B5B4] rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                 <div className="inline-block p-4 bg-blue-100 rounded-full text-blue-600 mb-4">
                   {item.icon}
                 </div>
                 <h3 className="text-xl text-gray-700 font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600 font-sans">{item.description}</p>
+                <p className="text-gray-600 font-playfair">{item.description}</p>
               </div>
             ))}
           </div>

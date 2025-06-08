@@ -33,7 +33,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-blue-900 to-blue-950 text-white mt-8">
+    <footer className="bg-[#186663] text-white">
 
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -106,15 +106,15 @@ const Footer = () => {
             <div className="space-y-4">
               <p className="flex items-start gap-3 text-blue-200">
                 <MapPin className="h-5 w-5 mt-1 flex-shrink-0" />
-                <span>123 Adventure Street, Wanderlust City, Travel Land 12345</span>
+                <span>114, Pramid Urban Square</span>
               </p>
               <p className="flex items-center gap-3 text-blue-200">
                 <Phone className="h-5 w-5" />
-                <span>+1 (234) 567-8900</span>
+                <span>+91-9667909383 </span>
               </p>
               <p className="flex items-center gap-3 text-blue-200">
                 <Mail className="h-5 w-5" />
-                <span>contact@travelease.com</span>
+                <span>contact@travelxec.com</span>
               </p>
               <p className="flex items-center gap-3 text-blue-200">
                 <Clock className="h-5 w-5" />

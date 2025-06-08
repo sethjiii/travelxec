@@ -11,6 +11,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '100mb', // increase as needed
+    },
+  },
+};
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -31,8 +39,8 @@ export default async function handler(req, res) {
       name,
       description,
       itinerary,
-      price,
-      currency,
+      //price,
+      //currency,
       duration,
       highlights,
       inclusions,
@@ -40,13 +48,17 @@ export default async function handler(req, res) {
       availability,
       images,
       places,
-      cityId, // city IDs from formData
+      cityId,
     } = req.body;
 
-    console.log(req.body.cityId)
     if (
-      !name || !description || !price || !duration || !currency ||
-      !Array.isArray(cityId) || cityId.length === 0
+      !name ||
+      !description ||
+      !duration ||
+      // !price ||
+      // !currency ||
+      !Array.isArray(cityId) ||
+      cityId.length === 0
     ) {
       return res.status(400).json({ error: 'Missing or invalid required fields' });
     }
@@ -65,13 +77,12 @@ export default async function handler(req, res) {
       }
     }
 
-    // Create and save the new package
     const newPackage = new TravelPackage({
       name,
       description,
       itinerary,
-      price,
-      currency,
+      // price,
+      // currency,
       duration,
       highlights,
       inclusions,
@@ -83,24 +94,23 @@ export default async function handler(req, res) {
 
     const savedPackage = await newPackage.save();
 
-    // Validate and update destination cities
     await Promise.all(
       cityId.map(async (id) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
           console.warn(`Invalid ObjectId: ${id}`);
           return null;
         }
-    
+
         const updated = await DestinationModel.findByIdAndUpdate(
           id,
           { $addToSet: { packages: savedPackage._id } },
-          { new: true } // optional: return the updated document
+          { new: true }
         );
-        // 6836903b1fd0770ae97a7731
+
         if (!updated) {
           console.warn(`Destination not found for ID: ${id}`);
         }
-    
+
         return updated;
       })
     );
