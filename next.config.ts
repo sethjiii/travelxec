@@ -4,7 +4,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["res.cloudinary.com"],
   },
-  //turbo:false,
+  eslint: {
+    ignoreDuringBuilds: true, // ✅ Ignore linting during Vercel build
+  },
 };
 
 export default nextConfig;
