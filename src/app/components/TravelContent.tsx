@@ -27,7 +27,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import ExploreButton from "@/ui/ExploreButton";
 import ViewPackagesButton from "@/ui/ViewPackagesButton";
 import Squares from "@/ui/Squares";
-import { motion } from "motion/react";
+
 
 
 
