@@ -230,7 +230,7 @@ const TravelContent = () => {
 
 
       {/* Featured Packages Section */}
-      <section className="py-16 bg-gradient-to-b from-[#186663]/10 to-[#A6B5B4]/10 px-4">
+      <section className="py-16 bg-[#8C7361] px-4">
 
 
         <div className="container mx-auto">

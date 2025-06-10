@@ -1,4 +1,5 @@
 import dbConnect from '../dbConnect';  // Adjust if needed
+import TravelPackage from'../../../models/TravelPackage'; // Your Mongoose TravelPackage model  
 import Destination from '../../../models/Destination'; // Your Mongoose Destination model
 
 export default async function handler(req, res) {
