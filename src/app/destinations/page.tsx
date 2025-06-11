@@ -7,11 +7,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { MapPin, Plane } from "lucide-react";
 
+// Removed price and currency from interface
 interface Package {
   _id: string;
   name: string;
   images: string[];
-  price: number;
   duration: string;
 }
 
@@ -36,7 +36,6 @@ export default function DestinationsList() {
         const data = await res.json();
         setDestinations(data.destinations || []);
       } catch (err: unknown) {
-        // Narrow down the error type to extract message safely
         if (err instanceof Error) {
           setError(err.message);
         } else {
@@ -48,30 +47,30 @@ export default function DestinationsList() {
     }
     fetchDestinations();
   }, []);
-  
 
-  if (loading) return (
-   
-        <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-white">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500 mb-6"></div>
-          <div className="text-black tracking-widest text-2xl text-center font-mono px-4">
-            Hold onn... We Are Fetching the Best Combination of Adventure For You...
-          </div>
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500 mb-6"></div>
+        <div className="text-black tracking-widest text-2xl text-center font-mono px-4">
+          Hold onn... We Are Fetching the Best Combination of Adventure For You...
         </div>
-      
-  );
+      </div>
+    );
 
-  if (error) return (
-    <div className="flex justify-center items-center py-10">
-      <p className="text-red-500 text-lg font-semibold">Error: {error}</p>
-    </div>
-  );
+  if (error)
+    return (
+      <div className="flex justify-center items-center py-10">
+        <p className="text-red-500 text-lg font-semibold">Error: {error}</p>
+      </div>
+    );
 
-  if (destinations.length === 0) return (
-    <div className="flex justify-center items-center py-10">
-      <p className="text-gray-400 text-lg">No destinations found.</p>
-    </div>
-  );
+  if (destinations.length === 0)
+    return (
+      <div className="flex justify-center items-center py-10">
+        <p className="text-gray-400 text-lg">No destinations found.</p>
+      </div>
+    );
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-6 font-sans text-gray-600">
@@ -97,12 +96,13 @@ export default function DestinationsList() {
                   {destination.city}
                 </h3>
               </div>
-              <p className="text-gray-700 leading-5 text-justify sm:leading-8 sm:text-lg text-sm sm:tracking-tight text-lg">{destination.description}</p>
+              <p className="text-gray-700 leading-5 text-justify sm:leading-8 sm:text-lg text-sm sm:tracking-tight text-lg">
+                {destination.description}
+              </p>
 
-              {destination.packages && destination.packages.length > 0? (
+              {destination.packages && destination.packages.length > 0 ? (
                 <div className="mt-12 pb-8 border-gray-700">
                   <div className="flex items-center gap-3 text-blue-400 mb-6">
-
                     <Plane className="w-6 h-6" />
                     <h4 className="text-2xl font-semibold text-blue-500">
                       Available Packages in {destination.city}
@@ -134,12 +134,6 @@ export default function DestinationsList() {
                                 {pkg.name}
                               </h5>
                               <p className="text-gray-400 text-sm">
-                                Price:{" "}
-                                <span className="text-green-400 font-medium">
-                                  ₹{pkg.price}
-                                </span>
-                              </p>
-                              <p className="text-gray-400 text-sm">
                                 Duration: {pkg.duration}
                               </p>
                             </div>
@@ -148,8 +142,11 @@ export default function DestinationsList() {
                       </SwiperSlide>
                     ))}
                   </Swiper>
-                </div>) : (
-                <p className="text-gray-500 text-xl font-bold mt-6">No packages available for this destination.</p>
+                </div>
+              ) : (
+                <p className="text-gray-500 text-xl font-bold mt-6">
+                  No packages available for this destination.
+                </p>
               )}
             </div>
           </div>

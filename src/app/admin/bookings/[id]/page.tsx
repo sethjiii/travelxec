@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import {User, Package, Calendar, Phone, Star, MapPin } from "lucide-react";
+import { User, Package, Calendar, Phone, Star, MapPin } from "lucide-react";
 
 interface Booking {
   user: {
@@ -12,13 +12,11 @@ interface Booking {
   package: {
     name: string;
     description: string;
-    price: number;
     itinerary: ItineraryItem[];
     reviews: Review[];
   };
   startDate: string;
   numberOfTravelers: number;
-  totalAmount: number;
   emergencyContact: {
     name: string;
     phone: string;
@@ -84,14 +82,21 @@ const BookingDetailsPage = () => {
     fetchBookingDetails();
   }, [bookingId]);
 
-  const Section = ({ title, children, icon: Icon }: { title: string; children: React.ReactNode; icon: React.ComponentType }) => (
+  const Section = ({
+    title,
+    children,
+    icon: Icon,
+  }: {
+    title: string;
+    children: React.ReactNode;
+    icon: React.ComponentType;
+  }) => (
     <div className="mb-6">
       <div className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
         <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 text-blue-600">
-          <Icon  />
-            </div>
-                
+          <div className="w-6 h-6 text-blue-600">
+            <Icon />
+          </div>
           <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
         </div>
       </div>
@@ -142,15 +147,16 @@ const BookingDetailsPage = () => {
           <div className="space-y-4">
             <InfoCard label="Package Name" value={booking.package?.name} />
             <InfoCard label="Description" value={booking.package?.description} />
-            <InfoCard label="Price" value={`₹${booking.package?.price}`} />
           </div>
         </Section>
 
         <Section title="Booking Information" icon={Calendar}>
           <div className="grid md:grid-cols-2 gap-4">
-            <InfoCard label="Start Date" value={new Date(booking.startDate).toLocaleDateString()} />
+            <InfoCard
+              label="Start Date"
+              value={new Date(booking.startDate).toLocaleDateString()}
+            />
             <InfoCard label="Number of Travelers" value={booking.numberOfTravelers} />
-            <InfoCard label="Total Amount" value={`₹${booking.totalAmount}`} />
           </div>
         </Section>
 
@@ -178,7 +184,10 @@ const BookingDetailsPage = () => {
                   <div className="grid gap-4 md:grid-cols-2">
                     {Array.isArray(item.activities) && item.activities.length > 0 ? (
                       item.activities.map((activity, activityIndex) => (
-                        <div key={activityIndex} className="p-3 bg-white rounded shadow-sm">
+                        <div
+                          key={activityIndex}
+                          className="p-3 bg-white rounded shadow-sm"
+                        >
                           <p className="font-medium text-blue-600">{activity.name}</p>
                           <p className="text-gray-600">{activity.time}</p>
                           <p className="text-gray-600">{activity.additionalDetails}</p>

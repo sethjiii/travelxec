@@ -36,7 +36,7 @@ interface TravelPackage {
   _id: number;
   title: string;
   description: string;
-  price: number;
+  // price: number;
   duration: string;
   highlights: string[];
   images: string[];
