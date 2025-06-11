@@ -8,8 +8,6 @@ interface TravelPackage {
   _id: string;
   name: string;
   description: string;
-  price: number;
-  currency: string;
   duration: string;
   availability: {
     startDate: string;
@@ -142,7 +140,6 @@ const ConfirmationPage = () => {
         packageId: id,
         userId: userProfile?._id,
         ...bookingDetails,
-        totalAmount: (packageData?.price || 0) * bookingDetails.numberOfTravelers,
       };
 
       const response = await fetch(`/api/confirmation/${id}`, {
@@ -190,8 +187,8 @@ const ConfirmationPage = () => {
         {/* Hero Image Section */}
         <div className="relative rounded-xl overflow-hidden shadow-xl">
           <Image
-            src={packageData.images[0]} 
-            alt="Travel Destination" 
+            src={packageData.images[0]}
+            alt="Travel Destination"
             className="w-full h-72 sm:h-96 object-cover"
             fill
           />
@@ -203,8 +200,7 @@ const ConfirmationPage = () => {
 
         {/* Package Summary */}
         <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-blue-700  mb-6">Package Details</h2>
-         
+          <h2 className="text-2xl font-bold text-blue-700 mb-6">Package Details</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <p className="text-sm font-medium text-gray-500">Package Name</p>
@@ -215,15 +211,9 @@ const ConfirmationPage = () => {
               <p className="mt-1 text-lg font-semibold text-gray-900">{packageData.duration}</p>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Price per Person</p>
-              <p className="mt-1 text-lg font-semibold text-gray-900">
-                {packageData.currency} {packageData.price.toLocaleString()}
-              </p>
-            </div>
-            <div>
               <p className="text-sm font-medium text-gray-500">Available Dates</p>
               <p className="mt-1 text-lg font-semibold text-gray-900">
-                {new Date(packageData.availability.startDate).toLocaleDateString()} - 
+                {new Date(packageData.availability.startDate).toLocaleDateString()} -{" "}
                 {new Date(packageData.availability.endDate).toLocaleDateString()}
               </p>
             </div>
@@ -232,151 +222,124 @@ const ConfirmationPage = () => {
 
         {/* Booking Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Traveler Information */}
           {bookingDetails.travelers.map((traveler, index) => (
             <div key={index} className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-blue-700  mb-6">
-                Traveler {index + 1}
-              </h2>
+              <h2 className="text-2xl font-bold text-blue-700 mb-6">Traveler {index + 1}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                   <input
                     type="text"
                     name={`traveler.${index}.name`}
                     value={traveler.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                   <input
                     type="email"
                     name={`traveler.${index}.email`}
                     value={traveler.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                   <input
                     type="tel"
                     name={`traveler.${index}.phone`}
                     value={traveler.phone}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
             </div>
           ))}
 
-          {/* Add More Traveler Button */}
           <button
             type="button"
             onClick={handleAddTraveler}
-            className="w-full py-3 bg-blue-500  text-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
           >
             Add Another Traveler
           </button>
 
-          {/* Emergency Contact */}
           <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl font-bold text-blue-700  mb-6">
-              Emergency Contact
-            </h2>
+            <h2 className="text-2xl font-bold text-blue-700 mb-6">Emergency Contact</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                 <input
                   type="text"
                   name="emergency.name"
                   value={bookingDetails.emergencyContact.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                 <input
                   type="tel"
                   name="emergency.phone"
                   value={bookingDetails.emergencyContact.phone}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Relation
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Relation</label>
                 <input
                   type="text"
                   name="emergency.relation"
                   value={bookingDetails.emergencyContact.relation}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
           </div>
 
-          {/* Start Date */}
           <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl font-bold text-blue-700  mb-6">
-              Start Date
-            </h2>
+            <h2 className="text-2xl font-bold text-blue-700 mb-6">Start Date</h2>
             <input
               type="date"
               name="startDate"
               value={bookingDetails.startDate}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
-          {/* Special Requests */}
           <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl font-bold text-blue-700  mb-6">
-              Special Requests
-            </h2>
+            <h2 className="text-2xl font-bold text-blue-700 mb-6">Special Requests</h2>
             <textarea
               name="specialRequests"
               value={bookingDetails.specialRequests}
               onChange={handleInputChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors resize-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
               placeholder="Any special requirements or requests..."
             ></textarea>
           </div>
 
-          {/* Success Message */}
           {successMessage && (
             <div className="bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-xl text-center font-medium">
               {successMessage}
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold text-lg shadow-lg"
