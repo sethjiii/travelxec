@@ -1,5 +1,5 @@
 import dbConnect from "../../dbConnect";
-import TravelPackage from "../../../../models/TravelPackages";
+import TravelPackage from "../../../../models/TravelPackage";
 import mongoose from "mongoose";
 
 export default async function handler(req, res) {

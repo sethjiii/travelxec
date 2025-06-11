@@ -24,12 +24,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
-import ExploreButton from "@/ui/ExploreButton";
-import ViewPackagesButton from "@/ui/ViewPackagesButton";
-import Squares from "@/ui/Squares";
-
-
-
+import ExploreButton from "@/ui2/ExploreButton.js";
+import ViewPackagesButton from "@/ui2/ViewPackagesButton.js";
+import { BackgroundLines } from "@/components/ui/background-lines"; // adjust the path if different
 
 
 
@@ -348,22 +345,11 @@ const TravelContent = () => {
       </section>
 
       <section className="relative py-10 px-10 overflow-hidden">
-        {/* Squares Background */}
-        <div className="absolute inset-0 z-0">
-          <Squares
-            speed={0.2}
-            squareSize={50}
-            direction='down'
-            hoverFillColor='#D2AF94'
-            borderColor="#D2AF94"
-          />
-        </div>
-
         {/* Content */}
         <div className="container mx-auto px-4 relative z-20">
           {/* Header */}
           <div className="flex justify-between items-center mb-12">
-            <h2 className="text-4xl font-bold text-white drop-shadow-md playfair font-sans">
+            <h2 className="text-4xl font-bold drop-shadow-md playfair font-sans -[#D2AF94]">
               Popular Destinations
             </h2>
             <Link
@@ -386,7 +372,7 @@ const TravelContent = () => {
                   <img
                     src={pkg.images[0]}
                     alt={pkg.title}
-                    className="w-full h-40 object-cover"
+                    className="w-full h-40 object-fill"
                   />
                   <button className="absolute top-3 right-3 p-2 bg-white/80 rounded-full shadow hover:bg-white transition-all">
                     <Heart className="h-4 w-4 text-red-500" />
@@ -428,42 +414,50 @@ const TravelContent = () => {
       </section>
 
       {/* Why Choose Us Section */}
-  <section
-    className="py-20"
-    style={{
-      background: "linear-gradient(to bottom, #002D37, #186663)",
-      minHeight: "100vh"
-    }}
-  >
+      <section
+        className="py-20"
+        style={{
+          background: "linear-gradient(to bottom, #002D37, #186663)",
+          minHeight: "100vh"
+        }}
+      >
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-[#D2AF94] playfair font-sans">
+          <h2 className="align-center text-4xl font-bold text-center mb-16 text-[#D2AF94] playfair font-sans">
             Why Travel With TravelXec
+            <div className="mt-2 h-[2px] w-32 mx-auto bg-gradient-to-r from-[#D2AF94] via-[#b98e6e] to-[#D2AF94] rounded-full" />
           </h2>
+
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 playfair">
             {[
               {
                 icon: <Award className="h-8 w-8 stroke-[#002D37]" />,
                 title: "Curated Destinations",
-                description: "We don’t just pick places — we handcraft journeys to India’s most coveted gems, offering privileged access to destinations that remain untouched by mass tourism"
+                description:
+                  "We don’t just pick places — we handcraft journeys to India’s most coveted gems, offering privileged access to destinations that remain untouched by mass tourism"
               },
               {
                 icon: <Castle className="h-8 w-8 text-[#002D37]" />,
                 title: "Exceptional Stays",
-                description: "From royal palaces and boutique heritage retreats to ultra-luxury eco-resorts, every accommodation is meticulously selected for its charm, comfort, and distinction"
+                description:
+                  "From royal palaces and boutique heritage retreats to ultra-luxury eco-resorts, every accommodation is meticulously selected for its charm, comfort, and distinction"
               },
               {
                 icon: <Star className="h-8 w-8 text-[#002D37]" />,
                 title: "Luxury with Purpose",
-                description: "We believe true luxury respects the planet. Our journeys uplift local artisans, preserve cultural legacies, and minimize environmental impact — all while delivering a seamless, world-class experience"
-              },
-
+                description:
+                  "We believe true luxury respects the planet. Our journeys uplift local artisans, preserve cultural legacies, and minimize environmental impact — all while delivering a seamless, world-class experience"
+              }
             ].map((item, index) => (
-              <div key={index} className="text-center p-6 bg-[#A6B5B4] rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                <div className="inline-block p-4 bg-blue-100 rounded-full text-blue-600 mb-4">
+              <div
+                key={index}
+                className="text-center p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] bg-white/10 backdrop-blur-lg border border-white/20"
+              >
+                <div className="inline-block p-4 bg-blue-100 rounded-full text-blue-600 mb-4 shadow-md">
                   {item.icon}
                 </div>
-                <h3 className="text-xl text-gray-700 font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600 font-playfair">{item.description}</p>
+                <h3 className="text-xl text-[#D2AF94] font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-200 font-playfair">{item.description}</p>
               </div>
             ))}
           </div>
@@ -472,9 +466,15 @@ const TravelContent = () => {
 
 
       {/* Testimonials Section */}
-      <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-center mb-8 text-gray-800">
+      <section
+        className="py-20"
+        style={{
+          background: "linear-gradient(to bottom,  #8C7361, #002D37)",
+          minHeight: "20vh"
+        }}
+      >
+        <div className="container mx-auto px-2">
+          <h2 className="text-4xl font-bold text-center mb-8 text-[#D2AF94] playfair font-sans">
             What Our Travelers Say
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -508,37 +508,48 @@ const TravelContent = () => {
 
       {/* Enhanced Newsletter Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-blue-600 transform -skew-y-6"></div>
-        <div className="relative container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center text-white">
-            <h2 className="text-4xl font-bold mb-6">
-              Get Exclusive Travel Updates
-            </h2>
-            <p className="text-xl mb-8 text-blue-100">
-              Subscribe to our newsletter and receive exclusive offers, travel tips, and destination guides.
-            </p>
-            <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row gap-4 justify-center">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="px-6 py-4 rounded-full text-gray-900 flex-grow max-w-md text-lg"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button
-                type="submit"
-                disabled={subscribing}
-                className="bg-white text-blue-600 px-8 py-4 rounded-full hover:bg-gray-100 transition-colors text-lg font-semibold disabled:opacity-70"
-              >
-                {subscribing ? "Subscribing..." : "Subscribe Now"}
-              </button>
-            </form>
-            <p className="mt-4 text-sm text-blue-100">
-              By subscribing, you agree to receive our marketing emails. You can unsubscribe at any time.
-            </p>
-          </div>
-        </div>
-      </section>
+  {/* Skewed background layer */}
+  <div className="absolute inset-0 bg-[#002D37] transform -skew-y-6 z-0"></div>
+
+  {/* Animated BackgroundLines */}
+  <BackgroundLines className="absolute inset-0 z-0 opacity-30 pointer-events-none">
+    {/* No children needed, so we pass an empty fragment */}
+    <>
+    </>
+  </BackgroundLines>
+
+  {/* Main content (z-10 to float above background) */}
+  <div className="relative container mx-auto px-4 z-10">
+    <div className="max-w-3xl mx-auto text-center text-white">
+      <h2 className="text-4xl font-bold mb-6 playfair font-sans">
+        Get Exclusive Travel Updates
+      </h2>
+      <p className="text-xl mb-8 text-blue-100 playfair font-sans">
+        Subscribe to our newsletter and embark on a journey of discovery with TravelXec.
+      </p>
+      <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row gap-4 justify-center">
+        <input
+          type="email"
+          placeholder="Enter your email address"
+          className="px-6 py-4 rounded-full text-gray-900 flex-grow max-w-md text-lg"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button
+          type="submit"
+          disabled={subscribing}
+          className="flex items-center space-x-2 bg-[#A6B5B4] text-[#002D37] px-6 py-2 rounded-full hover:bg-[#D2AF94] transition-colors duration-200"
+        >
+          {subscribing ? "Subscribing..." : "Subscribe Now"}
+        </button>
+      </form>
+      <p className="mt-4 text-sm text-blue-100">
+        By subscribing, you agree to receive our marketing emails. You can unsubscribe at any time.
+      </p>
+    </div>
+  </div>
+</section>
+
     </div>
   );
 };

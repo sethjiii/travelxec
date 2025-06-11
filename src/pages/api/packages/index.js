@@ -1,5 +1,5 @@
 import dbConnect from '../dbConnect';
-import TravelPackage from '../../../models/TravelPackages'; // Adjust the path to your TravelPackage model
+import TravelPackage from '../../../models/TravelPackage'; // Adjust the path to your TravelPackage model
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {

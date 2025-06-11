@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
-import TravelPackage from '../../../models/TravelPackages';
+import TravelPackage from '../../../models/TravelPackage';
 import DestinationModel from '../../../models/Destination';
 import dbConnect from '../dbConnect';
 import mongoose from 'mongoose';

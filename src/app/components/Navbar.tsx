@@ -5,7 +5,7 @@ import Link from "next/link";
 import { MapPin, Globe, Menu, X, User, Phone, LogOut, Settings, Heart, Search } from "lucide-react";
 import { useAuth } from "../../Auth/AuthProvider";
 import Image from "next/image";
-import LoginButton from "@/ui/LoginButton";
+
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -113,7 +113,7 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 w-full z-50 transition-colors duration-300 shadow-lg border-b border-[#186663]/10 ${isScrolled
         ? "bg-[rgba(0,45,55,0.3)] backdrop-blur-3xl"
-        : "bg-[rgba(0,45,55,0.8)] backdrop-blur-lg"
+        : "bg-[rgba(0,45,55,0.8)] backdrop-blur-2xl"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
