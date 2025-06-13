@@ -1,6 +1,8 @@
 // ContactPage.jsx
-import React, { useState } from 'react';
-import Head from 'next/head';
+"use client";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import Image from "next/image";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -34,11 +36,7 @@ const ContactPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Contact Us | Luxury Brand</title>
-        <meta name="description" content="Reach out to our premium customer service team" />
-      </Head>
-      
+      <title>Contact Us - Luxury Experience</title>
       <div className="min-h-screen bg-[#002D37] text-[#f8f8f8] overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#186663] to-transparent opacity-30"></div>
