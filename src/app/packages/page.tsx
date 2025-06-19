@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ArrowRight, Bookmark, Star, StarHalf, StarOff } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
+import { ArrowRight, Bookmark, Star, StarHalf, StarOff, Search, MapPin, Clock, Sparkles, Heart } from "lucide-react";
 
-// Define the structure of a package (removed price and currency)
+// Define the structure of a package
 interface Package {
   _id: string;
   name: string;
@@ -13,12 +12,26 @@ interface Package {
   description: string;
   rating: number;
   images: string[];
+  // price?: number;  // You can remove this if not needed
 }
+
+const PremiumLoader = () => (
+  <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-[#002D37]">
+    <div className="relative">
+      <div className="w-16 h-16 border-4 border-t-transparent border-[#D2AF94] rounded-full animate-spin"></div>
+      <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#D2AF94] w-6 h-6 animate-pulse" />
+    </div>
+    <div className="text-[#A6B5B4] tracking-widest text-xl text-center font-light px-4 mt-8 animate-pulse">
+      Hold on... We Are Fetching the Best Combination of Adventure For You...
+    </div>
+  </div>
+);
 
 const AllPackagesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
+  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
 
   const renderStars = (rating = 4.5) => {
     const fullStars = Math.floor(rating);
@@ -26,15 +39,32 @@ const AllPackagesPage = () => {
     const stars = [];
 
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<Star key={`star-${i}`} className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+      stars.push(
+        <Star
+          key={i}
+          className="text-amber-400 w-4 h-4 drop-shadow-sm"
+          fill="currentColor"
+        />
+      );
     }
 
     if (hasHalf && fullStars < 5) {
-      stars.push(<StarHalf key="half" className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+      stars.push(
+        <StarHalf
+          key="half"
+          className="text-amber-400 w-4 h-4 drop-shadow-sm"
+          fill="currentColor"
+        />
+      );
     }
 
     while (stars.length < 5) {
-      stars.push(<StarOff key={`off-${stars.length}`} className="text-yellow-400 w-4 h-4" />);
+      stars.push(
+        <StarOff
+          key={`off-${stars.length}`}
+          className="text-slate-400 w-4 h-4 opacity-40"
+        />
+      );
     }
 
     return stars;
@@ -57,96 +87,208 @@ const AllPackagesPage = () => {
   }, []);
 
   const handleAddToWishlist = (id: string) => {
-    console.log(`Adding package ${id} to wishlist`);
+    setWishlist((prev) => {
+      const newWishlist = new Set(prev);
+      if (newWishlist.has(id)) {
+        newWishlist.delete(id);
+      } else {
+        newWishlist.add(id);
+      }
+      return newWishlist;
+    });
   };
 
-  const filteredPackages = packages.filter((pkg) =>
-    pkg.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPackages = packages.filter(
+    (pkg) =>
+      pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pkg.places.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  if (loading) {
+    return <PremiumLoader />;
+  }
+
   return (
-    <div className="max-w-6xl mx-auto p-4 space-y-8">
-      <div className="flex items-center justify-center">
-        <input
-          type="text"
-          placeholder="Search for a package..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full max-w-lg px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+    <div className="min-h-screen bg-[#002D37] relative playfair">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#186663] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#D2AF94] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#A6B5B4] rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
       </div>
 
-      {loading && (
-        <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-white">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500 mb-6"></div>
-          <div className="text-black tracking-widest text-2xl text-center font-mono px-4">
-            Hold onn... We Are Fetching the Best Combination of Adventure For You...
+      {/* Header Section */}
+      <div className="relative z-10 pt-24 pb-12 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="flex items-center justify-center mb-6">
+            <Sparkles className="text-[#D2AF94] w-8 h-8 mr-3 animate-pulse" />
+            <h1 className="text-5xl md:text-6xl font-light text-white tracking-wide">
+              Exclusive
+              <span className="bg-gradient-to-r from-[#D2AF94] to-[#8C7361] bg-clip-text text-transparent font-normal ml-4">
+                Escapes
+              </span>
+            </h1>
+            <Sparkles className="text-[#D2AF94] w-8 h-8 ml-3 animate-pulse" />
+          </div>
+          <p className="text-[#A6B5B4] text-xl font-light max-w-2xl mx-auto leading-relaxed">
+            Discover handcrafted journeys to the world's most extraordinary
+            destinations
+          </p>
+        </div>
+      </div>
+
+      {/* Search Section */}
+      <div className="relative z-10 px-6 mb-16">
+        <div className="max-w-2xl mx-auto">
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+              <Search className="h-6 w-6 text-[#8C7361] group-hover:text-[#D2AF94] transition-colors duration-300" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search extraordinary destinations..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-16 pr-8 py-5 bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 rounded-2xl hover:bg-[#A6B5B4]/20 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]/50 focus:border-[#D2AF94]/50 transition-all duration-300 text-white placeholder-[#8C7361] text-lg font-light shadow-xl hover:shadow-2xl"
+            />
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#D2AF94]/20 to-[#186663]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
         </div>
-      )}
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 bg-gray-200 gap-6">
-        {filteredPackages.map((pkg) => (
-          <div key={pkg._id}>
-            <div className="overflow-hidden shadow-l text-gray-800 hover:shadow-2xl transition-shadow duration-300">
-              <div className="relative h-64">
-                <Image
+      {/* Packages Grid */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {filteredPackages.map((pkg, index) => (
+            <div
+              key={pkg._id}
+              className="group relative overflow-hidden rounded-3xl bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 hover:bg-[#A6B5B4]/20 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl"
+              style={{
+                animation: `slideUp 0.8s ease-out forwards ${index * 0.1}s`,
+              }}
+            >
+              {/* Card glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#D2AF94]/20 to-[#186663]/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              {/* Image Section */}
+              <div className="relative h-72 overflow-hidden">
+                <img
                   src={pkg.images[0]}
                   alt={pkg.name}
-                  width={200}
-                  height={300}
-                  className="w-full h-full object-fill"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                {/* Wishlist Button */}
+                <button
+                  onClick={() => handleAddToWishlist(pkg._id)}
+                  className="absolute top-4 left-4 w-12 h-12 bg-[#A6B5B4]/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#A6B5B4]/30 transition-all duration-300 group/heart"
+                >
+                  <Heart
+                    className={`w-5 h-5 transition-all duration-300 ${wishlist.has(pkg._id)
+                        ? "text-[#D2AF94] fill-current scale-110"
+                        : "text-white group-hover/heart:text-[#D2AF94] group-hover/heart:scale-110"
+                      }`}
+                  />
+                </button>
+
+                {/* Duration Badge */}
+                <div className="absolute bottom-4 left-4 flex items-center bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
+                  <Clock className="w-4 h-4 mr-1" />
+                  {pkg.duration}
+                </div>
               </div>
-              <div className="p-4">
-                <h6 className="text-sm text-gray-500 tracking-wide">{pkg.duration}</h6>
-                <div className="flex justify-between items-end w-full mt-auto pt-1">
-                  <h2 className="text-2xl font-semibold font-sans tracking-wider">{pkg.name}</h2>
+
+              {/* Content Section */}
+              <div className="p-8">
+                <h2 className="text-2xl font-light text-white mb-3 group-hover:text-[#D2AF94] transition-colors duration-300">
+                  {pkg.name}
+                </h2>
+
+                <div className="flex items-center text-[#A6B5B4] mb-4">
+                  <MapPin className="w-4 h-4 mr-2 text-[#D2AF94]" />
+                  <div className="flex flex-wrap text-sm gap-1">
+                    {pkg.places.split("-").map((place, index, arr) => (
+                      <span key={index} className="flex items-center">
+                        <span className="hover:text-[#D2AF94] transition-colors duration-200">
+                          {place.trim()}
+                        </span>
+                        {index < arr.length - 1 && (
+                          <ArrowRight className="mx-2 w-3 h-3 text-[#8C7361]" />
+                        )}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap text-xs text-gray-500 mt-2 mb-2">
-                  {pkg.places.split("-").map((place, index, arr) => (
-                    <span key={index} className="flex items-center tracking-wide">
-                      <span>{place}</span>
-                      {index < arr.length - 1 && <ArrowRight className="mx-1 w-4 h-6 opacity-25" />}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-[#A6B5B4] text-sm mb-6 leading-relaxed">
+                  {pkg.description}
+                </p>
 
-                <div className="flex flex-wrap gap-6 mt-4 items-center">
-                  <div className="flex items-center gap-1 mr-auto">
+                {/* Rating */}
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="flex items-center gap-1">
                     {renderStars(pkg.rating)}
-                    <span className="text-sm font-bold text-gray-900 tracking-widest">
-                      {(pkg.rating ?? 4.5).toFixed(1)}
-                    </span>
                   </div>
-                  <div className="flex items-center space-x-6 ml-4 sm:gap-2">
-                    <Link
-                      href={`/packages/${pkg._id}`}
-                      className="w-fit min-w-[120px] rounded-md hover:bg-blue-700 flex items-center justify-center gap-1 border border-blue-500 text-blue-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
-                    >
-                      Explore Now
-                    </Link>
-                    <button
-                      onClick={() => handleAddToWishlist(pkg._id)}
-                      className="w-fit min-w-[120px] rounded-md hover:bg-green-700 flex items-center justify-center gap-1 border border-green-500 text-green-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
-                    >
-                      <Bookmark className="w-4 h-4" />
-                      Wishlist
-                    </button>
-                  </div>
+                  <span className="text-white font-medium">
+                    {(pkg.rating ?? 4.5).toFixed(1)}
+                  </span>
+                  {/* <span className="text-[#8C7361] text-sm">
+                    ({Math.floor(Math.random() * 500) + 100} reviews)
+                  </span> */}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-4">
+                  <Link
+                    href={`/packages/${pkg._id}`}
+                    className="flex-1 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-[#002D37] py-3 px-6 rounded-xl font-medium hover:from-[#8C7361] hover:to-[#D2AF94] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    Explore Journey
+                  </Link>
+                  <button
+                    onClick={() => handleAddToWishlist(pkg._id)}
+                    className={`flex-1 py-3 px-6 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 ${wishlist.has(pkg._id)
+                        ? "bg-[#D2AF94] text-[#002D37] hover:bg-[#8C7361]"
+                        : "border border-[#D2AF94] text-[#D2AF94] hover:bg-[#D2AF94] hover:text-[#002D37]"
+                      }`}
+                  >
+                    <Bookmark className="w-4 h-4" />
+                    {wishlist.has(pkg._id) ? "Saved" : "Save"}
+                  </button>
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        {filteredPackages.length === 0 && (
+          <div className="text-center py-16">
+            <div className="text-[#A6B5B4] text-lg mb-4">
+              No destinations found for "{searchQuery}"
+            </div>
+            <button
+              onClick={() => setSearchQuery("")}
+              className="text-[#D2AF94] hover:text-[#8C7361] transition-colors duration-200"
+            >
+              Clear search to view all destinations
+            </button>
           </div>
-        ))}
+        )}
       </div>
 
-      {filteredPackages.length === 0 && !loading && (
-        <div className="text-center text-gray-600">
-          <p>No packages found for &quot;{searchQuery}&quot;.</p>
-        </div>
-      )}
+      <style jsx>{`
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };

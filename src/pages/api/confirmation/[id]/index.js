@@ -9,19 +9,22 @@ export default async function handler(req, res) {
   try {
     await dbConnect();
 
-    console.log("req.body")
-    console.log(req.body)
     const { bookingData, userId } = req.body;
-  
 
     if (!userId || !bookingData) {
       return res.status(400).json({ error: "Missing userId or bookingData" });
     }
 
-    // Create a new Booking using nested subdocuments
+    // Clean unwanted fields just in case (e.g. totalAmount)
+    const {
+      totalAmount, // ❌ destructure to discard it
+      ...filteredBookingData
+    } = bookingData;
+
+    // Create new booking
     const newBooking = new Booking({
-      ...bookingData,
-      userId, // Should be valid ObjectId
+      ...filteredBookingData,
+      userId,
     });
 
     const savedBooking = await newBooking.save();

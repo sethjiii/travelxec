@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { Calendar, MapPin, Users, Mail, Phone, Star } from "lucide-react";
 
 interface TravelPackage {
   _id: string;
@@ -14,6 +15,8 @@ interface TravelPackage {
     endDate: string;
   };
   images: string[];
+  rating?: number;
+  price?: string;
 }
 
 interface UserProfile {
@@ -182,174 +185,352 @@ const ConfirmationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* Hero Image Section */}
-        <div className="relative rounded-xl overflow-hidden shadow-xl">
-          <Image
-            src={packageData.images[0]}
-            alt="Travel Destination"
-            className="w-full h-72 sm:h-96 object-cover"
-            fill
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
-          <h1 className="absolute bottom-8 left-8 text-3xl sm:text-4xl font-bold text-white leading-tight">
-            {packageData.name}
-          </h1>
+<div className="min-h-screen" style={{ backgroundColor: '#faf9f7' }}>
+      {/* Elegant Header */}
+      <div className="relative h-24 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #002D37 0%, #186663 100%)' }}>
+        <div className="text-center">
+          <h1 className="text-2xl font-light tracking-widest text-white playfair">TRAVELXEC</h1>
+          <div className="w-16 h-px bg-gradient-to-r from-transparent via-white to-transparent mt-2"></div>
         </div>
+      </div>
 
-        {/* Package Summary */}
-        <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-blue-700 mb-6">Package Details</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <p className="text-sm font-medium text-gray-500">Package Name</p>
-              <p className="mt-1 text-lg font-semibold text-gray-900">{packageData.name}</p>
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        {/* Hero Section */}
+        <div className="relative rounded-2xl overflow-hidden shadow-2xl mb-12" style={{ background: 'linear-gradient(135deg, #002D37 0%, #186663 100%)' }}>
+          <div className="absolute inset-0 bg-black opacity-20"></div>
+          <div className="relative px-12 py-16 text-white">
+            <div className="flex items-center gap-2 mb-4">
+              {packageData.rating && (
+                <>
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} fill="currentColor" />
+                    ))}
+                  </div>
+                  <span className="text-sm font-light opacity-90">{packageData.rating} • Luxury Experience</span>
+                </>
+              )}
             </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">Duration</p>
-              <p className="mt-1 text-lg font-semibold text-gray-900">{packageData.duration}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">Available Dates</p>
-              <p className="mt-1 text-lg font-semibold text-gray-900">
-                {new Date(packageData.availability.startDate).toLocaleDateString()} -{" "}
-                {new Date(packageData.availability.endDate).toLocaleDateString()}
-              </p>
+            <h1 className="text-4xl md:text-5xl font-light mb-4 tracking-wide playfair">
+              {packageData.name}
+            </h1>
+            <div className="flex flex-wrap items-center gap-8 text-sm font-light opacity-90">
+              <div className="flex items-center gap-2">
+                <Calendar size={16} />
+                <span>{packageData.duration}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin size={16} />
+                <span>Premium Accommodations</span>
+              </div>
+              {packageData.price && (
+                <div className="text-2xl font-light">
+                  From {packageData.price}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
+        {/* Package Overview */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
+          <h2 className="text-2xl font-light mb-8 tracking-wide" style={{ color: '#002D37' }}>
+            Experience Details
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
+              <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#D2AF94' }}>
+                <Calendar size={20} style={{ color: '#002D37' }} />
+              </div>
+              <p className="text-sm font-medium opacity-70 mb-2">DURATION</p>
+              <p className="text-lg font-light" style={{ color: '#002D37' }}>{packageData.duration}</p>
+            </div>
+            <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
+              <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#A6B5B4' }}>
+                <Users size={20} style={{ color: '#002D37' }} />
+              </div>
+              <p className="text-sm font-medium opacity-70 mb-2">AVAILABILITY</p>
+              <p className="text-lg font-light" style={{ color: '#002D37' }}>
+                {packageData.availability ? 
+                  `${new Date(packageData.availability.startDate).toLocaleDateString()} - ${new Date(packageData.availability.endDate).toLocaleDateString()}` 
+                  : 'Contact for availability'
+                }
+              </p>
+            </div>
+            {packageData.rating && (
+              <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
+                <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#8C7361' }}>
+                  <Star size={20} style={{ color: '#002D37' }} />
+                </div>
+                <p className="text-sm font-medium opacity-70 mb-2">RATING</p>
+                <p className="text-lg font-light" style={{ color: '#002D37' }}>{packageData.rating}/5.0</p>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Booking Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form className="space-y-8" onSubmit={handleSubmit}>
+          {/* Travelers Section */}
           {bookingDetails.travelers.map((traveler, index) => (
-            <div key={index} className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-blue-700 mb-6">Traveler {index + 1}</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <div key={index} className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#186663' }}>
+                  <Users size={18} className="text-white" />
+                </div>
+                <h2 className="text-2xl font-light tracking-wide" style={{ color: '#002D37' }}>
+                  Guest {index + 1}
+                </h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
+                    FULL NAME
+                  </label>
                   <input
                     type="text"
                     name={`traveler.${index}.name`}
                     value={traveler.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none focus:border-opacity-100 text-lg font-light transition-all duration-300"
+                    style={{ 
+                      borderColor: '#A6B5B4',
+                      color: '#002D37'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#186663'}
+                    onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <input
-                    type="email"
-                    name={`traveler.${index}.email`}
-                    value={traveler.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
+                
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
+                    EMAIL ADDRESS
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      name={`traveler.${index}.email`}
+                      value={traveler.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-4 pl-12 border-0 border-b-2 bg-transparent focus:outline-none focus:border-opacity-100 text-lg font-light transition-all duration-300"
+                      style={{ 
+                        borderColor: '#A6B5B4',
+                        color: '#002D37'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#186663'}
+                      onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
+                    />
+                    <Mail size={18} className="absolute left-0 top-4" style={{ color: '#A6B5B4' }} />
+                  </div>
                 </div>
-                <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                  <input
-                    type="tel"
-                    name={`traveler.${index}.phone`}
-                    value={traveler.phone}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
+                
+                <div className="md:col-span-2 space-y-2">
+                  <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
+                    PHONE NUMBER
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      name={`traveler.${index}.phone`}
+                      value={traveler.phone}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-4 pl-12 border-0 border-b-2 bg-transparent focus:outline-none focus:border-opacity-100 text-lg font-light transition-all duration-300"
+                      style={{ 
+                        borderColor: '#A6B5B4',
+                        color: '#002D37'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#186663'}
+                      onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
+                    />
+                    <Phone size={18} className="absolute left-0 top-4" style={{ color: '#A6B5B4' }} />
+                  </div>
                 </div>
               </div>
             </div>
           ))}
 
+          {/* Add Traveler Button */}
           <button
             type="button"
             onClick={handleAddTraveler}
-            className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+            className="w-full py-4 rounded-xl font-light text-lg tracking-wide transition-all duration-300 hover:shadow-lg border-2 border-dashed"
+            style={{ 
+              borderColor: '#A6B5B4',
+              color: '#186663',
+              backgroundColor: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              const target = e.target as HTMLButtonElement;
+              target.style.backgroundColor = '#186663';
+              target.style.color = 'white';
+              target.style.borderColor = '#186663';
+            }}
+            onMouseLeave={(e) => {
+              const target = e.target as HTMLButtonElement;
+              target.style.backgroundColor = 'transparent';
+              target.style.color = '#186663';
+              target.style.borderColor = '#A6B5B4';
+            }}
           >
-            Add Another Traveler
+            + Add Another Guest
           </button>
 
-          <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl font-bold text-blue-700 mb-6">Emergency Contact</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          {/* Emergency Contact */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <h2 className="text-2xl font-light mb-8 tracking-wide" style={{ color: '#002D37' }}>
+              Emergency Contact
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
+                  CONTACT NAME
+                </label>
                 <input
                   type="text"
                   name="emergency.name"
                   value={bookingDetails.emergencyContact.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
+                  style={{ 
+                    borderColor: '#A6B5B4',
+                    color: '#002D37'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#186663'}
+                  onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+              
+              <div className="space-y-2">
+                <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
+                  PHONE NUMBER
+                </label>
                 <input
                   type="tel"
                   name="emergency.phone"
                   value={bookingDetails.emergencyContact.phone}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
+                  style={{ 
+                    borderColor: '#A6B5B4',
+                    color: '#002D37'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#186663'}
+                  onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
                 />
               </div>
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Relation</label>
+              
+              <div className="md:col-span-2 space-y-2">
+                <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
+                  RELATIONSHIP
+                </label>
                 <input
                   type="text"
                   name="emergency.relation"
                   value={bookingDetails.emergencyContact.relation}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., Spouse, Parent, Sibling"
+                  className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
+                  style={{ 
+                    borderColor: '#A6B5B4',
+                    color: '#002D37'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#186663'}
+                  onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl font-bold text-blue-700 mb-6">Start Date</h2>
-            <input
-              type="date"
-              name="startDate"
-              value={bookingDetails.startDate}
-              onChange={handleInputChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
+          {/* Travel Date */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <h2 className="text-2xl font-light mb-8 tracking-wide" style={{ color: '#002D37' }}>
+              Preferred Departure Date
+            </h2>
+            <div className="max-w-md">
+              <label className="block text-sm font-medium tracking-wide mb-2" style={{ color: '#8C7361' }}>
+                DEPARTURE DATE
+              </label>
+              <input
+                type="date"
+                name="startDate"
+                value={bookingDetails.startDate}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
+                style={{ 
+                  borderColor: '#A6B5B4',
+                  color: '#002D37'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#186663'}
+                onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
+              />
+            </div>
           </div>
 
-          <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl font-bold text-blue-700 mb-6">Special Requests</h2>
-            <textarea
-              name="specialRequests"
-              value={bookingDetails.specialRequests}
-              onChange={handleInputChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-              placeholder="Any special requirements or requests..."
-            ></textarea>
+          {/* Special Requests */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <h2 className="text-2xl font-light mb-8 tracking-wide" style={{ color: '#002D37' }}>
+              Special Requests & Preferences
+            </h2>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
+                ADDITIONAL REQUESTS
+              </label>
+              <textarea
+                name="specialRequests"
+                value={bookingDetails.specialRequests}
+                onChange={handleInputChange}
+                rows={5}
+                className="w-full px-4 py-4 border-2 rounded-xl bg-transparent focus:outline-none text-lg font-light transition-all duration-300 resize-none"
+                style={{ 
+                  borderColor: '#A6B5B4',
+                  color: '#002D37'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#186663'}
+                onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
+                placeholder="Dietary preferences, room preferences, celebration occasions, accessibility needs..."
+              />
+            </div>
           </div>
 
+          {/* Success Message */}
           {successMessage && (
-            <div className="bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-xl text-center font-medium">
+            <div className="rounded-2xl p-6 text-center font-light text-lg border-2" style={{ 
+              backgroundColor: '#f0f9f7',
+              borderColor: '#186663',
+              color: '#002D37'
+            }}>
               {successMessage}
             </div>
           )}
 
-          <button
-            type="submit"
-            className="w-full py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold text-lg shadow-lg"
-          >
-            Confirm Booking
-          </button>
+          {/* Submit Button */}
+          <div className="text-center pt-8">
+            <button
+              type="submit"
+              className="px-16 py-5 rounded-xl font-light text-lg tracking-widest transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1"
+              style={{ 
+                background: 'linear-gradient(135deg, #002D37 0%, #186663 100%)',
+                color: 'white'
+              }}
+            >
+              RESERVE EXPERIENCE
+            </button>
+            <p className="mt-4 text-sm font-light opacity-70" style={{ color: '#8C7361' }}>
+              Our travel concierge will contact you within 24 hours to finalize your luxury experience
+            </p>
+          </div>
         </form>
       </div>
     </div>
   );
-};
+}
 
 export default ConfirmationPage;

@@ -12,7 +12,7 @@ interface Booking {
   };
   startDate: string;
   numberOfTravelers: number;
-  totalAmount: number;
+  // totalAmount: number;
 }
 
 const BookingsPage = () => {
@@ -74,7 +74,7 @@ const BookingsPage = () => {
                     <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 border-b">Package Name</th>
                     <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 border-b">Start Date</th>
                     <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 border-b">Number of Travelers</th>
-                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 border-b">Total Amount</th>
+                    {/* <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 border-b">Total Amount</th> */}
                     <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 border-b">Actions</th>
                   </tr>
                 </thead>
@@ -85,7 +85,7 @@ const BookingsPage = () => {
                       <td className="px-6 py-4 text-sm text-gray-800 border-b">{booking.package?.name || "N/A"}</td>
                       <td className="px-6 py-4 text-sm text-gray-800 border-b">{booking.startDate}</td>
                       <td className="px-6 py-4 text-sm text-gray-800 border-b">{booking.numberOfTravelers}</td>
-                      <td className="px-6 py-4 text-sm text-gray-800 border-b">{booking.totalAmount}</td>
+                      {/* <td className="px-6 py-4 text-sm text-gray-800 border-b">{booking.totalAmount}</td> */}
                       <td className="px-6 py-4 text-sm text-blue-600 border-b">
                         <Link
                           href={`/admin/bookings/${booking._id}`}

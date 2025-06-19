@@ -2,8 +2,8 @@ import { nextui } from '@nextui-org/theme';
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-    darkMode: ['class'],
-    content: [
+  darkMode: ['class'],
+  content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -51,17 +51,59 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			premium: {
+  				dark: '#002D37',
+  				teal: '#186663',
+  				silver: '#A6B5B4',
+  				bronze: '#8C7361',
+  				gold: '#D2AF94'
   			}
+  		},
+  		fontFamily: {
+  			milchella: [
+  				'Milchella',
+  				'sans-serif'
+  			]
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+  		animation: {
+  			'fade-in': 'fadeIn 0.8s ease-out both',
+  			'slide-up': 'slideUp 0.6s ease-out both'
+  		},
+  		keyframes: {
+  			fadeIn: {
+  				'0%': {
+  					opacity: '0',
+  					transform: 'translateY(20px)'
+  				},
+  				'100%': {
+  					opacity: '1',
+  					transform: 'translateY(0)'
+  				}
+  			},
+  			slideUp: {
+  				'0%': {
+  					transform: 'translateY(20px)',
+  					opacity: '0'
+  				},
+  				'100%': {
+  					transform: 'translateY(0)',
+  					opacity: '1'
+  				}
+  			}
+  		},
+  		backdropBlur: {
+  			xs: '2px'
+  		},
+  		
   	}
   },
-  plugins: [nextui(), require("tailwindcss-animate")],
+  plugins: [nextui(), require('tailwindcss-animate')],
 };
 
 export default config;
-// This Tailwind CSS configuration file is set up to work with Next.js and the NextUI library.

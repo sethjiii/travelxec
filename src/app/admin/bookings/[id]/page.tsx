@@ -214,9 +214,8 @@ const BookingDetailsPage = () => {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-4 h-4 ${
-                            i < review.rating ? "text-yellow-400 fill-current" : "text-gray-300"
-                          }`}
+                          className={`w-4 h-4 ${i < review.rating ? "text-yellow-400 fill-current" : "text-gray-300"
+                            }`}
                         />
                       ))}
                     </div>

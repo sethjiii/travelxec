@@ -16,19 +16,22 @@ const TravelerSchema = new Schema({
   phone: { type: String, required: true },
 });
 
-// Booking Schema
-const BookingSchema = new Schema({
-  packageId: { type: Schema.Types.ObjectId, ref: "TravelPackage", required: true },
-  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  numberOfTravelers: { type: Number, required: true },
-  startDate: { type: String, required: true },
-  specialRequests: { type: String, default: "" },
-  emergencyContact: { type: EmergencyContactSchema, required: true },
-  travelers: { type: [TravelerSchema], required: true },
-  totalAmount: { type: Number, required: true },
-}, {
-  timestamps: true,
-});
+// Booking Schema (without totalAmount)
+const BookingSchema = new Schema(
+  {
+    packageId: { type: Schema.Types.ObjectId, ref: "TravelPackage", required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    numberOfTravelers: { type: Number, required: true },
+    startDate: { type: String, required: true },
+    specialRequests: { type: String, default: "" },
+    emergencyContact: { type: EmergencyContactSchema, required: true },
+    travelers: { type: [TravelerSchema], required: true },
+    // totalAmount: { type: Number, required: true }, ❌ Removed
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // Avoid recompiling the model if already compiled
 const BookingModel = mongoose.models.Booking || mongoose.model("Booking", BookingSchema);
