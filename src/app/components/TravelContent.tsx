@@ -486,7 +486,7 @@ const TravelContent = () => {
                     </div>
 
                     <Link
-                      href={`/destinations/${pkg._id}`}
+                      href={`/destinations`}
                       className="block w-full text-center bg-gradient-to-r from-[#186663] to-[#002D37] hover:from-[#002D37] hover:to-[#186663] text-white text-sm py-3 px-4 rounded-xl font-light transition-all duration-500 transform hover:translate-y-[-1px] hover:shadow-lg mt-auto"
                     >
                       Discover Details
