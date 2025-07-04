@@ -102,11 +102,12 @@
   }
 }
 
-
-
-
-
-
+.input {
+  @apply w-full p-3 border border-gray-300 rounded-md outline-none transition-shadow duration-200;
+}
+.input:focus {
+  @apply ring-2 ring-[#186663];
+}
 
 @layer base {
   * {

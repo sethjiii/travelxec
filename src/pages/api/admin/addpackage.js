@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
 import TravelPackage from '../../../models/TravelPackage';
 import DestinationModel from '../../../models/Destination';
 import dbConnect from '../dbConnect';
 import mongoose from 'mongoose';
+import { getUserFromRequest } from '@/lib/getUserFromRequest';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -14,7 +14,7 @@ cloudinary.config({
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '1000mb', // increase as needed
+      sizeLimit: '1000mb',
     },
   },
 };
@@ -27,11 +27,15 @@ export default async function handler(req, res) {
   await dbConnect();
 
   try {
-    const token = req.headers['authorization']?.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'No token provided' });
+    // ✅ Auth support for both Google + JWT
+    const user = await getUserFromRequest(req);
+    console.log("🔐 Authenticated user:", user);
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.role !== 'admin') {
+    if (!user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    if (user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied: Admins only' });
     }
 
@@ -39,8 +43,6 @@ export default async function handler(req, res) {
       name,
       description,
       itinerary,
-      //price,
-      //currency,
       duration,
       highlights,
       inclusions,
@@ -51,19 +53,18 @@ export default async function handler(req, res) {
       cityId,
     } = req.body;
 
+    // ✅ Validate required fields
     if (
       !name ||
       !description ||
       !duration ||
-      // !price ||
-      // !currency ||
       !Array.isArray(cityId) ||
       cityId.length === 0
     ) {
       return res.status(400).json({ error: 'Missing or invalid required fields' });
     }
 
-    // Upload images to Cloudinary
+    // ✅ Upload images to Cloudinary
     const uploadedImages = [];
     for (const image of images || []) {
       try {
@@ -72,17 +73,16 @@ export default async function handler(req, res) {
         });
         uploadedImages.push(result.secure_url);
       } catch (uploadError) {
-        console.error('Cloudinary upload error:', uploadError);
+        console.error('❌ Cloudinary upload error:', uploadError);
         return res.status(500).json({ error: 'Image upload failed' });
       }
     }
 
+    // ✅ Save travel package
     const newPackage = new TravelPackage({
       name,
       description,
       itinerary,
-      // price,
-      // currency,
       duration,
       highlights,
       inclusions,
@@ -94,6 +94,7 @@ export default async function handler(req, res) {
 
     const savedPackage = await newPackage.save();
 
+    // ✅ Link to destination(s)
     await Promise.all(
       cityId.map(async (id) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -119,13 +120,9 @@ export default async function handler(req, res) {
       message: 'Travel package added and linked to cities successfully',
       package: savedPackage,
     });
+
   } catch (error) {
-    console.error('Error adding package:', error);
-
-    if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({ error: 'Invalid or expired token' });
-    }
-
+    console.error('❌ Error adding package:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }

@@ -239,15 +239,15 @@ const Footer = () => {
               © {currentYear} TravelXec. All rights reserved.
             </p>
             <div className="flex items-center gap-8">
-              <a href="#" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
+              <a href="/privacy-policy" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
                 Privacy Policy
                 <div className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-px bg-[#D2AF94] transition-all duration-300"></div>
               </a>
-              <a href="#" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
+              <a href="/terms-and-conditions" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
                 Terms of Service
                 <div className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-px bg-[#D2AF94] transition-all duration-300"></div>
               </a>
-              <a href="#" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
+              <a href="/cookie-policy" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
                 Cookie Policy
                 <div className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-px bg-[#D2AF94] transition-all duration-300"></div>
               </a>

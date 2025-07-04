@@ -9,13 +9,17 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      required: true, // ✅ Required for all users (JWT + Google)
+      unique: true,   // ✅ Ensure no duplicates
+      trim: true,
+      lowercase: true,
     },
     location: {
-        type: String,
+      type: String,
     },
     password: {
       type: String,
-      required: true,
+      required: false, // ✅ Optional for Google users
     },
     phone: {
       type: String,
@@ -23,12 +27,12 @@ const UserSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
-      default: 'avatar.jpeg', // Default profile picture
+      default: 'avatar.jpeg',
     },
     favorites: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'PackageCard',
+        ref: 'TravelPackage',
       },
     ],
     role: {
@@ -38,31 +42,33 @@ const UserSchema = new mongoose.Schema(
     },
     isVerified: {
       type: Boolean,
-      default: false, // Whether the user has verified their email
+      default: false,
     },
     preferences: {
       notifications: {
-        email: { type: Boolean, default: true }, // Default to receive email notifications
-        sms: { type: Boolean, default: false },  // Default to not receive SMS notifications
+        email: { type: Boolean, default: true },
+        sms: { type: Boolean, default: false },
       },
       theme: {
         type: String,
         enum: ['light', 'dark'],
-        default: 'light', // Default theme is light
+        default: 'light',
       },
     },
     accountStatus: {
       type: String,
       enum: ['active', 'inactive', 'suspended'],
-      default: 'active', // Default status is active
+      default: 'active',
     },
   },
   {
-    timestamps: true, // Automatically adds `createdAt` and `updatedAt`
+    timestamps: true,
   }
 );
 
-// Create or reuse the User model
+// Index to speed up email-based lookups (optional)
+UserSchema.index({ email: 1 });
+
 const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
 export default User;

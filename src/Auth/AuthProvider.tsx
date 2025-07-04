@@ -8,6 +8,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
+import { useSession, signOut as googleSignOut } from "next-auth/react";
 
 type User = {
   email: string;
@@ -28,43 +29,38 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [jwtUser, setJwtUser] = useState<User | null>(null);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
-  // ✅ Load user from localStorage when app starts
+  // Load JWT user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setIsAuthenticated(true);
+      setJwtUser(parsedUser);
     }
   }, []);
 
-  // ✅ Persist user changes to localStorage
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", user.token || "");
-      localStorage.setItem("email", user.email);
-      localStorage.setItem("name", user.name);
-      localStorage.setItem("role", user.role);
-      localStorage.setItem("_id", user._id || "");
-    } else {
-      localStorage.clear(); // Clear all if logged out
-    }
-  }, [user]);
+  // Unified user getter
+  const user: User | null = session?.user
+    ? {
+        name: session.user.name || "",
+        email: session.user.email || "",
+        role: (session.user as any).role || "user",
+        avatarUrl: session.user.image || "",
+        _id: session.user.id || "",
+      }
+    : jwtUser;
 
+  const isAuthenticated = !!user;
+
+  // Custom email/password login (JWT)
   const login = async (email: string, password: string) => {
     try {
-      console.log("Attempting login with email:", email);
-
       const response = await fetch("/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -76,30 +72,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           token: data.user.token,
         };
 
-        setUser(userData);
-        setIsAuthenticated(true);
-
-        console.log("Login successful:", userData);
-
-        // Redirect based on role
-        router.push(userData.role === "admin" ? "/admin" : "/");
+        localStorage.setItem("user", JSON.stringify(userData));
+        setJwtUser(userData);
+        router.push(userData.role === "admin" ? "/admin" : "/profile");
       } else {
-        console.error("Login failed:", data.error);
-        alert("Login failed. Please check your credentials.");
+        alert(data?.error || "Invalid credentials");
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("An error occurred during login. Please try again later.");
+      console.error("JWT login failed", error);
+      alert("Login error");
     }
   };
 
+  // Unified logout
   const logout = () => {
-    console.log("Logging out...");
-    document.cookie = "token=; max-age=0; path=/";
-    setUser(null);
-    setIsAuthenticated(false);
     localStorage.clear();
-    router.push("/login");
+    setJwtUser(null);
+    googleSignOut({ callbackUrl: "/auth/login" });
+    router.push("/auth/login");
   };
 
   return (
@@ -111,8 +101,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };

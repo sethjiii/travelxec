@@ -1,6 +1,7 @@
-import dbConnect from '../dbConnect';  // Adjust path as needed
-import User from '../../../models/user';  // Adjust path as needed
+import dbConnect from '../dbConnect';  // Adjust path if needed
+import User from '../../../models/user';  // Adjust path if needed
 import bcrypt from 'bcrypt';
+import { sendWelcomeEmail } from '@/lib/mail'; // ✅ Make sure this path is correct
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user document
+    // Create new user
     const newUser = new User({
       name: fullName,
       email,
@@ -33,6 +34,9 @@ export default async function handler(req, res) {
     });
 
     await newUser.save();
+
+    // ✅ Send welcome email
+    await sendWelcomeEmail(email, fullName);
 
     return res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {

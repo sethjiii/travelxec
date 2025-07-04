@@ -1,7 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Bookmark, Star, StarHalf, StarOff, Search, MapPin, Clock, Sparkles, Heart } from "lucide-react";
+import {
+  ArrowRight, Bookmark, Star, StarHalf, StarOff, Search, MapPin, Clock, Sparkles, Heart
+} from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
 
 // Define the structure of a package
 interface Package {
@@ -12,7 +15,6 @@ interface Package {
   description: string;
   rating: number;
   images: string[];
-  // price?: number;  // You can remove this if not needed
 }
 
 const PremiumLoader = () => (
@@ -31,7 +33,8 @@ const AllPackagesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
-  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
+
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const renderStars = (rating = 4.5) => {
     const fullStars = Math.floor(rating);
@@ -39,32 +42,15 @@ const AllPackagesPage = () => {
     const stars = [];
 
     for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <Star
-          key={i}
-          className="text-amber-400 w-4 h-4 drop-shadow-sm"
-          fill="currentColor"
-        />
-      );
+      stars.push(<Star key={i} className="text-amber-400 w-4 h-4" fill="currentColor" />);
     }
 
     if (hasHalf && fullStars < 5) {
-      stars.push(
-        <StarHalf
-          key="half"
-          className="text-amber-400 w-4 h-4 drop-shadow-sm"
-          fill="currentColor"
-        />
-      );
+      stars.push(<StarHalf key="half" className="text-amber-400 w-4 h-4" fill="currentColor" />);
     }
 
     while (stars.length < 5) {
-      stars.push(
-        <StarOff
-          key={`off-${stars.length}`}
-          className="text-slate-400 w-4 h-4 opacity-40"
-        />
-      );
+      stars.push(<StarOff key={`off-${stars.length}`} className="text-slate-400 w-4 h-4 opacity-40" />);
     }
 
     return stars;
@@ -86,40 +72,26 @@ const AllPackagesPage = () => {
     fetchPackages();
   }, []);
 
-  const handleAddToWishlist = (id: string) => {
-    setWishlist((prev) => {
-      const newWishlist = new Set(prev);
-      if (newWishlist.has(id)) {
-        newWishlist.delete(id);
-      } else {
-        newWishlist.add(id);
-      }
-      return newWishlist;
-    });
-  };
-
   const filteredPackages = packages.filter(
     (pkg) =>
       pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       pkg.places.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (loading) {
-    return <PremiumLoader />;
-  }
+  if (loading) return <PremiumLoader />;
 
   return (
     <div className="min-h-screen bg-[#002D37] relative playfair">
-      {/* Animated background elements */}
+      {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#186663] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#D2AF94] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#A6B5B4] rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
       </div>
 
-      {/* Header Section */}
-      <div className="relative z-10 pt-24 pb-12 px-6">
-        <div className="max-w-7xl mx-auto text-center">
+      {/* Header */}
+      <div className="relative z-10 pt-24 pb-12 px-6 text-center">
+        <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-center mb-6">
             <Sparkles className="text-[#D2AF94] w-8 h-8 mr-3 animate-pulse" />
             <h1 className="text-5xl md:text-6xl font-light text-white tracking-wide">
@@ -131,13 +103,12 @@ const AllPackagesPage = () => {
             <Sparkles className="text-[#D2AF94] w-8 h-8 ml-3 animate-pulse" />
           </div>
           <p className="text-[#A6B5B4] text-xl font-light max-w-2xl mx-auto leading-relaxed">
-            Discover handcrafted journeys to the world's most extraordinary
-            destinations
+            Discover handcrafted journeys to the world's most extraordinary destinations
           </p>
         </div>
       </div>
 
-      {/* Search Section */}
+      {/* Search */}
       <div className="relative z-10 px-6 mb-16">
         <div className="max-w-2xl mx-auto">
           <div className="relative group">
@@ -151,95 +122,77 @@ const AllPackagesPage = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-16 pr-8 py-5 bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 rounded-2xl hover:bg-[#A6B5B4]/20 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]/50 focus:border-[#D2AF94]/50 transition-all duration-300 text-white placeholder-[#8C7361] text-lg font-light shadow-xl hover:shadow-2xl"
             />
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#D2AF94]/20 to-[#186663]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
         </div>
       </div>
 
-      {/* Packages Grid */}
+      {/* Packages */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 pb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredPackages.map((pkg, index) => (
             <div
               key={pkg._id}
-              className="group relative overflow-hidden rounded-3xl bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 hover:bg-[#A6B5B4]/20 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl"
-              style={{
-                animation: `slideUp 0.8s ease-out forwards ${index * 0.1}s`,
-              }}
+              className="group relative overflow-hidden rounded-3xl bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 hover:bg-[#A6B5B4]/20 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl flex flex-col"
+              style={{ animation: `slideUp 0.8s ease-out forwards ${index * 0.1}s` }}
             >
-              {/* Card glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#D2AF94]/20 to-[#186663]/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-              {/* Image Section */}
-              <div className="relative h-72 overflow-hidden">
+              {/* Image */}
+              <div className="relative h-64 overflow-hidden">
                 <img
                   src={pkg.images[0]}
                   alt={pkg.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
                 {/* Wishlist Button */}
                 <button
-                  onClick={() => handleAddToWishlist(pkg._id)}
+                  onClick={() => toggleFavorite(pkg._id)}
                   className="absolute top-4 left-4 w-12 h-12 bg-[#A6B5B4]/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#A6B5B4]/30 transition-all duration-300 group/heart"
                 >
                   <Heart
-                    className={`w-5 h-5 transition-all duration-300 ${wishlist.has(pkg._id)
+                    className={`w-5 h-5 transition-all duration-300 ${
+                      isFavorite(pkg._id)
                         ? "text-[#D2AF94] fill-current scale-110"
                         : "text-white group-hover/heart:text-[#D2AF94] group-hover/heart:scale-110"
-                      }`}
+                    }`}
                   />
                 </button>
 
-                {/* Duration Badge */}
+                {/* Duration */}
                 <div className="absolute bottom-4 left-4 flex items-center bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
                   <Clock className="w-4 h-4 mr-1" />
                   {pkg.duration}
                 </div>
               </div>
 
-              {/* Content Section */}
-              <div className="p-8">
-                <h2 className="text-2xl font-light text-white mb-3 group-hover:text-[#D2AF94] transition-colors duration-300">
-                  {pkg.name}
-                </h2>
+              {/* Details */}
+              <div className="flex flex-col justify-between flex-1 p-8">
+                <div>
+                  <h2 className="text-2xl font-light text-white mb-3 group-hover:text-[#D2AF94] transition-colors duration-300">
+                    {pkg.name}
+                  </h2>
 
-                <div className="flex items-center text-[#A6B5B4] mb-4">
-                  <MapPin className="w-4 h-4 mr-2 text-[#D2AF94]" />
-                  <div className="flex flex-wrap text-sm gap-1">
-                    {pkg.places.split("-").map((place, index, arr) => (
-                      <span key={index} className="flex items-center">
-                        <span className="hover:text-[#D2AF94] transition-colors duration-200">
-                          {place.trim()}
+                  <div className="flex items-center text-[#A6B5B4] mb-4">
+                    <MapPin className="w-4 h-4 mr-2 text-[#D2AF94]" />
+                    <div className="flex flex-wrap text-sm gap-1">
+                      {pkg.places.split("-").map((place, i, arr) => (
+                        <span key={i} className="flex items-center">
+                          <span className="hover:text-[#D2AF94] transition-colors duration-200">{place.trim()}</span>
+                          {i < arr.length - 1 && <ArrowRight className="mx-2 w-3 h-3 text-[#8C7361]" />}
                         </span>
-                        {index < arr.length - 1 && (
-                          <ArrowRight className="mx-2 w-3 h-3 text-[#8C7361]" />
-                        )}
-                      </span>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="text-[#A6B5B4] text-sm mb-6 leading-relaxed line-clamp-3">{pkg.description}</p>
+
+                  <div className="flex items-center gap-2 mb-6">
+                    <div className="flex items-center gap-1">{renderStars(pkg.rating)}</div>
+                    <span className="text-white font-medium">{(pkg.rating ?? 4.5).toFixed(1)}</span>
                   </div>
                 </div>
 
-                <p className="text-[#A6B5B4] text-sm mb-6 leading-relaxed">
-                  {pkg.description}
-                </p>
-
-                {/* Rating */}
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="flex items-center gap-1">
-                    {renderStars(pkg.rating)}
-                  </div>
-                  <span className="text-white font-medium">
-                    {(pkg.rating ?? 4.5).toFixed(1)}
-                  </span>
-                  {/* <span className="text-[#8C7361] text-sm">
-                    ({Math.floor(Math.random() * 500) + 100} reviews)
-                  </span> */}
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-4">
+                <div className="flex gap-4 mt-auto">
                   <Link
                     href={`/packages/${pkg._id}`}
                     className="flex-1 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-[#002D37] py-3 px-6 rounded-xl font-medium hover:from-[#8C7361] hover:to-[#D2AF94] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
@@ -247,14 +200,14 @@ const AllPackagesPage = () => {
                     Explore Journey
                   </Link>
                   <button
-                    onClick={() => handleAddToWishlist(pkg._id)}
-                    className={`flex-1 py-3 px-6 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 ${wishlist.has(pkg._id)
+                    onClick={() => toggleFavorite(pkg._id)}
+                    className={`flex-1 py-3 px-6 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
+                      isFavorite(pkg._id)
                         ? "bg-[#D2AF94] text-[#002D37] hover:bg-[#8C7361]"
                         : "border border-[#D2AF94] text-[#D2AF94] hover:bg-[#D2AF94] hover:text-[#002D37]"
-                      }`}
+                    }`}
                   >
-                    <Bookmark className="w-4 h-4" />
-                    {wishlist.has(pkg._id) ? "Saved" : "Save"}
+                    {isFavorite(pkg._id) ? "Wishlisted ❤️" : "Add to Wishlist"}
                   </button>
                 </div>
               </div>

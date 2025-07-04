@@ -7,6 +7,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { CalendarArrowDown, CalendarArrowUp, Check, CheckCircle, ListCheck, ListXIcon, Rocket, Sparkles, User, X } from "lucide-react";
 
+
 // Interfaces remain the same as your original code
 type Availability = {
   startDate: string;

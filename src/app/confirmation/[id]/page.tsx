@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { Calendar, MapPin, Users, Mail, Phone, Star } from "lucide-react";
+import { Calendar, MapPin, Users, Mail, Phone, Star, IndianRupee } from "lucide-react";
 
 interface TravelPackage {
   _id: string;
@@ -44,6 +44,10 @@ interface BookingDetails {
   specialRequests: string;
   emergencyContact: EmergencyContact;
   travelers: Traveler[];
+  priceRange: {
+    min: number;
+    max: number;
+  };
 }
 
 const ConfirmationPage = () => {
@@ -63,8 +67,16 @@ const ConfirmationPage = () => {
       relation: "",
     },
     travelers: [{ name: "", email: "", phone: "" }],
+    priceRange: {
+      min: 20000,
+      max: 100000,
+    },
   });
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  // Price range constants
+  const MIN_PRICE = 20000;
+  const MAX_PRICE = 100000;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,6 +139,16 @@ const ConfirmationPage = () => {
     }
   };
 
+  const handlePriceRangeChange = (type: 'min' | 'max', value: number) => {
+    setBookingDetails(prev => ({
+      ...prev,
+      priceRange: {
+        ...prev.priceRange,
+        [type]: value,
+      },
+    }));
+  };
+
   const handleAddTraveler = () => {
     setBookingDetails(prev => ({
       ...prev,
@@ -135,36 +157,59 @@ const ConfirmationPage = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
       const bookingData = {
         packageId: id,
-        userId: userProfile?._id,
         ...bookingDetails,
       };
 
+      const payload = {
+        bookingData,
+        userId: userProfile?._id,
+      };
+
+      // Detect Google OAuth by checking for next-auth session keys
+      const isGoogleOAuth = Object.keys(localStorage).some((key) =>
+        key.startsWith("nextauth.")
+      );
+
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      // For JWT users, add Authorization header
+      if (!isGoogleOAuth) {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("You are not logged in.");
+          return;
+        }
+        headers.Authorization = `Bearer ${token}`;
+      }
+
       const response = await fetch(`/api/confirmation/${id}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          bookingData,
-          userId: userProfile?._id,
-        }),
+        headers,
+        credentials: isGoogleOAuth ? "include" : "same-origin",
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log(data);
         setSuccessMessage("Booking done! Our team will reach out to you soon.");
+      } else {
+        const err = await response.json();
+        console.error("Booking error:", err);
+        alert(err?.error || "Booking failed");
       }
     } catch (error) {
       console.error("Error creating booking:", error);
+      alert("An error occurred during booking.");
     }
   };
+
 
   if (loading) {
     return (
@@ -185,7 +230,7 @@ const ConfirmationPage = () => {
   }
 
   return (
-<div className="min-h-screen" style={{ backgroundColor: '#faf9f7' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#faf9f7' }}>
       {/* Elegant Header */}
       <div className="relative h-24 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #002D37 0%, #186663 100%)' }}>
         <div className="text-center">
@@ -223,11 +268,11 @@ const ConfirmationPage = () => {
                 <MapPin size={16} />
                 <span>Premium Accommodations</span>
               </div>
-              {packageData.price && (
+              {/* {packageData.price && (
                 <div className="text-2xl font-light">
                   From {packageData.price}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -237,7 +282,7 @@ const ConfirmationPage = () => {
           <h2 className="text-2xl font-light mb-8 tracking-wide" style={{ color: '#002D37' }}>
             Experience Details
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8">
             <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
               <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#D2AF94' }}>
                 <Calendar size={20} style={{ color: '#002D37' }} />
@@ -245,7 +290,7 @@ const ConfirmationPage = () => {
               <p className="text-sm font-medium opacity-70 mb-2">DURATION</p>
               <p className="text-lg font-light" style={{ color: '#002D37' }}>{packageData.duration}</p>
             </div>
-            <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
+            {/* <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
               <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#A6B5B4' }}>
                 <Users size={20} style={{ color: '#002D37' }} />
               </div>
@@ -256,7 +301,7 @@ const ConfirmationPage = () => {
                   : 'Contact for availability'
                 }
               </p>
-            </div>
+            </div> */}
             {packageData.rating && (
               <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
                 <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#8C7361' }}>
@@ -266,11 +311,63 @@ const ConfirmationPage = () => {
                 <p className="text-lg font-light" style={{ color: '#002D37' }}>{packageData.rating}/5.0</p>
               </div>
             )}
+            {/* Price Range Slider */}
+            <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
+              <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#D2AF94' }}>
+                <IndianRupee size={20} style={{ color: '#002D37' }} />
+              </div>
+              <p className="text-sm font-medium opacity-70 mb-4">BUDGET RANGE PER PERSON</p>
+              <div className="space-y-4">
+                <div className="text-lg font-light" style={{ color: '#002D37' }}>
+                  ₹{bookingDetails.priceRange.min.toLocaleString()} - ₹{bookingDetails.priceRange.max.toLocaleString()}
+                </div>
+
+                {/* Min Price Slider */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-medium opacity-60" style={{ color: '#8C7361' }}>
+                    MIN BUDGET
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="range"
+                      min={MIN_PRICE}
+                      max={bookingDetails.priceRange.max - 500}
+                      value={bookingDetails.priceRange.min}
+                      onChange={(e) => handlePriceRangeChange('min', parseInt(e.target.value))}
+                      className="w-full h-2 rounded-lg appearance-none cursor-pointer slider"
+                      style={{
+                        background: `linear-gradient(to right, #186663 0%, #186663 ${((bookingDetails.priceRange.min - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%, #D2AF94 ${((bookingDetails.priceRange.min - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%, #D2AF94 100%)`
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Max Price Slider */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-medium opacity-60" style={{ color: '#8C7361' }}>
+                    MAX BUDGET
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="range"
+                      min={bookingDetails.priceRange.min + 500}
+                      max={MAX_PRICE}
+                      value={bookingDetails.priceRange.max}
+                      onChange={(e) => handlePriceRangeChange('max', parseInt(e.target.value))}
+                      className="w-full h-2 rounded-lg appearance-none cursor-pointer slider"
+                      style={{
+                        background: `linear-gradient(to right, #D2AF94 0%, #D2AF94 ${((bookingDetails.priceRange.max - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%, #186663 ${((bookingDetails.priceRange.max - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%, #186663 100%)`
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Booking Form */}
-        <form className="space-y-8" onSubmit={handleSubmit}>
+        <div className="space-y-8">
           {/* Travelers Section */}
           {bookingDetails.travelers.map((traveler, index) => (
             <div key={index} className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
@@ -282,7 +379,7 @@ const ConfirmationPage = () => {
                   Guest {index + 1}
                 </h2>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
@@ -295,7 +392,7 @@ const ConfirmationPage = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none focus:border-opacity-100 text-lg font-light transition-all duration-300"
-                    style={{ 
+                    style={{
                       borderColor: '#A6B5B4',
                       color: '#002D37'
                     }}
@@ -303,7 +400,7 @@ const ConfirmationPage = () => {
                     onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
                     EMAIL ADDRESS
@@ -316,7 +413,7 @@ const ConfirmationPage = () => {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-4 pl-12 border-0 border-b-2 bg-transparent focus:outline-none focus:border-opacity-100 text-lg font-light transition-all duration-300"
-                      style={{ 
+                      style={{
                         borderColor: '#A6B5B4',
                         color: '#002D37'
                       }}
@@ -326,7 +423,7 @@ const ConfirmationPage = () => {
                     <Mail size={18} className="absolute left-0 top-4" style={{ color: '#A6B5B4' }} />
                   </div>
                 </div>
-                
+
                 <div className="md:col-span-2 space-y-2">
                   <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
                     PHONE NUMBER
@@ -339,7 +436,7 @@ const ConfirmationPage = () => {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-4 pl-12 border-0 border-b-2 bg-transparent focus:outline-none focus:border-opacity-100 text-lg font-light transition-all duration-300"
-                      style={{ 
+                      style={{
                         borderColor: '#A6B5B4',
                         color: '#002D37'
                       }}
@@ -358,7 +455,7 @@ const ConfirmationPage = () => {
             type="button"
             onClick={handleAddTraveler}
             className="w-full py-4 rounded-xl font-light text-lg tracking-wide transition-all duration-300 hover:shadow-lg border-2 border-dashed"
-            style={{ 
+            style={{
               borderColor: '#A6B5B4',
               color: '#186663',
               backgroundColor: 'transparent'
@@ -396,7 +493,7 @@ const ConfirmationPage = () => {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
-                  style={{ 
+                  style={{
                     borderColor: '#A6B5B4',
                     color: '#002D37'
                   }}
@@ -404,7 +501,7 @@ const ConfirmationPage = () => {
                   onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
                   PHONE NUMBER
@@ -416,7 +513,7 @@ const ConfirmationPage = () => {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
-                  style={{ 
+                  style={{
                     borderColor: '#A6B5B4',
                     color: '#002D37'
                   }}
@@ -424,7 +521,7 @@ const ConfirmationPage = () => {
                   onBlur={(e) => e.target.style.borderColor = '#A6B5B4'}
                 />
               </div>
-              
+
               <div className="md:col-span-2 space-y-2">
                 <label className="block text-sm font-medium tracking-wide" style={{ color: '#8C7361' }}>
                   RELATIONSHIP
@@ -437,7 +534,7 @@ const ConfirmationPage = () => {
                   required
                   placeholder="e.g., Spouse, Parent, Sibling"
                   className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
-                  style={{ 
+                  style={{
                     borderColor: '#A6B5B4',
                     color: '#002D37'
                   }}
@@ -464,7 +561,7 @@ const ConfirmationPage = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full px-4 py-4 border-0 border-b-2 bg-transparent focus:outline-none text-lg font-light transition-all duration-300"
-                style={{ 
+                style={{
                   borderColor: '#A6B5B4',
                   color: '#002D37'
                 }}
@@ -489,7 +586,7 @@ const ConfirmationPage = () => {
                 onChange={handleInputChange}
                 rows={5}
                 className="w-full px-4 py-4 border-2 rounded-xl bg-transparent focus:outline-none text-lg font-light transition-all duration-300 resize-none"
-                style={{ 
+                style={{
                   borderColor: '#A6B5B4',
                   color: '#002D37'
                 }}
@@ -502,7 +599,7 @@ const ConfirmationPage = () => {
 
           {/* Success Message */}
           {successMessage && (
-            <div className="rounded-2xl p-6 text-center font-light text-lg border-2" style={{ 
+            <div className="rounded-2xl p-6 text-center font-light text-lg border-2" style={{
               backgroundColor: '#f0f9f7',
               borderColor: '#186663',
               color: '#002D37'
@@ -514,9 +611,9 @@ const ConfirmationPage = () => {
           {/* Submit Button */}
           <div className="text-center pt-8">
             <button
-              type="submit"
+              onClick={handleSubmit}
               className="px-16 py-5 rounded-xl font-light text-lg tracking-widest transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1"
-              style={{ 
+              style={{
                 background: 'linear-gradient(135deg, #002D37 0%, #186663 100%)',
                 color: 'white'
               }}
@@ -527,8 +624,31 @@ const ConfirmationPage = () => {
               Our travel concierge will contact you within 24 hours to finalize your luxury experience
             </p>
           </div>
-        </form>
+        </div>
       </div>
+
+      <style jsx>{`
+        .slider::-webkit-slider-thumb {
+          appearance: none;
+          height: 18px;
+          width: 18px;
+          border-radius: 50%;
+          background: #002D37;
+          cursor: pointer;
+          border: 2px solid #fff;
+          box-shadow: 0 2px 6px rgba(0, 45, 55, 0.3);
+        }
+
+        .slider::-moz-range-thumb {
+          height: 18px;
+          width: 18px;
+          border-radius: 50%;
+          background: #002D37;
+          cursor: pointer;
+          border: 2px solid #fff;
+          box-shadow: 0 2px 6px rgba(0, 45, 55, 0.3);
+        }
+      `}</style>
     </div>
   );
 }

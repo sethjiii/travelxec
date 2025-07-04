@@ -8,6 +8,7 @@ interface Booking {
     name: string;
     email: string;
     phone: string;
+    role?: string;
   };
   package: {
     name: string;
@@ -17,10 +18,20 @@ interface Booking {
   };
   startDate: string;
   numberOfTravelers: number;
+  specialRequests: string;
   emergencyContact: {
     name: string;
     phone: string;
     relation: string;
+  };
+  travelers: {
+    name: string;
+    email: string;
+    phone: string;
+  }[];
+  priceRange: {
+    min: number;
+    max: number;
   };
 }
 
@@ -100,9 +111,7 @@ const BookingDetailsPage = () => {
           <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
         </div>
       </div>
-      <div className="mt-4 p-6 bg-white rounded-lg shadow-lg animate-fadeIn">
-        {children}
-      </div>
+      <div className="mt-4 p-6 bg-white rounded-lg shadow-lg animate-fadeIn">{children}</div>
     </div>
   );
 
@@ -152,11 +161,22 @@ const BookingDetailsPage = () => {
 
         <Section title="Booking Information" icon={Calendar}>
           <div className="grid md:grid-cols-2 gap-4">
-            <InfoCard
-              label="Start Date"
-              value={new Date(booking.startDate).toLocaleDateString()}
-            />
+            <InfoCard label="Start Date" value={new Date(booking.startDate).toLocaleDateString()} />
             <InfoCard label="Number of Travelers" value={booking.numberOfTravelers} />
+            <InfoCard label="Special Requests" value={booking.specialRequests} />
+            <InfoCard label="Budget Range" value={`₹${booking.priceRange?.min} - ₹${booking.priceRange?.max}`} />
+          </div>
+        </Section>
+
+        <Section title="Travelers" icon={User}>
+          <div className="space-y-2">
+            {booking.travelers?.map((traveler, index) => (
+              <div key={index} className="bg-gray-100 rounded p-3">
+                <p><strong>Name:</strong> {traveler.name}</p>
+                <p><strong>Email:</strong> {traveler.email}</p>
+                <p><strong>Phone:</strong> {traveler.phone}</p>
+              </div>
+            ))}
           </div>
         </Section>
 
@@ -176,18 +196,13 @@ const BookingDetailsPage = () => {
                   Day {item.day}: {item.title}
                 </h3>
                 <p className="text-gray-700 mb-2">{item.description}</p>
-                <p className="text-gray-700 mb-2">
-                  <span className="font-medium">Stay:</span> {item.stay}
-                </p>
+                <p className="text-gray-700 mb-2"><span className="font-medium">Stay:</span> {item.stay}</p>
                 <div className="mt-4">
                   <h4 className="font-medium text-gray-800 mb-2">Activities:</h4>
                   <div className="grid gap-4 md:grid-cols-2">
                     {Array.isArray(item.activities) && item.activities.length > 0 ? (
                       item.activities.map((activity, activityIndex) => (
-                        <div
-                          key={activityIndex}
-                          className="p-3 bg-white rounded shadow-sm"
-                        >
+                        <div key={activityIndex} className="p-3 bg-white rounded shadow-sm">
                           <p className="font-medium text-blue-600">{activity.name}</p>
                           <p className="text-gray-600">{activity.time}</p>
                           <p className="text-gray-600">{activity.additionalDetails}</p>
@@ -214,16 +229,13 @@ const BookingDetailsPage = () => {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-4 h-4 ${i < review.rating ? "text-yellow-400 fill-current" : "text-gray-300"
-                            }`}
+                          className={`w-4 h-4 ${i < review.rating ? "text-yellow-400 fill-current" : "text-gray-300"}`}
                         />
                       ))}
                     </div>
                   </div>
                   <p className="text-gray-700">{review.review}</p>
-                  <p className="text-gray-500 text-sm mt-2">
-                    {new Date(review.createdAt).toLocaleDateString()}
-                  </p>
+                  <p className="text-gray-500 text-sm mt-2">{new Date(review.createdAt).toLocaleDateString()}</p>
                 </div>
               ))
             ) : (
@@ -244,3 +256,5 @@ const InfoCard = ({ label, value }: { label: string; value: string | number | nu
 );
 
 export default BookingDetailsPage;
+// This code defines a BookingDetailsPage component that fetches and displays detailed information about a specific booking.
+// It includes sections for user information, package details, booking information, travelers, emergency contact, itinerary, and reviews.

@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from "react";
 import { Mail, Lock, Eye, EyeOff, Compass, MapPin } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import { Input } from "../../components/InputProps";
 import { useAuth } from "../../../Auth/AuthProvider";
+import { signIn, useSession } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
   const { login, user } = useAuth();
@@ -88,7 +89,7 @@ export default function LoginPage() {
               TravelXec
             </h1>
             <h2 className="text-xl font-semibold text-[#A6B5B4] text-center mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Welcome Back
+              Welcome
             </h2>
             <p className="text-[#A6B5B4]/80 text-center text-sm font-light tracking-wide">
               Continue your luxury journey
@@ -169,6 +170,7 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Divider */}
           <div className="mt-8 text-center">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -179,6 +181,19 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* 🔹 Google Login Button */}
+            <div className="mt-6 flex justify-center">
+              <button
+                type="button"
+                onClick={() => signIn("google")}
+                className="flex items-center gap-3 px-6 py-3 border border-[#A6B5B4] rounded-xl text-[#002D37] hover:bg-[#002D37] hover:text-white transition-all duration-300 shadow-sm bg-white"
+              >
+                <FcGoogle className="text-xl" />
+                <span className="text-sm font-medium">Continue with Google</span>
+              </button>
+            </div>
+
+            {/* Sign up */}
             <p className="mt-6 text-[#8C7361]">
               Don&apos;t have an account?{" "}
               <Link href="/auth/signup" className="text-[#186663] hover:text-[#002D37] font-semibold hover:underline">

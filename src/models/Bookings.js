@@ -16,7 +16,13 @@ const TravelerSchema = new Schema({
   phone: { type: String, required: true },
 });
 
-// Booking Schema (without totalAmount)
+// ✅ Add priceRange Sub-Schema
+const PriceRangeSchema = new Schema({
+  min: { type: Number, required: true },
+  max: { type: Number, required: true },
+});
+
+// Booking Schema
 const BookingSchema = new Schema(
   {
     packageId: { type: Schema.Types.ObjectId, ref: "TravelPackage", required: true },
@@ -26,7 +32,7 @@ const BookingSchema = new Schema(
     specialRequests: { type: String, default: "" },
     emergencyContact: { type: EmergencyContactSchema, required: true },
     travelers: { type: [TravelerSchema], required: true },
-    // totalAmount: { type: Number, required: true }, ❌ Removed
+    priceRange: { type: PriceRangeSchema, required: true }, // ✅ Added
   },
   {
     timestamps: true,

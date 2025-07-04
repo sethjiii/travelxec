@@ -32,6 +32,10 @@ interface Booking {
   specialRequests: string;
   emergencyContact: EmergencyContact;
   travelers: Traveler[];
+  priceRange?: {
+    min: number;
+    max: number;
+  };
 }
 
 const MyBookingsPage = () => {
@@ -108,7 +112,6 @@ const MyBookingsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-24 playfair">
       <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-light text-slate-800 mb-4 tracking-wide">
             My <span className="text-emerald-600 font-medium">Journeys</span>
@@ -117,7 +120,6 @@ const MyBookingsPage = () => {
           <p className="text-slate-600 text-lg mt-4">Curated experiences for discerning travelers</p>
         </div>
 
-        {/* Bookings */}
         <div className="space-y-6">
           {bookings.map((booking) => {
             const formattedDate = new Date(booking.startDate).toLocaleDateString('en-US', {
@@ -133,7 +135,6 @@ const MyBookingsPage = () => {
                 key={booking._id}
                 className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300"
               >
-                {/* Main Card */}
                 <div
                   className="p-6 cursor-pointer"
                   onClick={() => toggleExpand(booking._id)}
@@ -148,7 +149,6 @@ const MyBookingsPage = () => {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                      {/* Image */}
                       {booking.packageId.images?.[0] && (
                         <div className="w-32 h-24 rounded-xl overflow-hidden border-2 border-slate-200">
                           <img
@@ -158,8 +158,6 @@ const MyBookingsPage = () => {
                           />
                         </div>
                       )}
-                      
-                      {/* Content */}
                       <div className="space-y-2">
                         <h2 className="text-2xl font-semibold text-slate-800">
                           {booking.packageId.name}
@@ -176,8 +174,6 @@ const MyBookingsPage = () => {
                         </div>
                       </div>
                     </div>
-
-                    {/* Expand Button */}
                     <div className="flex-shrink-0">
                       {isExpanded ? (
                         <ChevronUp className="w-6 h-6 text-slate-400" />
@@ -188,13 +184,10 @@ const MyBookingsPage = () => {
                   </div>
                 </div>
 
-                {/* Expanded Content */}
                 {isExpanded && (
                   <div className="border-t border-slate-200 bg-slate-50 p-6">
                     <div className="grid md:grid-cols-2 gap-8">
-                      {/* Left Column */}
                       <div className="space-y-6">
-                        {/* Package Info */}
                         <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
                           <div className="flex items-center gap-3 mb-4">
                             <MapPin className="w-5 h-5 text-emerald-600" />
@@ -219,7 +212,6 @@ const MyBookingsPage = () => {
                           </div>
                         </div>
 
-                        {/* User Info */}
                         <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
                           <div className="flex items-center gap-3 mb-4">
                             <Mail className="w-5 h-5 text-emerald-600" />
@@ -238,9 +230,7 @@ const MyBookingsPage = () => {
                         </div>
                       </div>
 
-                      {/* Right Column */}
                       <div className="space-y-6">
-                        {/* Booking Details */}
                         <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
                           <div className="flex items-center gap-3 mb-4">
                             <Calendar className="w-5 h-5 text-emerald-600" />
@@ -264,7 +254,24 @@ const MyBookingsPage = () => {
                           </div>
                         </div>
 
-                        {/* Emergency Contact */}
+                        {/* Price Range */}
+                        <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+                          <div className="flex items-center gap-3 mb-4">
+                            <span className="w-5 h-5 text-emerald-600 font-bold">₹</span>
+                            <h3 className="text-lg font-semibold text-slate-800">Budget Range</h3>
+                          </div>
+                          <div className="space-y-2 text-slate-700">
+                            <div className="flex justify-between">
+                              <span className="text-slate-600">Min Budget (Per Person):</span>
+                              <span className="font-medium">₹{booking.priceRange?.min.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-600">Max Budget (Per Person):</span>
+                              <span className="font-medium">₹{booking.priceRange?.max.toLocaleString()}</span>
+                            </div>
+                          </div>
+                        </div>
+
                         <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
                           <div className="flex items-center gap-3 mb-4">
                             <Phone className="w-5 h-5 text-emerald-600" />
@@ -288,7 +295,6 @@ const MyBookingsPage = () => {
                       </div>
                     </div>
 
-                    {/* Travelers */}
                     <div className="mt-8 bg-white rounded-xl p-5 shadow-sm border border-slate-200">
                       <div className="flex items-center gap-3 mb-4">
                         <Users className="w-5 h-5 text-emerald-600" />

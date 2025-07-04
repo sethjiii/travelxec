@@ -12,11 +12,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
+
+
 const AdminTravelPackage = () => {
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -24,7 +28,7 @@ const AdminTravelPackage = () => {
     //price: "",
     places: "",
     cityId: [],
-    currency: "USD",
+    // currency: "USD",
     duration: "",
     itinerary: [
       {
@@ -215,33 +219,74 @@ const AdminTravelPackage = () => {
     setLoading(true);
     setError("");
     setSuccess("");
+    
 
     try {
       const token = localStorage.getItem("token");
-      console.log("token");
-      const response = await fetch("/api/admin/addpackage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Prefix the token with 'Bearer '
-        },
-        body: JSON.stringify(formData),
-      });
 
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      const options = {
+        method: "POST",
+        headers,
+        body: JSON.stringify(formData),
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`; // For JWT
+      } else {
+        options.credentials = "include"; // For NextAuth session cookie
+      }
+
+      const response = await fetch("/api/admin/addpackage", options);
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to add travel package");
       }
 
+      
+
       setSuccess("Travel package added successfully!");
-      // Reset form...
+      setFormData({
+        name: "",
+        description: "",
+        places: "",
+        cityId: [],
+        duration: "",
+        itinerary: [
+          {
+            day: 1,
+            title: "",
+            description: "",
+            stay: "",
+            activities: [
+              {
+                name: "",
+                time: "",
+                additionalDetails: "",
+              },
+            ],
+          },
+        ],
+        highlights: [""],
+        inclusions: [""],
+        exclusions: [""],
+        availability: {
+          startDate: "",
+          endDate: "",
+        },
+        images: [],
+      });
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+
 
   const tabs = [
     { id: "basic", label: "Basic Info", icon: PackageOpen },
@@ -250,7 +295,7 @@ const AdminTravelPackage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-600">
+    <div className="min-h-screen bg-gray-50 text-gray-600 py-24">
       <div className="max-w-6xl mx-auto p-6">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
@@ -269,8 +314,8 @@ const AdminTravelPackage = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${activeTab === tab.id
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
               >
                 <tab.icon className="h-4 w-4" />
@@ -314,8 +359,8 @@ const AdminTravelPackage = () => {
                         <label
                           key={city._id}
                           className={`flex items-center gap-1 px-2 py-1 border rounded-md text-sm cursor-pointer transition ${formData.cityId.includes(city._id)
-                              ? 'bg-blue-100 border-blue-500 text-blue-800 font-medium'
-                              : 'hover:bg-gray-100'
+                            ? 'bg-blue-100 border-blue-500 text-blue-800 font-medium'
+                            : 'hover:bg-gray-100'
                             }`}
                         >
                           <input
@@ -338,11 +383,6 @@ const AdminTravelPackage = () => {
                       ))}
                     </div>
                   </div>
-
-
-
-
-
                   <textarea
                     placeholder="Description"
                     value={formData.description}
