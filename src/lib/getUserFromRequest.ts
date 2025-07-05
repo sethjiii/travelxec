@@ -4,19 +4,26 @@ import type { NextApiRequest } from "next";
 
 export async function getUserFromRequest(req: NextApiRequest) {
   try {
-    // 1️⃣ Try next-auth session token
+    // 1️⃣ Try to get session token from next-auth (cookie based)
     const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     console.log("🔐 Session from next-auth:", session);
 
     if (session) {
       return {
         email: session.email ?? null,
-        role: (session as any).user?.role || (session as any).role || "user",
-        id: (session as any).user?.id || (session as any).sub || null,
+        // NextAuth's default JWT structure puts user info differently, so we check multiple places:
+        role:
+          (session as any).user?.role || // if you add role in user object
+          (session as any).role ||       // or directly on token
+          "user",
+        id:
+          (session as any).user?.id ||  // if you put id inside user
+          (session as any).sub ||        // 'sub' is the default subject (user id) claim
+          null,
       };
     }
 
-    // 2️⃣ Fallback: Custom JWT in Authorization header
+    // 2️⃣ Fallback: Check for Bearer token in Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       console.warn("🔐 No Authorization header or not Bearer format");
