@@ -225,7 +225,9 @@ const TravelContent = () => {
               "True Luxury isn't thread count, but the thread that weaves unforgettable stories"
             </p>
             <div className="flex gap-5">
-              <ExploreButton />
+              <Link href="/destinations">
+                <ExploreButton />
+              </Link>
               <ViewPackagesButton />
             </div>
           </div>
