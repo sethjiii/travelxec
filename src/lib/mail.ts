@@ -1,4 +1,4 @@
- import nodemailer from "nodemailer";
+import nodemailer from "nodemailer";
 
 export const transporter = nodemailer.createTransport({
   host: "smtp.zoho.in", // Use smtp.zoho.com for global users
@@ -53,6 +53,28 @@ export const sendBookingConfirmationEmail = async (to: string, name: string, boo
     from: `"TravelXec" <${process.env.EMAIL_USER}>`,
     to,
     subject: "📄 Your Booking with TravelXec is Confirmed!",
+    html,
+  });
+};
+
+// 3. Newsletter Subscription Confirmation Email
+export const sendNewsletterConfirmationEmail = async (to: string) => {
+  const html = `
+    <div style="font-family:sans-serif; padding:32px; background:#fffefc; border-radius:12px; border:1px solid #eee; max-width:600px; margin:auto;">
+      <h2 style="color:#186663;">You're in! 🎉</h2>
+      <p>Thanks for subscribing to <strong>TravelXec</strong>'s newsletter.</p>
+      <p>Expect curated travel tips, exclusive offers, and destination guides—delivered right to your inbox.</p>
+      <p><a href="https://travelxec.com" style="color:#D2AF94; text-decoration:none;">Visit TravelXec</a></p>
+      <hr style="margin-top:24px; border:none; border-top:1px solid #ccc;" />
+      <p style="font-size:13px; color:#999;">You can unsubscribe at any time.</p>
+      <p style="font-size:13px; color:#999;">© ${new Date().getFullYear()} TravelXec. All rights reserved.</p>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: `"TravelXec" <${process.env.EMAIL_USER}>`,
+    to,
+    subject: "✅ You're Subscribed to TravelXec!",
     html,
   });
 };

@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-  MapPin, 
-  Mail, 
-  Phone, 
-  Facebook, 
-  Instagram, 
-  Twitter, 
+import {
+  MapPin,
+  Mail,
+  Phone,
+  Facebook,
+  Instagram,
+  Twitter,
   Linkedin,
   Plane,
   Heart,
@@ -39,7 +39,7 @@ const Footer = () => {
         <div className="absolute w-96 h-96 rounded-full bg-gradient-to-br from-[#D2AF94]/10 to-[#8C7361]/5 blur-3xl animate-pulse" style={{ top: '20%', left: '10%' }}></div>
         <div className="absolute w-64 h-64 rounded-full bg-gradient-to-br from-[#186663]/20 to-[#A6B5B4]/10 blur-2xl animate-pulse" style={{ top: '60%', right: '15%', animationDelay: '3s' }}></div>
         <div className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-[#A6B5B4]/8 to-[#D2AF94]/15 blur-3xl animate-pulse" style={{ bottom: '10%', left: '60%', animationDelay: '6s' }}></div>
-        
+
         {/* Animated lines */}
         <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1000 600" preserveAspectRatio="none">
           <defs>
@@ -52,28 +52,28 @@ const Footer = () => {
               </stop>
             </linearGradient>
           </defs>
-          
-          <path d="M0,100 Q500,50 1000,100 T2000,100" 
-                stroke="url(#footerGradient1)" 
-                strokeWidth="1" 
-                fill="none">
-            <animate attributeName="d" 
-                     values="M0,100 Q500,50 1000,100;M0,120 Q500,70 1000,120;M0,100 Q500,50 1000,100" 
-                     dur="12s" 
-                     repeatCount="indefinite" />
+
+          <path d="M0,100 Q500,50 1000,100 T2000,100"
+            stroke="url(#footerGradient1)"
+            strokeWidth="1"
+            fill="none">
+            <animate attributeName="d"
+              values="M0,100 Q500,50 1000,100;M0,120 Q500,70 1000,120;M0,100 Q500,50 1000,100"
+              dur="12s"
+              repeatCount="indefinite" />
           </path>
-          
-          <path d="M0,300 Q250,250 500,300 T1000,300" 
-                stroke="url(#footerGradient1)" 
-                strokeWidth="0.8" 
-                fill="none"
-                opacity="0.6">
-            <animate attributeName="d" 
-                     values="M0,300 Q250,250 500,300 T1000,300;M0,320 Q250,270 500,320 T1000,320;M0,300 Q250,250 500,300 T1000,300" 
-                     dur="15s" 
-                     repeatCount="indefinite" />
+
+          <path d="M0,300 Q250,250 500,300 T1000,300"
+            stroke="url(#footerGradient1)"
+            strokeWidth="0.8"
+            fill="none"
+            opacity="0.6">
+            <animate attributeName="d"
+              values="M0,300 Q250,250 500,300 T1000,300;M0,320 Q250,270 500,320 T1000,320;M0,300 Q250,250 500,300 T1000,300"
+              dur="15s"
+              repeatCount="indefinite" />
           </path>
-          
+
           {/* Floating particles */}
           <circle cx="150" cy="200" r="1.5" fill="#D2AF94" opacity="0.7">
             <animate attributeName="cy" values="200;50;200" dur="20s" repeatCount="indefinite" />
@@ -88,7 +88,7 @@ const Footer = () => {
 
       {/* Luxury top border */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent"></div>
-      
+
       {/* Main Footer Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -105,13 +105,13 @@ const Footer = () => {
                 TravelXec
               </span>
             </div>
-            
+
             <p className="text-[#A6B5B4] leading-relaxed font-light">
-              Discover the world with us. We create 
+              Discover the world with us. We create
               <span className="text-[#D2AF94] font-medium"> unforgettable travel experiences </span>
               and help you explore the most beautiful destinations around the globe.
             </p>
-            
+
             <div className="flex items-center gap-4 pt-4">
               <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -139,10 +139,16 @@ const Footer = () => {
               <div className="absolute -bottom-2 left-0 w-12 h-0.5 bg-gradient-to-r from-[#D2AF94] to-transparent"></div>
             </h3>
             <ul className="space-y-4">
-              {destinations.map((destination, index) => (
-                <li key={destination}>
-                  <a 
-                    href="#" 
+              {[
+                { name: "Rajasthan" },
+                { name: "Kerala" },
+                { name: "Kashmir" },
+                { name: "North East" },
+                { name: "Tamil Nadu" },
+              ].map((dest, index) => (
+                <li key={index}>
+                  <a
+                    href={`/destinations`}
                     className="group text-[#A6B5B4] hover:text-[#D2AF94] transition-all duration-300 flex items-center gap-3 py-2"
                   >
                     <div className="relative">
@@ -150,7 +156,7 @@ const Footer = () => {
                       <div className="absolute inset-0 bg-[#D2AF94]/30 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <span className="font-light group-hover:font-medium transition-all duration-300">
-                      {destination}
+                      {dest.name}
                     </span>
                     <div className="w-0 group-hover:w-2 h-0.5 bg-[#D2AF94] transition-all duration-300 ml-auto"></div>
                   </a>
@@ -160,7 +166,7 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-6">
+          {/* <div className="space-y-6">
             <h3 className="text-xl font-light text-white mb-8 relative">
               Quick Links
               <div className="absolute -bottom-2 left-0 w-12 h-0.5 bg-gradient-to-r from-[#D2AF94] to-transparent"></div>
@@ -184,7 +190,7 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Contact Info */}
           <div className="space-y-6">
@@ -198,9 +204,9 @@ const Footer = () => {
                   <MapPin className="h-5 w-5 flex-shrink-0 transition-all duration-300 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-[#D2AF94]/30 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-                <span className="font-light leading-relaxed">114, Pramid Urban Square</span>
+                <span className="font-light leading-relaxed">114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana, India, 122102</span>
               </div>
-              
+
               <div className="group flex items-center gap-4 text-[#A6B5B4] hover:text-[#D2AF94] transition-colors duration-300">
                 <div className="relative">
                   <Phone className="h-5 w-5 transition-all duration-300 group-hover:scale-110" />
@@ -208,7 +214,7 @@ const Footer = () => {
                 </div>
                 <span className="font-light">+91-9667909383</span>
               </div>
-              
+
               <div className="group flex items-center gap-4 text-[#A6B5B4] hover:text-[#D2AF94] transition-colors duration-300">
                 <div className="relative">
                   <Mail className="h-5 w-5 transition-all duration-300 group-hover:scale-110" />
@@ -216,7 +222,7 @@ const Footer = () => {
                 </div>
                 <span className="font-light">contact@travelxec.com</span>
               </div>
-              
+
               <div className="group flex items-center gap-4 text-[#A6B5B4] hover:text-[#D2AF94] transition-colors duration-300">
                 <div className="relative">
                   <Clock className="h-5 w-5 transition-all duration-300 group-hover:scale-110" />
@@ -233,7 +239,7 @@ const Footer = () => {
           {/* Decorative divider */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#A6B5B4]/30 to-transparent"></div>
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-1 bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent"></div>
-          
+
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <p className="text-[#A6B5B4] text-sm font-light">
               © {currentYear} TravelXec. All rights reserved.
