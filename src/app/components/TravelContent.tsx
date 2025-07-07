@@ -58,27 +58,27 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Sarah Johnson",
+    name: "sanskar Seth, Delhi",
     image: "r1.jpeg",
-    comment: "The best travel experience I've ever had! The attention to detail was amazing.",
+    comment: "TravelXec made my solo trip to Rajasthan seamless, allowing me to explore the beauty of Jaipur and Udaipur at my own pace!",
     rating: 5,
-    destination: "Japan Tour"
+    destination: "Rajasthan Explorer"
   },
   {
     id: 2,
-    name: "Michael Chen",
+    name: "Neha & Rohan, Bangalore",
     image: "r2.jpeg",
-    comment: "Perfectly organized trip with unforgettable moments. Highly recommended!",
+    comment: "Thanks to TravelXec, our romantic escape to Coorg was nothing short of perfect, with personalized experiences and breathtaking views!",
     rating: 5,
-    destination: "Italy Adventure"
+    destination: "Coorg Getaway"
   },
   {
     id: 3,
-    name: "Emma Davis",
+    name: "The Deshmukh Family, Pune",
     image: "r3.jpeg",
-    comment: "Professional service and incredible destinations. Will definitely book again!",
+    comment: "Our family vacation to Goa was unforgettable, with TravelXec handling every detail to ensure we experienced the best of the royal state!",
     rating: 5,
-    destination: "Greece Explorer"
+    destination: "Goa Family Vacation"
   }
 ];
 
@@ -141,40 +141,40 @@ const TravelContent = () => {
     return stars;
   };
 
-  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !email.includes('@')) {
-      toast.error("Please enter a valid email address");
+    if (!email) {
+      toast.error("Please enter your email address");
       return;
     }
 
     setSubscribing(true);
-
     try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Subscription failed');
+      if (response.ok) {
+        toast.success("Thanks for subscribing!");
+        setEmail(""); // Reset input
+      } else {
+        toast.error(data.error || "Subscription failed.");
       }
-
-      toast.success("🎉 Successfully subscribed to newsletter!");
-      setEmail('');
-    } catch (error: any) {
-      console.error('❌ Subscription error:', error);
-      toast.error(error.message || "Failed to subscribe. Please try again.");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubscribing(false);
     }
   };
+
 
 
   const filterPackages = (packages: TravelPackage[]) => {
@@ -464,8 +464,11 @@ const TravelContent = () => {
               1024: { slidesPerView: 3 },
               1280: { slidesPerView: 4 },
             }}
-
-            pagination={{ clickable: true }}
+            pagination={{
+              clickable: true,
+              el: '.swiper-pagination', // Ensures pagination is positioned correctly
+              type: 'bullets', // Pagination style
+            }}
             autoplay={{ delay: 4000 }}
             loop
             className="!px-2"
@@ -527,12 +530,25 @@ const TravelContent = () => {
           </Swiper>
         </div>
 
+        {/* Pagination Container */}
+        <div className="absolute bottom-10 left-0 right-0 flex justify-center z-30 swiper-pagination"></div>
+
         <style jsx>{`
-        .bg-gradient-radial {
-          background: radial-gradient(circle, var(--tw-gradient-from), var(--tw-gradient-to));
-        }
-      `}</style>
+    .bg-gradient-radial {
+      background: radial-gradient(circle, var(--tw-gradient-from), var(--tw-gradient-to));
+    }
+
+    .swiper-pagination {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      z-index: 10;  // Ensure pagination is above the other elements
+    }
+  `}</style>
       </section>
+
+
 
       {/* Why Choose Us Section */}
       <section
@@ -545,9 +561,19 @@ const TravelContent = () => {
 
 
         <div className="w-full mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-light text-[#D2AF94] font-serif tracking-wide leading-tight mb-4">
+          <h2 className="text-4xl md:text-5xl font-light text-white font-serif tracking-wide leading-tight mb-4">
             Why Travel With
-            <span className="block font-extralight text-white/90 italic">TravelXec</span>
+            <br />
+            <span
+              className="text-4xl font-bold text-[#d2af94] text-center mb-2"
+              style={{
+                fontFamily: 'League Spartan, sans-serif',
+                letterSpacing: '-1.5px',  // Reduce letter spacing
+                lineHeight: '1.0',        // Adjust line height to make the lines tighter
+              }}
+            >
+              travelxec
+            </span>
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent mx-auto mb-4"></div>
           <p className="text-[#A6B5B4] font-light text-lg max-w-2xl mx-auto">
@@ -835,76 +861,83 @@ const TravelContent = () => {
               <span className="text-[#A6B5B4]">Subscribe to our newsletter and </span>
               <span className="text-[#D2AF94] font-medium">embark on a journey</span>
               <span className="text-[#A6B5B4]"> of discovery with </span>
-              <span className="text-white font-medium">TravelXec</span>
-              <span className="text-[#A6B5B4]">.</span>
+              <span className="text-4xl font-bold text-[#d2af94] text-center mb-2"
+                style={{
+                  fontFamily: 'League Spartan, sans-serif',
+                  letterSpacing: '-1.5px',  // Reduce letter spacing
+                  lineHeight: '1.0',        // Adjust line height to make the lines tighter
+                }}>travelxec</span>
+
             </p>
 
             {/* Form */}
-            <div className="relative max-w-2xl mx-auto group">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#186663]/20 via-[#A6B5B4]/30 to-[#D2AF94]/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <form onSubmit={handleSubscribe} className="relative max-w-2xl mx-auto group">
+              <div className="relative max-w-2xl mx-auto group">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#186663]/20 via-[#A6B5B4]/30 to-[#D2AF94]/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-              <div className="relative bg-gradient-to-r from-[#002D37]/80 via-[#186663]/20 to-[#002D37]/80 backdrop-blur-lg border border-[#A6B5B4]/30 rounded-2xl p-8 shadow-2xl">
-                <div className="flex flex-col md:flex-row gap-6 items-center">
-                  <div className="relative flex-grow w-full md:w-auto">
-                    <input
-                      type="email"
-                      placeholder="Enter your email address"
-                      className="w-full px-8 py-5 bg-white/10 backdrop-blur-sm border border-[#A6B5B4]/40 rounded-xl text-white placeholder-[#A6B5B4]/70 text-lg font-light transition-all duration-300 focus:border-[#D2AF94] focus:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]/50"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+                <div className="relative bg-gradient-to-r from-[#002D37]/80 via-[#186663]/20 to-[#002D37]/80 backdrop-blur-lg border border-[#A6B5B4]/30 rounded-2xl p-8 shadow-2xl">
+                  <div className="flex flex-col md:flex-row gap-6 items-center">
+                    <div className="relative flex-grow w-full md:w-auto">
+                      <input
+                        type="email"
+                        placeholder="Enter your email address"
+                        className="w-full px-8 py-5 bg-white/10 backdrop-blur-sm border border-[#A6B5B4]/40 rounded-xl text-white placeholder-[#A6B5B4]/70 text-lg font-light transition-all duration-300 focus:border-[#D2AF94] focus:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]/50"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={subscribing}
+                      className="relative group px-10 py-5 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-[#002D37] rounded-xl font-medium text-lg transition-all duration-300 hover:from-[#8C7361] hover:to-[#D2AF94] hover:shadow-2xl hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                      <span className="relative z-10 flex items-center justify-center space-x-2">
+                        {subscribing ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-[#002D37]/30 border-t-[#002D37] rounded-full animate-spin"></div>
+                            <span>Subscribing...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Subscribe Now</span>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                          </>
+                        )}
+                      </span>
+                    </button>
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={subscribing}
-                    className="relative group px-10 py-5 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-[#002D37] rounded-xl font-medium text-lg transition-all duration-300 hover:from-[#8C7361] hover:to-[#D2AF94] hover:shadow-2xl hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed overflow-hidden"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                    <span className="relative z-10 flex items-center justify-center space-x-2">
-                      {subscribing ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-[#002D37]/30 border-t-[#002D37] rounded-full animate-spin"></div>
-                          <span>Subscribing...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Subscribe Now</span>
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                          </svg>
-                        </>
-                      )}
-                    </span>
-                  </button>
+                  <p className="mt-6 text-sm text-blue-100 font-light leading-relaxed">
+                    By subscribing, you agree to receive our marketing emails.
+                    <br />
+                    <span className="text-[#D2AF94]/90">You can unsubscribe at any time.</span>
+                  </p>
                 </div>
+              </div>
 
-                <p className="mt-6 text-sm text-blue-100 font-light leading-relaxed">
-                  By subscribing, you agree to receive our marketing emails.
-                  <br />
-                  <span className="text-[#D2AF94]/90">You can unsubscribe at any time.</span>
-                </p>
+              {/* Trust Indicators */}
+              <div className="mt-16 flex justify-center items-center space-x-12 opacity-60">
+                <div className="flex items-center space-x-2 text-[#A6B5B4]">
+                  <div className="w-2 h-2 bg-[#D2AF94] rounded-full animate-pulse"></div>
+                  <span className="text-sm font-light">Premium Content</span>
+                </div>
+                <div className="flex items-center space-x-2 text-[#A6B5B4]">
+                  <div className="w-2 h-2 bg-[#186663] rounded-full animate-pulse"></div>
+                  <span className="text-sm font-light">Weekly Updates</span>
+                </div>
+                <div className="flex items-center space-x-2 text-[#A6B5B4]">
+                  <div className="w-2 h-2 bg-[#8C7361] rounded-full animate-pulse"></div>
+                  <span className="text-sm font-light">Exclusive Access</span>
+                </div>
               </div>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="mt-16 flex justify-center items-center space-x-12 opacity-60">
-              <div className="flex items-center space-x-2 text-[#A6B5B4]">
-                <div className="w-2 h-2 bg-[#D2AF94] rounded-full animate-pulse"></div>
-                <span className="text-sm font-light">Premium Content</span>
-              </div>
-              <div className="flex items-center space-x-2 text-[#A6B5B4]">
-                <div className="w-2 h-2 bg-[#186663] rounded-full animate-pulse"></div>
-                <span className="text-sm font-light">Weekly Updates</span>
-              </div>
-              <div className="flex items-center space-x-2 text-[#A6B5B4]">
-                <div className="w-2 h-2 bg-[#8C7361] rounded-full animate-pulse"></div>
-                <span className="text-sm font-light">Exclusive Access</span>
-              </div>
-            </div>
+            </form>
           </div>
+          {/* End of .relative w-full mx-auto px-8 z-10 */}
         </div>
-
         {/* Corner decorations */}
         <div className="absolute top-8 left-8 w-16 h-16 border-l-2 border-t-2 border-[#D2AF94]/40 rounded-tl-lg"></div>
         <div className="absolute top-8 right-8 w-16 h-16 border-r-2 border-t-2 border-[#D2AF94]/40 rounded-tr-lg"></div>

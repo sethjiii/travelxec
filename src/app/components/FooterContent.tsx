@@ -101,9 +101,13 @@ const Footer = () => {
                   <Plane className="h-6 w-6 text-[#002D37]" />
                 </div>
               </div>
-              <span className="text-3xl font-light bg-gradient-to-r from-white via-[#A6B5B4] to-white bg-clip-text text-transparent">
-                TravelXec
-              </span>
+
+              {/* Replace the text with the company logo */}
+              <img
+                src="/logo.png"  // Path to your logo image
+                alt="TravelXec Logo"
+                className="h-32 w-32 rounded"  // Adjust size as needed
+              />
             </div>
 
             <p className="text-[#A6B5B4] leading-relaxed font-light">

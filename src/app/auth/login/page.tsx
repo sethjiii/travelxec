@@ -85,8 +85,15 @@ export default function LoginPage() {
               <Compass className="h-16 w-16 text-[#D2AF94] animate-spin" style={{ animationDuration: '8s' }} />
               <div className="absolute inset-0 bg-gradient-to-r from-[#A6B5B4] to-[#D2AF94] rounded-full opacity-20 blur-xl"></div>
             </div>
-            <h1 className="text-4xl font-bold text-white text-center mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-              TravelXec
+            <h1
+              className="text-4xl font-bold text-[#d2af94] text-center mb-2"
+              style={{
+                fontFamily: 'League Spartan, sans-serif',
+                letterSpacing: '-1.5px',  // Reduce letter spacing
+                lineHeight: '1.2',        // Adjust line height to make the lines tighter
+              }}
+            >
+              travelxec
             </h1>
             <h2 className="text-xl font-semibold text-[#A6B5B4] text-center mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
               Welcome

@@ -4,6 +4,7 @@ import React from "react";
 import { Globe, Users, MapPin, Star, Heart } from "lucide-react";
 import Link from "next/link";
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import Footer from "@/app/components/FooterContent"; // Adjust the import path as necessary
 
 const AboutUsPage = () => {
   return (
@@ -71,37 +72,39 @@ const AboutUsPage = () => {
 
       {/* Mission Section */}
       <section className="relative py-24 bg-gradient-to-br from-[#002D37]/90 via-[#003a47]/85 to-[#186663]/80 text-white px-6 overflow-hidden">
-        <AuroraBackground className="w-full h-full">
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <h2 className="text-4xl md:text-5xl font-serif font-light mb-6">
-              Our <span className="text-[#D2AF94]">Mission</span>
-            </h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed text-[#E0EDED] mb-10">
-              To elevate every travel moment into a legacy — by merging cultural depth, sustainability, and understated elegance.
-            </p>
+        <AuroraBackground className="absolute inset-0 w-full h-full z-0"> {/* Ensure full coverage of the section */}
+          {/* The Aurora Background is set to cover the entire section now */}
+        </AuroraBackground>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-serif font-light mb-6">
+            Our <span className="text-[#D2AF94]">Mission</span>
+          </h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed text-[#E0EDED] mb-10">
+            To elevate every travel moment into a legacy — by merging cultural depth, sustainability, and understated elegance.
+          </p>
 
-            <div className="flex flex-wrap justify-center gap-8">
-              {/* Card 1 */}
-              <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <MapPin className="mx-auto mb-4 w-8 h-8 text-[#D2AF94]" />
-                <p className="text-white font-light text-lg">500+ curated experiences</p>
-              </div>
+          <div className="flex flex-wrap justify-center gap-8">
+            {/* Card 1 */}
+            <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
+              <MapPin className="mx-auto mb-4 w-8 h-8 text-[#D2AF94]" />
+              <p className="text-white font-light text-lg">500+ curated experiences</p>
+            </div>
 
-              {/* Card 2 */}
-              <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <Users className="mx-auto mb-4 w-8 h-8 text-[#A6B5B4]" />
-                <p className="text-white font-light text-lg">10000+ delighted travelers</p>
-              </div>
+            {/* Card 2 */}
+            <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
+              <Users className="mx-auto mb-4 w-8 h-8 text-[#A6B5B4]" />
+              <p className="text-white font-light text-lg">10000+ delighted travelers</p>
+            </div>
 
-              {/* Card 3 */}
-              <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <Star className="mx-auto mb-4 w-8 h-8 text-[#8C7361]" />
-                <p className="text-white font-light text-lg">Rated 5-stars in experience & luxury</p>
-              </div>
+            {/* Card 3 */}
+            <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
+              <Star className="mx-auto mb-4 w-8 h-8 text-[#8C7361]" />
+              <p className="text-white font-light text-lg">Rated 5-stars in experience & luxury</p>
             </div>
           </div>
-        </AuroraBackground>
+        </div>
       </section>
+
 
 
       {/* Call to Action */}
@@ -114,8 +117,11 @@ const AboutUsPage = () => {
           </button>
         </Link>
       </section>
+      <footer className="w-full bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent">
+        <Footer />
+      </footer>
     </div>
-    
+
   );
 };
 

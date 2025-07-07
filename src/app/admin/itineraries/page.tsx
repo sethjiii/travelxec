@@ -70,7 +70,7 @@ export default function AdminItineraries() {
                 <td className="p-3 border">{i.destinations}</td>
                 <td className="p-3 border">{i.startDate} → {i.endDate}</td>
                 <td className="p-3 border text-center">{i.duration} days</td>
-                <td className="p-3 border">${i.budget}</td>
+                <td className="p-3 border">₹{i.budget}</td>
                 <td className="p-3 border text-center">
                   {i.contacted
                     ? <span className="text-green-600 font-semibold">Contacted</span>

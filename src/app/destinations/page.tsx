@@ -8,6 +8,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { MapPin, Plane, Star, ArrowRight, Calendar, Camera } from "lucide-react";
 import Loader from "@/ui2/Loader";
+import Footer from "../components/FooterContent";
 
 interface Package {
   _id: string;
@@ -302,13 +303,7 @@ export default function DestinationsList() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-32 pt-16 border-t border-[#A6B5B4]/20">
-          <div className="inline-flex items-center gap-2 text-[#D2AF94] text-sm font-light tracking-wider">
-            <div className="w-8 h-px bg-[#D2AF94]"></div>
-            <span>YOUR JOURNEY AWAITS</span>
-            <div className="w-8 h-px bg-[#D2AF94]"></div>
-          </div>
-        </div>
+
       </div>
 
       <style jsx>{`
@@ -449,6 +444,9 @@ export default function DestinationsList() {
           opacity: 1;
         }
       `}</style>
+      <footer className="w-full bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent">
+        <Footer />
+      </footer>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import {
   ArrowRight, Bookmark, Star, StarHalf, StarOff, Search, MapPin, Clock, Sparkles, Heart
 } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
+import Footer from "../components/FooterContent";
 
 // Define the structure of a package
 interface Package {
@@ -242,6 +243,9 @@ const AllPackagesPage = () => {
           }
         }
       `}</style>
+      <footer className="w-full bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent">
+        <Footer />
+      </footer>
     </div>
   );
 };

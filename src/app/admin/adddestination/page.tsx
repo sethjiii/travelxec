@@ -74,7 +74,7 @@ export default function AddDestination() {
   };
 
   return (
-    <div className="max-w-md text-gray-700 mx-auto p-4 border rounded shadow">
+    <div className="max-w-md text-gray-700 mx-auto p-4 border rounded shadow py-24">
       <h2 className="text-xl font-bold mb-4">Add New Destination</h2>
       <form onSubmit={handleSubmit}>
         <label className="block mb-2 font-semibold">
