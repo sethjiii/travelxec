@@ -199,12 +199,12 @@ const Navbar = () => {
                 My Adventures
               </Link>
               <Link
-                href="/favorites"
+                href="/saved-places"
                 onClick={handleProfileMenuToggle}
                 className="flex items-center gap-4 px-6 py-3.5 hover:bg-white/10 rounded-xl transition"
               >
                 <Heart className="w-4 h-4 text-rose-400" />
-                Favorites
+                Saved Places
               </Link>
               <div className="mx-6 my-3 border-t border-white/10" />
               <button
