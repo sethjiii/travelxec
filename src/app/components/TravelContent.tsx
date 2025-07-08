@@ -58,16 +58,16 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "sanskar Seth, Delhi",
-    image: "r1.jpeg",
+    name: "Sanskar Seth, Delhi",
+    image: "seth.jpg",
     comment: "TravelXec made my solo trip to Rajasthan seamless, allowing me to explore the beauty of Jaipur and Udaipur at my own pace!",
     rating: 5,
     destination: "Rajasthan Explorer"
   },
   {
     id: 2,
-    name: "Neha & Rohan, Bangalore",
-    image: "r2.jpeg",
+    name: "Sanskriti & Saket, Gurgaon",
+    image: "saket&sanskriti.jpg",
     comment: "Thanks to TravelXec, our romantic escape to Coorg was nothing short of perfect, with personalized experiences and breathtaking views!",
     rating: 5,
     destination: "Coorg Getaway"
@@ -75,7 +75,7 @@ const testimonials: Testimonial[] = [
   {
     id: 3,
     name: "The Deshmukh Family, Pune",
-    image: "r3.jpeg",
+    image: "family.jpg",
     comment: "Our family vacation to Goa was unforgettable, with TravelXec handling every detail to ensure we experienced the best of the royal state!",
     rating: 5,
     destination: "Goa Family Vacation"
