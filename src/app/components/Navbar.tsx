@@ -77,8 +77,8 @@ const Navbar = () => {
   const menuItems = [
     { name: "Destinations", href: "/destinations" },
     { name: "Packages", href: "/packages" },
-    { name: "Contact Us", href: "/contact-us" },
     { name: "About Us", href: "/about-us" },
+    { name: "Contact Us", href: "/contact-us" },
   ];
 
   // Prevent hydration mismatch by not rendering interactive elements until mounted
@@ -94,7 +94,7 @@ const Navbar = () => {
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             <Link href="/">
-              <div className="absolute left-0 top-2 h-full w-50 flex items-center justify-center">
+              <div className="absolute left-0 top-2 h-full w-50 flex items-center justify-center z-10">
                 <Image
                   src="/logo2.png"
                   alt="TravelXec Logo"
@@ -134,10 +134,15 @@ const Navbar = () => {
                 </Link>
               </div>
             </div>
-            <div className="md:hidden">
-              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80">
-                <Menu className="h-5 w-5" />
-              </div>
+            <div className="md:hidden z-20">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:text-white transition-colors"
+                aria-expanded={isMenuOpen}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
             </div>
           </div>
         </div>
@@ -232,8 +237,8 @@ const Navbar = () => {
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
-          <Link href={user?.role === "admin" ? "/admin" : "/"}>
-            <div className="absolute left-0 top-2 h-full w-50 flex items-center justify-center">
+          <Link href={user?.role === "admin" ? "/admin" : "/"}> 
+            <div className=" left-0 top-2 h-full w-50 flex items-center justify-center z-10">
               <Image
                 src="/logo2.png"
                 alt="TravelXec Logo"
@@ -245,7 +250,7 @@ const Navbar = () => {
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-1 z-10">
             {menuItems.map((item) => (
               <Link
                 key={item.name}
@@ -300,7 +305,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="md:hidden">
+          <div className="md:hidden z-20">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:text-white transition-colors"
@@ -314,7 +319,7 @@ const Navbar = () => {
 
         {/* Mobile Menu Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden px-6 pt-4 pb-6 space-y-3 bg-[#002D37]/95 backdrop-blur-lg border-t border-white/10">
+          <div className="md:hidden px-6 pt-4 pb-6 space-y-3 bg-[#002D37]/10 backdrop-blur-lg border-t border-white/10 z-10">
             {menuItems.map((item) => (
               <Link
                 key={item.name}
