@@ -221,15 +221,16 @@ const TravelContent = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-4 text-[#D2AF94] playfair font-sans">
               The Connoisseur's Compass
             </h1>
-            <p className="text-lg md:text-xl mb-8 text-[#FFFFFF] font-milchella leading-loose">
+            <p className="text-lg md:text-xl mb-8 text-[#FFFFFF] font-League Spartan leading-loose">
               "True Luxury isn't thread count, but the thread that weaves unforgettable stories"
             </p>
-            <div className="flex gap-5">
+            <div className="flex flex-col md:flex-row gap-6"> {/* Increased gap to 6 for consistent spacing */}
               <Link href="/destinations">
                 <ExploreButton />
               </Link>
               <ViewPackagesButton />
             </div>
+
           </div>
         </div>
       </section>
@@ -239,8 +240,10 @@ const TravelContent = () => {
 
 
 
+
       {/* Featured Packages Section / Curated Experience  */}
-      <section className="py-24 bg-gradient-to-br from-[#A6B5B4]/10 via-[#FEFDFB] to-[#D2AF94]/15 px-6 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-[#A6B5B4]/10 via-[#FEFDFB] to-[#D2AF94]/15 px-6 relative overflow-hidden" aria-labelledby="curated-experiences">
+
         {/* Background Radials */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0">
           <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-radial from-[#186663] to-transparent rounded-full blur-3xl" />
@@ -249,7 +252,7 @@ const TravelContent = () => {
 
         <div className="w-full mx-auto relative z-10">
           {/* Heading and Link */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6" id="curated-experiences">
             <div className="text-center md:text-left">
               <h2 className="text-4xl md:text-5xl font-light text-[#002D37] font-serif tracking-wide leading-tight mb-3">
                 Curated
@@ -257,9 +260,11 @@ const TravelContent = () => {
               </h2>
               <div className="w-24 h-px bg-gradient-to-r from-[#186663] to-transparent mx-auto md:mx-0" />
             </div>
+
+            {/* Button (Mobile-optimized) */}
             <Link
               href="/packages"
-              className="group flex items-center gap-3 text-[#002D37] hover:text-[#186663] font-light text-lg transition-all duration-500 relative"
+              className="group flex items-center gap-3 text-[#002D37] hover:text-[#186663] font-light text-lg transition-all duration-500 relative mt-6 md:mt-0"
             >
               <span className="relative">
                 Discover Collection
@@ -284,6 +289,7 @@ const TravelContent = () => {
                   className="w-full pl-16 pr-6 py-4 border-0 rounded-xl bg-[#A6B5B4]/10 backdrop-blur-sm hover:bg-[#A6B5B4]/20 focus:outline-none focus:ring-2 focus:ring-[#186663]/30 focus:bg-white/80 transition-all duration-300 text-[#002D37] placeholder-[#8C7361]/60 font-light text-lg"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  aria-label="Search destinations"
                 />
               </div>
 
@@ -291,6 +297,7 @@ const TravelContent = () => {
                 className="py-4 px-6 border-0 rounded-xl bg-[#A6B5B4]/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#186663]/30 focus:bg-white/80 text-[#002D37] font-light text-lg transition-all duration-300 appearance-none cursor-pointer"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sort options"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23186663' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
                   backgroundPosition: 'right 1.5rem center',
@@ -343,6 +350,7 @@ const TravelContent = () => {
                       src={pkg.images[0]}
                       alt={pkg.name}
                       className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                      aria-describedby="package-description"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-md text-[#186663] py-2 px-4 rounded-full text-sm font-light z-10 shadow-lg border border-[#A6B5B4]/30 transition-all duration-300 group-hover:bg-white">
@@ -378,11 +386,11 @@ const TravelContent = () => {
                         <button
                           onClick={() => toggleFavorite(pkg._id.toString())}
                           className={`w-full border ${isFavorite(pkg._id.toString()) ? 'border-[#002D37] text-[#002D37]' : 'border-[#8C7361]/40 text-[#8C7361]'} 
-    hover:bg-[#D2AF94]/10 hover:border-[#8C7361] hover:text-[#002D37] py-3 px-6 
-    rounded-xl font-light transition-all duration-300 flex items-center justify-center gap-2 group/save`}
+      hover:bg-[#D2AF94]/10 hover:border-[#8C7361] hover:text-[#002D37] py-3 px-6 
+      rounded-xl font-light transition-all duration-300 flex items-center justify-center gap-2 group/save`}
                         >
                           <Bookmark className={`w-4 h-4 transition-transform duration-300 group-hover/save:scale-110 ${isFavorite(pkg._id.toString()) ? 'fill-[#002D37]' : ''}`} />
-                          <span>{isFavorite(pkg._id.toString()) ? 'Curated' : 'Curate'}</span>
+                          <span>{isFavorite(pkg._id.toString()) ? 'Wishlisted' : 'Wishlist'}</span>
                         </button>
 
                       </div>
@@ -407,17 +415,8 @@ const TravelContent = () => {
         {/* Bottom Gradient Fade */}
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#FEFDFB] z-20 pointer-events-none" />
 
-        {/* Styles */}
-        <style jsx>{`
-    .swiper-pagination-bullet-active-custom {
-      background-color: #186663 !important;
-      transform: scale(1.4);
-    }
-    .bg-gradient-radial {
-      background: radial-gradient(circle, var(--tw-gradient-from), var(--tw-gradient-to));
-    }
-  `}</style>
       </section>
+
 
 
       {/* Popular Destinations Section */}
@@ -504,17 +503,18 @@ const TravelContent = () => {
                         {pkg.name}
                       </h3>
 
-                      <p className="flex items-center gap-2 text-[#8C7361] text-sm mb-4 font-light">
-                        <MapPin className="h-4 w-4 text-[#186663]" />
-                        {pkg.highlights[0]}
-                      </p>
-
                       <div className="flex items-center justify-between text-[#002D37] mb-5">
                         <span className="flex items-center gap-2 text-sm text-[#8C7361] font-light">
                           <Clock className="h-4 w-4 text-[#A6B5B4]" />
                           {pkg.duration}
                         </span>
                       </div>
+
+                      {/* Highlights with text truncation */}
+                      <p className="flex items-center gap-2 text-[#8C7361] text-sm mb-4 font-light overflow-hidden text-ellipsis whitespace-nowrap">
+                        <MapPin className="h-4 w-4 text-[#186663]" />
+                        {pkg.highlights[0]}
+                      </p>
                     </div>
 
                     <Link
@@ -524,6 +524,7 @@ const TravelContent = () => {
                       Discover Details
                     </Link>
                   </div>
+
                 </div>
               </SwiperSlide>
             ))}
@@ -557,15 +558,17 @@ const TravelContent = () => {
           background: "linear-gradient(to bottom, #002D37, #186663)",
           minHeight: "80vh"
         }}
+        aria-labelledby="why-travel-with-title"
       >
-
-
-        <div className="w-full mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-light text-white font-serif tracking-wide leading-tight mb-4">
+        <div className="w-full mx-auto px-6 sm:px-8 text-center" aria-describedby="why-travel-with-description">
+          <h2
+            id="why-travel-with-title"
+            className="text-4xl md:text-5xl font-light text-white font-serif tracking-wide leading-tight mb-4"
+          >
             Why Travel With
             <br />
             <span
-              className="text-4xl font-bold text-[#d2af94] text-center mb-2"
+              className="text-4xl font-bold text-[#d2af94] mb-2"
               style={{
                 fontFamily: 'League Spartan, sans-serif',
                 letterSpacing: '-1.5px',  // Reduce letter spacing
@@ -576,11 +579,14 @@ const TravelContent = () => {
             </span>
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent mx-auto mb-4"></div>
-          <p className="text-[#A6B5B4] font-light text-lg max-w-2xl mx-auto">
+          <p
+            id="why-travel-with-description"
+            className="text-[#A6B5B4] font-light text-lg max-w-2xl mx-auto playfair"
+          >
             Discover the extraordinary through the eyes of our discerning travelers
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 playfair">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-10 playfair">
             {[
               {
                 icon: <Award className="h-8 w-8 stroke-[#002D37]" />,
@@ -615,6 +621,7 @@ const TravelContent = () => {
           </div>
         </div>
       </section>
+
 
 
       {/* Testimonials Section */}

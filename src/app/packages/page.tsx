@@ -82,7 +82,7 @@ const AllPackagesPage = () => {
   if (loading) return <PremiumLoader />;
 
   return (
-    <div className="min-h-screen bg-[#002D37] relative playfair">
+    <div className="min-h-screen bg-gradient-to-br from-[#002D37] via-[#186663] to-[#002D37] relative playfair">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#186663] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
@@ -121,7 +121,7 @@ const AllPackagesPage = () => {
               placeholder="Search extraordinary destinations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-16 pr-8 py-5 bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 rounded-2xl hover:bg-[#A6B5B4]/20 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]/50 focus:border-[#D2AF94]/50 transition-all duration-300 text-white placeholder-[#8C7361] text-lg font-light shadow-xl hover:shadow-2xl"
+              className="w-full pl-16 pr-8 py-5 bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 rounded-2xl hover:bg-[#A6B5B4]/20 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]/50 focus:border-[#D2AF94]/50 transition-all duration-300 text-white placeholder-white text-lg font-light shadow-xl hover:shadow-2xl"
             />
           </div>
         </div>
@@ -133,15 +133,16 @@ const AllPackagesPage = () => {
           {filteredPackages.map((pkg, index) => (
             <div
               key={pkg._id}
-              className="group relative overflow-hidden rounded-3xl bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 hover:bg-[#A6B5B4]/20 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl flex flex-col"
+              className="relative overflow-hidden rounded-3xl bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 flex flex-col justify-center items-center"
               style={{ animation: `slideUp 0.8s ease-out forwards ${index * 0.1}s` }}
             >
               {/* Image */}
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-64 overflow-hidden w-full">
+                
                 <img
                   src={pkg.images[0]}
                   alt={pkg.name}
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
@@ -160,18 +161,16 @@ const AllPackagesPage = () => {
                 </button>
 
                 {/* Duration */}
-                <div className="absolute bottom-4 left-4 flex items-center bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
+                <div className="absolute bottom-4 left-4 flex bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
                   <Clock className="w-4 h-4 mr-1" />
                   {pkg.duration}
                 </div>
               </div>
 
               {/* Details */}
-              <div className="flex flex-col justify-between flex-1 p-8">
+              <div className="flex flex-col justify-center p-8 ">
                 <div>
-                  <h2 className="text-2xl font-light text-white mb-3 group-hover:text-[#D2AF94] transition-colors duration-300">
-                    {pkg.name}
-                  </h2>
+                  <h2 className="text-2xl font-light text-white mb-3">{pkg.name}</h2>
 
                   <div className="flex items-center text-[#A6B5B4] mb-4">
                     <MapPin className="w-4 h-4 mr-2 text-[#D2AF94]" />
@@ -187,16 +186,16 @@ const AllPackagesPage = () => {
 
                   <p className="text-[#A6B5B4] text-sm mb-6 leading-relaxed line-clamp-3">{pkg.description}</p>
 
-                  <div className="flex items-center gap-2 mb-6">
-                    <div className="flex items-center gap-1">{renderStars(pkg.rating)}</div>
+                  <div className="flex gap-2 mb-6">
+                    <div className="flex gap-1">{renderStars(pkg.rating)}</div>
                     <span className="text-white font-medium">{(pkg.rating ?? 4.5).toFixed(1)}</span>
                   </div>
                 </div>
 
-                <div className="flex gap-4 mt-auto">
+                <div className="flex gap-4 mt-auto w-full justify-center">
                   <Link
                     href={`/packages/${pkg._id}`}
-                    className="flex-1 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-[#002D37] py-3 px-6 rounded-xl font-medium hover:from-[#8C7361] hover:to-[#D2AF94] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="flex-1 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-[#002D37] py-3 px-6 rounded-xl font-medium hover:from-[#8C7361] hover:to-[#D2AF94] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
                   >
                     Explore Journey
                   </Link>

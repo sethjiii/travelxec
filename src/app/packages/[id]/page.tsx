@@ -5,8 +5,9 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { CalendarArrowDown, CalendarArrowUp, Check, CheckCircle, ListCheck, ListXIcon, Rocket, Sparkles, User, X } from "lucide-react";
+import { CalendarArrowDown, CalendarArrowUp, Check, CheckCircle, ListCheck, ListXIcon, Rocket, Sparkles, Star, User, X } from "lucide-react";
 import Footer from "@/app/components/FooterContent";
+import { useFavorites } from "@/hooks/useFavorites";
 
 
 // Interfaces remain the same as your original code
@@ -82,6 +83,7 @@ const TravelPackageDisplay = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [visibleReviews, setVisibleReviews] = useState<Review[]>([]);
   const [activeTab, setActiveTab] = useState("overview");
+  const { isFavorite, toggleFavorite } = useFavorites();
   const router = useRouter()
   useEffect(() => {
     const fetchPackageData = async () => {
@@ -214,16 +216,17 @@ const TravelPackageDisplay = () => {
 
         {/* Main Content */}
         <div className="relative z-20 flex flex-col justify-center items-center text-center px-6 sm:px-10 max-w-4xl mx-auto">
-          <h1 className="text-white drop-shadow-lg leading-tight font-milchella text-7xl ">
+          <h1 className="text-white drop-shadow-lg leading-tight font-milchella text-4xl sm:text-6xl md:text-7xl lg:text-8xl py-4 sm:py-6 md:py-8 lg:py-10 tracking-loose">
             {packageData.name}
           </h1>
 
-          <p className="mt-6 text-base sm:text-lg text-white/90 leading-relaxed font-medium drop-shadow-sm playfair">
+          {/* Description (Truncated) */}
+          <p className="mt-6 text-base sm:text-lg text-white/90 leading-relaxed font-medium drop-shadow-sm playfair line-clamp-3">
             {packageData.description}
           </p>
 
           {/* Duration Badge */}
-          <div className="mt-6 px-5 py-2 bg-[#186663]/50 text-white rounded-full shadow-md backdrop-blur-md text-sm border border-white/10 flex items-center gap-2 playfair text-3xl">
+           <div className="mt-6 px-5 py-2 bg-[#186663]/50 text-white rounded-full shadow-md backdrop-blur-md text-sm border border-white/10 flex items-center gap-2 playfair text-3xl">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
@@ -231,43 +234,63 @@ const TravelPackageDisplay = () => {
           </div>
         </div>
 
+
         {/* Footer Bar */}
-        <div className="absolute bottom-0 left-0 w-full z-30 bg-[#002D37]/90 backdrop-blur-md px-4 sm:px-10 py-3 flex justify-between items-center text-white rounded-t-xl">
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[90%] max-w-2xl z-30 bg-[#002D37]/80 backdrop-blur-lg px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:justify-between items-center text-white rounded-xl shadow-lg md:shadow-xl gap-4 sm:gap-0">
+          {/* Rating and Review */}
           <div className="flex items-center gap-4">
-            <span className="text-sm sm:text-base">
-              ⭐ {(packageData.rating || 0).toFixed(1)}
-            </span>
-            <span className="text-sm text-gray-300 flex items-center gap-1">
-              <User size={16} className="text-[#D2AF94]" /> {packageData.reviews.length}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-lg sm:text-xl font-semibold flex items-center gap-1">
+                <Star className="text-[#D2AF94]" size={20} />
+                {(packageData.rating || 0).toFixed(1)}
+              </span>
+              <span className="text-lg sm:text-xl font-semibold flex items-center gap-1">
+                <User size={20} className="text-[#D2AF94]" />
+                {packageData.reviews.length}
+              </span>
+            </div>
           </div>
 
-          <button
-            onClick={handleBookNow}
-            className="bg-[#D2AF94] text-[#002D37] hover:bg-[#8C7361] hover:text-white px-5 py-2 rounded-md font-semibold text-sm sm:text-base shadow-md transition-all"
-          >
-            Book Now
-          </button>
+          {/* Action Buttons */}
+          <div className="flex gap-3 sm:gap-4">
+            <button
+              onClick={() => toggleFavorite(packageData._id)}
+              className="bg-transparent border border-[#D2AF94] text-[#D2AF94] hover:bg-[#8C7361] hover:text-white px-5 py-2.5 rounded-md font-medium text-sm sm:text-base shadow-md transition-all duration-200 transform hover:scale-105"
+            >
+              {isFavorite(packageData._id) ? "Wishlisted ❤️" : "Add to Wishlist"}
+            </button>
+            <button
+              onClick={handleBookNow}
+              className="bg-[#D2AF94] text-[#002D37] hover:bg-[#8C7361] hover:text-white px-5 py-2.5 rounded-md font-medium text-sm sm:text-base shadow-md transition-all duration-200 transform hover:scale-105"
+            >
+              Book Now
+            </button>
+          </div>
         </div>
+
+
+
+
+
       </div>
 
 
       {/* Tabs Navigation */}
       <div className="py-8 border-b border-[#D2AF94]/20 bg-[#fdfaf6] backdrop-blur-lg shadow-sm">
         <nav className="flex flex-wrap justify-center gap-6 sm:gap-12">
-          {["overview", "itinerary", "gallery", "reviews"].map((tab) => (
+          {["overview", "itinerary", "gallery", "reviews"].map((Tab) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+              key={Tab}
+              onClick={() => setActiveTab(Tab)}
               className={`relative text-sm sm:text-base tracking-widest uppercase font-light playfair transition-all duration-300 pb-2
-        ${activeTab === tab ? "text-[#8C7361]" : "text-gray-500 hover:text-[#8C7361]"}`}
+        ${activeTab === Tab ? "text-[#8C7361]" : "text-gray-500 hover:text-[#8C7361]"}`}
             >
-              {tab}
+              {Tab}
 
               {/* Animated underline */}
               <span
                 className={`absolute left-1/2 -bottom-1 h-[1.5px] bg-[#D2AF94] transition-all duration-300 ease-in-out
-          ${activeTab === tab ? "w-full -translate-x-1/2" : "w-0 -translate-x-1/2"}`}
+          ${activeTab === Tab ? "w-full -translate-x-1/2" : "w-0 -translate-x-1/2"}`}
               />
             </button>
           ))}

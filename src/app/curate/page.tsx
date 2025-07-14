@@ -62,26 +62,16 @@ export default function CurateItineraryPage() {
 
   return (
     <>
-      <div className="bg-[#002D37] min-h-screen py-24 relative">
+      <div className="bg-[#002D37] min-h-screen py-24 relative" style={{ backgroundImage: 'url(/bkgc.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
         <div className="absolute inset-0 opacity-20 bg-[#186663]"></div>
-        {/* Travel-themed icons background */}
-        <div className="absolute top-10 left-10 opacity-30 z-0">
-          <Plane width="100" height="100" fill="none" stroke="#D2AF94" strokeWidth="0.5" />
-        </div>
-        <div className="absolute top-20 right-10 opacity-20 z-0">
-          <svg width="100" height="100" fill="none" stroke="#D2AF94" strokeWidth="2" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="30" />
-            <line x1="50" y1="50" x2="90" y2="10" />
-          </svg>
-        </div>
-        <div className="absolute bottom-20 left-20 opacity-30 z-0">
-          <svg width="100" height="100" fill="none" stroke="#D2AF94" strokeWidth="2" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10,90 L90,10" />
-          </svg>
-        </div>
+       
 
         <div className="max-w-2xl mx-auto p-8 bg-white rounded-xl shadow-lg z-10 relative">
+
           <h1 className="text-3xl font-semibold mb-8 text-[#186663]">Curate Your Own Itinerary</h1>
+          <button className="absolute top-4 right-4 text-sm text-[#186663] bg-white border border-[#A6B5B4] py-2 px-4 rounded-md hover:bg-[#F5F5F5]" onClick={() => window.location.href = '/'}>
+            Back to Home
+          </button>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-2 gap-8">
@@ -91,23 +81,27 @@ export default function CurateItineraryPage() {
             <input className="input bg-[#F5F5F5] text-[#002D37] border border-[#A6B5B4] rounded-lg py-3 px-6 focus:ring-2 focus:ring-[#186663]" type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
             <input className="input bg-[#F5F5F5] text-[#002D37] border border-[#A6B5B4] rounded-lg py-3 px-6 focus:ring-2 focus:ring-[#186663]" type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
             <input className="input bg-[#F5F5F5] text-[#002D37] border border-[#A6B5B4] rounded-lg py-3 px-6 focus:ring-2 focus:ring-[#186663]" name="destinations" placeholder="Destinations (e.g., Jaipur, Mumbai)" value={formData.destinations} onChange={handleChange} required />
-            
+
             <div className="grid grid-cols-2 gap-8">
               <input className="input bg-[#F5F5F5] text-[#002D37] border border-[#A6B5B4] rounded-lg py-3 px-6 focus:ring-2 focus:ring-[#186663]" type="date" name="startDate" value={formData.startDate} onChange={handleChange} required />
               <input className="input bg-[#F5F5F5] text-[#002D37] border border-[#A6B5B4] rounded-lg py-3 px-6 focus:ring-2 focus:ring-[#186663]" type="date" name="endDate" value={formData.endDate} onChange={handleChange} required />
             </div>
-            
+
             <p className="text-sm text-[#A6B5B4]">Duration: {duration} day(s)</p>
-            
+
             <input className="input bg-[#F5F5F5] text-[#002D37] border border-[#A6B5B4] rounded-lg py-3 px-6 focus:ring-2 focus:ring-[#186663]" type="number" name="budget" placeholder="Budget (INR)" value={formData.budget} onChange={handleChange} required />
             <textarea className="input bg-[#F5F5F5] text-[#002D37] border border-[#A6B5B4] rounded-lg py-3 px-6 focus:ring-2 focus:ring-[#186663]" rows={4} name="specialRequirements" placeholder="Any special requirements?" value={formData.specialRequirements} onChange={handleChange} />
-            
+
             <button type="submit" className="bg-[#186663] text-white px-8 py-3 rounded-lg hover:bg-[#0f4b4b] transition-all duration-300">Submit</button>
+
           </form>
 
           {success && <p className="mt-4 text-green-400 font-medium">Itinerary submitted successfully!</p>}
         </div>
+
+
       </div>
+
 
       <footer className="w-full bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent">
         <Footer />

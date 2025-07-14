@@ -201,15 +201,20 @@ export default function LoginPage() {
             </div>
 
             {/* Sign up */}
-            <p className="mt-6 text-[#8C7361]">
+            <p className="mt-6 text-[#8C7361] pb-4">
               Don&apos;t have an account?{" "}
               <Link href="/auth/signup" className="text-[#186663] hover:text-[#002D37] font-semibold hover:underline">
                 Create Account
               </Link>
+
+              
             </p>
+            <button className="items-center gap-3 px-6 py-3 bottom text-sm text-[#186663] bg-white border border-[#A6B5B4] rounded-md hover:bg-[#F5F5F5]" onClick={() => window.location.href = '/'}>
+            Back to Home
+          </button>
           </div>
+          
         </div>
       </div>
-    </div>
-  );
+    </div>);
 }

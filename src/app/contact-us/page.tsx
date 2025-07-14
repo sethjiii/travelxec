@@ -18,8 +18,8 @@ const ContactUsPage = () => {
   const contactData = {
     phoneNumbers: [
       'General Inquiries: +91-9667909383',
-      'Support: +91-9667909384',
-      'Sales: +91-9667909385',
+      'Support: +91-9667909383',
+      'Sales: +91-9667909383',
     ],
     emailAddresses: [
       'Support: contact@travelxec.com',
@@ -27,7 +27,7 @@ const ContactUsPage = () => {
     ],
     socialMedia: [
       { name: 'Facebook', url: 'https://facebook.com', icon: 'f' },
-      { name: 'Twitter', url: 'https://twitter.com', icon: '𝕏' },
+      { name: 'WhatsApp', url: 'https://whatsapp.com', icon: 'FaWhatsapp' },
       { name: 'LinkedIn', url: 'https://linkedin.com', icon: 'in' },
     ],
     address: '114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana, India, 122102',
