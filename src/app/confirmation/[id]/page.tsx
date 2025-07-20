@@ -16,7 +16,7 @@ interface TravelPackage {
   };
   images: string[];
   rating?: number;
-  price?: string;
+  OnwardPrice?: string;
 }
 
 interface UserProfile {

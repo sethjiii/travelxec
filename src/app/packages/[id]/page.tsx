@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { CalendarArrowDown, CalendarArrowUp, Check, CheckCircle, ListCheck, ListXIcon, Rocket, Sparkles, Star, User, X } from "lucide-react";
 import Footer from "@/app/components/FooterContent";
 import { useFavorites } from "@/hooks/useFavorites";
+import { CurrencyIcon } from "lucide-react";
 
 
 // Interfaces remain the same as your original code
@@ -58,8 +59,10 @@ interface TravelPackage {
   duration: string;
   highlights: string[];
   itinerary: ItineraryItem[];
-  images: string[];
-  rating: number;
+  images: {
+    url: string;
+    public_id: string;
+  }[]; rating: number;
   reviews: Review[];
   comments: Comment[];
   likes: number;
@@ -69,6 +72,7 @@ interface TravelPackage {
   exclusions: string[];
   inclusions: string[];
   availability: Availability;
+  OnwardPrice: number; // Assuming this is the price for onward journey
 }
 
 
@@ -197,19 +201,31 @@ const TravelPackageDisplay = () => {
     );
   }
 
+  const heroImage =
+    Array.isArray(packageData.images) && packageData.images.length > 0 && typeof packageData.images[0] === "string" && packageData.images[0]
+      ? packageData.images[0]
+      : "/placeholder.jpg";
+
+
   return (
     <div className="w-full bg-gray-50 mx-auto">
 
       <div className="relative w-full min-h-[80vh] pt-24 overflow-hidden bg-black top-22">
         {/* Background Image */}
-        <Image
-          src={packageData.images[0] || "/placeholder.jpg"}
-          alt={packageData.name}
-          className="absolute inset-0 w-full h-full object-cover brightness-90"
-          width={1920}
-          height={1080}
-          priority
-        />
+        {packageData.images?.length > 0 ? (
+          <img
+            src={packageData.images[0].url}
+            alt={packageData.name}
+            className="absolute inset-0 w-full h-full object-cover brightness-90"
+            width={1920}
+            height={1080}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+            No image available
+          </div>
+        )}
 
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/80 to-transparent z-10" />
@@ -226,7 +242,7 @@ const TravelPackageDisplay = () => {
           </p>
 
           {/* Duration Badge */}
-           <div className="mt-6 px-5 py-2 bg-[#186663]/50 text-white rounded-full shadow-md backdrop-blur-md text-sm border border-white/10 flex items-center gap-2 playfair text-3xl">
+          <div className="mt-6 px-5 py-2 bg-[#186663]/50 text-white rounded-full shadow-md backdrop-blur-md text-sm border border-white/10 flex items-center gap-2 playfair text-3xl">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
@@ -246,9 +262,16 @@ const TravelPackageDisplay = () => {
               </span>
               <span className="text-lg sm:text-xl font-semibold flex items-center gap-1">
                 <User size={20} className="text-[#D2AF94]" />
-                {packageData.reviews.length}
+                {(packageData.reviews || []).length}
+
               </span>
             </div>
+          </div>
+          {/* Onward Price */}
+          <div className="flex items-center gap-2">
+            <span className="text-lg sm:text-xl font-semibold flex items-center gap-1 playfair">
+              ₹{packageData.OnwardPrice?.toLocaleString?.() || 'N/A'}{" "} Onwards
+            </span>
           </div>
 
           {/* Action Buttons */}
@@ -566,16 +589,23 @@ const TravelPackageDisplay = () => {
                       <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
 
                       {/* Premium Image */}
-                      <Image
-                        src={image}
-                        alt={`${packageData.name} - Luxury Experience ${index + 1}`}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                        fill
-                      />
+                      {packageData.images?.length > 0 ? (
+                        <img
+                          src={packageData.images[0].url}
+                          alt={`${packageData.name} - Luxury Experience ${index + 1}`}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                          width={800}
+                          height={600}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                          No image available
+                        </div>
+                      )}
 
                       {/* Elegant Hover Content */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-30">
-                        <div className="bg-white/90 backdrop-blur-md rounded-2xl px-6 py-4 shadow-xl border border-[#A6B5B4]ransform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                        <div className="bg-white/90 backdrop-blur-md rounded-2xl px-6 py-4 shadow-xl border border-[#A6B5B4] transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-gradient-to-br from-[#186663] to-[#002D37] rounded-full flex items-center justify-center">
                               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -8,7 +8,8 @@ import Footer from "@/app/components/FooterContent"; // Adjust the import path a
 
 const AboutUsPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FEFDFB] via-white to-[#D2AF94]/10 text-[#002D37] font-milchella ">
+    <div className="min-h-screen bg-gradient-to-b from-[#FEFDFB] via-white to-[#D2AF94]/10 text-[#002D37] font-serif">
+      {/* Navbar */}
 
 
       {/* Hero Section */}
@@ -58,12 +59,12 @@ const AboutUsPage = () => {
             <p className="text-[#8C7361] text-sm mt-2">Elite gateways to the world's rarest destinations.</p>
           </div>
           <div>
-            <Heart className="mx-auto h-10 w-10 text-[#8C7361]" />
+            <Heart className="mx-auto h-10 w-10 text-[#186663]" />
             <h3 className="mt-4 text-xl font-medium">Personal Touch</h3>
             <p className="text-[#8C7361] text-sm mt-2">Each journey is tailored with heart and precision.</p>
           </div>
           <div>
-            <Star className="mx-auto h-10 w-10 text-[#D2AF94]" />
+            <Star className="mx-auto h-10 w-10 text-[#186663]" />
             <h3 className="mt-4 text-xl font-medium">Uncompromised Luxury</h3>
             <p className="text-[#8C7361] text-sm mt-2">We define luxury through experience, not just amenities.</p>
           </div>
@@ -85,21 +86,27 @@ const AboutUsPage = () => {
 
           <div className="flex flex-wrap justify-center gap-8">
             {/* Card 1 */}
-            <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
-              <MapPin className="mx-auto mb-4 w-8 h-8 text-[#D2AF94]" />
+            <div className="w-50 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
+              <MapPin className="mx-auto mb-4 w-8 h-8 text-white" />
               <p className="text-white font-light text-lg">500+ curated experiences</p>
             </div>
 
             {/* Card 2 */}
-            <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
-              <Users className="mx-auto mb-4 w-8 h-8 text-[#A6B5B4]" />
+            <div className="w-50 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
+              <Users className="mx-auto mb-4 w-8 h-8 text-white" />
               <p className="text-white font-light text-lg">10000+ delighted travelers</p>
             </div>
 
             {/* Card 3 */}
-            <div className="w-72 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
-              <Star className="mx-auto mb-4 w-8 h-8 text-[#8C7361]" />
-              <p className="text-white font-light text-lg">Rated 5-stars in experience & luxury</p>
+            <div className="w-50 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
+              <div className="flex justify-center space-x-2">
+                <Star className="w-8 h-8 text-white" />
+                <Star className="w-8 h-8 text-white" />
+                <Star className="w-8 h-8 text-white" />
+                <Star className="w-8 h-8 text-white" />
+                <Star className="w-8 h-8 text-white" />
+              </div>
+              <p className=" py-2 text-white font-light text-lg">Rated 5-stars in experience & luxury</p>
             </div>
           </div>
         </div>

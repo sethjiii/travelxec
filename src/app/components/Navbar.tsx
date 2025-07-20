@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   MapPin,
-  Globe,
   Menu,
   X,
   User,
@@ -20,59 +19,28 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [profileMenuTimer, setProfileMenuTimer] =
-    useState<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { isAuthenticated, logout, user } = useAuth();
 
+  useEffect(() => setMounted(true), []);
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const { isAuthenticated, logout, user } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    setIsProfileMenuOpen(false);
-    if (profileMenuTimer) clearTimeout(profileMenuTimer);
-  };
-
-  const handleProfileMenuToggle = () => {
-    if (isProfileMenuOpen) {
-      setIsProfileMenuOpen(false);
-      if (profileMenuTimer) clearTimeout(profileMenuTimer);
-    } else {
-      setIsProfileMenuOpen(true);
-      const timer = setTimeout(() => {
-        setIsProfileMenuOpen(false);
-        setProfileMenuTimer(null);
-      }, 5000);
-      setProfileMenuTimer(timer);
-    }
-  };
-
-  const handleProfileMenuHover = () => {
-    if (profileMenuTimer) {
-      clearTimeout(profileMenuTimer);
-      const timer = setTimeout(() => {
-        setIsProfileMenuOpen(false);
-        setProfileMenuTimer(null);
-      }, 10000);
-      setProfileMenuTimer(timer);
-    }
-  };
-
+  // For accessibility: close menus on ESC
   useEffect(() => {
-    return () => {
-      if (profileMenuTimer) clearTimeout(profileMenuTimer);
+    if (!isMenuOpen && !isProfileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+        setIsProfileMenuOpen(false);
+      }
     };
-  }, [profileMenuTimer]);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isMenuOpen, isProfileMenuOpen]);
 
   const menuItems = [
     { name: "Destinations", href: "/destinations" },
@@ -81,277 +49,193 @@ const Navbar = () => {
     { name: "Contact Us", href: "/contact-us" },
   ];
 
-  // Prevent hydration mismatch by not rendering interactive elements until mounted
-  if (!mounted) {
-    return (
-      <nav className="fixed top-0 w-full z-50 transition-all duration-700 ease-out">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[#002D37]/70 backdrop-blur-xl" />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-[#002D37]/10" />
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#D2AF94]/40 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
-            <Link href="/">
-              <div className="absolute left-0 top-2 h-full w-50 flex items-center justify-center z-10">
-                <Image
-                  src="/logo2.png"
-                  alt="TravelXec Logo"
-                  width={200}
-                  height={70}
-                  className="object-contain"
-                />
-              </div>
-            </Link>
-            <div className="hidden md:flex items-center space-x-1">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="relative px-5 py-2.5 text-white/80 hover:text-white font-medium transition-all duration-300 group"
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <Link
-                href="/curate-itinerary"
-                className="relative ml-6 px-6 py-2.5 text-white/90 hover:text-white font-medium transition-all duration-300 group border-l border-white/10 pl-6"
-              >
-                <div className="relative flex items-center gap-2">
-                  <span className="text-sm font-medium tracking-wide">Bespoke Itineraries</span>
-                  <div className="w-1 h-1 bg-[#D2AF94] rounded-full opacity-60 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <div className="absolute bottom-0 left-6 right-0 h-0.5 bg-gradient-to-r from-[#D2AF94] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </Link>
-              <div className="ml-6 pl-6 border-l border-white/10">
-                <Link
-                  href="/auth/login"
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-white rounded-xl"
-                >
-                  <User className="h-4 w-4 inline mr-2" />
-                  Sign In
-                </Link>
-              </div>
-            </div>
-            <div className="md:hidden z-20">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:text-white transition-colors"
-                aria-expanded={isMenuOpen}
-                aria-label="Toggle menu"
-              >
-                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
-  }
+  if (!mounted) return null; // Avoid hydration issues
 
-  const renderProfileMenu = () => (
-    <div
-      className={`absolute z-50 top-16 right-0 w-64 transition-all duration-300 ease-out transform ${isProfileMenuOpen
-        ? "opacity-100 translate-y-0 scale-100"
-        : "opacity-0 translate-y-[-8px] scale-95 pointer-events-none"
-        }`}
-      onMouseEnter={handleProfileMenuHover}
-    >
-      <div className="relative">
-        <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl ring-1 ring-white/10 overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/5 before:via-transparent before:to-black/5 before:pointer-events-none">
-          <div className="relative px-6 py-5 border-b border-white/10">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Image
-                  src="/avatar.jpeg"
-                  alt="Profile"
-                  width={48}
-                  height={48}
-                  className="rounded-full ring-2 ring-[#D2AF94]/40 shadow-md hover:scale-105 transition-transform"
-                />
-                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full shadow-sm" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-white text-sm font-semibold truncate">
-                  {user?.name || "Guest User"}
-                </h3>
-                <p className="text-[#D2AF94] text-xs font-medium flex items-center gap-1.5">
-                  <span className="w-2 h-2 bg-[#D2AF94] rounded-full animate-pulse" />
-                  Premium Member
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="py-3">
-            <nav className="space-y-1 text-sm font-medium text-white/90">
-              {user?.role === "admin" && (
-                <Link
-                  href="/admin"
-                  onClick={handleProfileMenuToggle}
-                  className="flex items-center gap-4 px-6 py-3.5 hover:bg-white/10 rounded-xl transition"
-                >
-                  <Settings className="w-4 h-4 text-[#D2AF94]" />
-                  Admin Dashboard
-                </Link>
-              )}
-              <Link
-                href={`/my-trips/${user?._id}`}
-                onClick={handleProfileMenuToggle}
-                className="flex items-center gap-4 px-6 py-3.5 hover:bg-white/10 rounded-xl transition"
-              >
-                <MapPin className="w-4 h-4 text-blue-400" />
-                My Adventures
-              </Link>
-              <Link
-                href="/saved-places"
-                onClick={handleProfileMenuToggle}
-                className="flex items-center gap-4 px-6 py-3.5 hover:bg-white/10 rounded-xl transition"
-              >
-                <Heart className="w-4 h-4 text-rose-400" />
-                Saved Places
-              </Link>
-              <div className="mx-6 my-3 border-t border-white/10" />
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-4 px-6 py-3.5 text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-xl w-full transition"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </button>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
+  /*** ---------- NAVBAR RENDER ---------- ***/
   return (
-    <nav className="fixed top-0 w-full z-50 transition-all duration-700 ease-out">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[#002D37]/70 backdrop-blur-xl" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-[#002D37]/10" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#D2AF94]/40 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-          <Link href={user?.role === "admin" ? "/admin" : "/"}> 
-            <div className=" left-0 top-2 h-full w-50 flex items-center justify-center z-10">
-              <Image
-                src="/logo2.png"
-                alt="TravelXec Logo"
-                width={200}
-                height={70}
-                className="object-contain"
-                priority
-              />
-            </div>
-          </Link>
-
-          <div className="hidden md:flex items-center space-x-1 z-10">
-            {menuItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="relative px-5 py-2.5 text-white/80 hover:text-white font-medium transition-all duration-300 group"
-              >
-                {item.name}
-              </Link>
-            ))}
-            
-            {/* Premium Curate Itinerary Button */}
-            <Link
-              href="/curate"
-              className="relative ml-6 px-6 py-2.5 text-white/90 hover:text-white font-medium transition-all duration-300 group border-l border-white/10 pl-6"
-            >
-              <div className="relative flex items-center gap-2">
-                <span className="text-sm font-medium tracking-wide">Bespoke Itineraries</span>
-                <div className="w-1 h-1 bg-[#D2AF94] rounded-full opacity-60 group-hover:opacity-100 transition-opacity" />
-              </div>
-              <div className="absolute bottom-0 left-6 right-0 h-0.5 bg-gradient-to-r from-[#D2AF94] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-            </Link>
-            
-            <div className="ml-6 pl-6 border-l border-white/10">
-              {isAuthenticated ? (
-                <div className="relative">
-                  <button
-                    onClick={handleProfileMenuToggle}
-                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
-                    aria-expanded={isProfileMenuOpen}
-                    aria-haspopup="true"
-                  >
-                    <Image
-                      src="/avatar.jpeg"
-                      alt="Avatar"
-                      width={32}
-                      height={32}
-                      className="rounded-lg ring-2 ring-[#D2AF94]/30"
-                    />
-                    <span className="text-white/90">{user?.name?.split(" ")[0] || "User"}</span>
-                  </button>
-                  {renderProfileMenu()}
-                </div>
-              ) : (
-                <Link
-                  href="/auth/login"
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-white rounded-xl hover:from-[#C4925F] hover:to-[#7A6654] transition-all"
-                >
-                  <User className="h-4 w-4 inline mr-2" />
-                  Sign In
-                </Link>
-              )}
-            </div>
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition duration-300
+        ${isScrolled ? "backdrop-blur-md bg-[#002D37]/80 shadow-lg" : "bg-transparent"}
+      `}
+      aria-label="Global Navigation"
+    >
+      <div className="relative max-w-7xl mx-auto flex items-center justify-between px-3 sm:px-5 md:px-8 h-16 md:h-20">
+        {/* --- LOGO --- */}
+        <Link href={user?.role === "admin" ? "/admin" : "/"}>
+          <div className="flex items-center gap-3 h-16 md:h-20 w-auto cursor-pointer select-none">
+            <Image
+              src="/logo2.png"
+              alt="Logo"
+              width={isMenuOpen ? 110 : 150}
+              height={45}
+              className="object-contain transition-all duration-300"
+              priority
+            />
           </div>
-
-          <div className="md:hidden z-20">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:text-white transition-colors"
-              aria-expanded={isMenuOpen}
-              aria-label="Toggle menu"
+        </Link>
+        {/* --- DESKTOP NAV --- */}
+        <div className="hidden md:flex items-center">
+          {menuItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="
+                px-3 py-2 mx-1 text-base text-white/80 hover:text-white
+                transition font-medium rounded-lg
+                focus:outline-none focus:ring-2 focus:ring-[#D2AF94]
+              "
             >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {item.name}
+            </Link>
+          ))}
+          <Link
+            href="/curate"
+            className="
+              ml-4 px-4 py-2 text-white bg-gradient-to-r from-[#D2AF94] to-[#8C7361]
+              rounded-xl font-semibold hover:from-[#cba57f] hover:to-[#8C7361] 
+              focus:outline-none focus:ring-2 focus:ring-[#D2AF94] transition
+            "
+          >
+            Bespoke Itineraries
+          </Link>
+          <div className="ml-4">
+            {isAuthenticated ? (
+              <div className="relative">
+                <button
+                  aria-haspopup="true"
+                  aria-expanded={isProfileMenuOpen}
+                  onClick={() => setIsProfileMenuOpen((open) => !open)}
+                  className="flex items-center gap-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]"
+                >
+                  <Image
+                    src="/avatar.jpeg"
+                    alt="Avatar"
+                    width={36}
+                    height={36}
+                    className="rounded-full ring-2 ring-[#D2AF94]/30"
+                  />
+                  <span className="hidden lg:inline-block text-white/80 font-medium">{user?.name?.split(" ")[0] || "User"}</span>
+                </button>
+                {/* PROFILE MENU */}
+                <div
+                  className={`
+                    absolute right-0 mt-2 w-52 rounded-xl bg-white/90 shadow-2xl border
+                    transition-all duration-150
+                    ${isProfileMenuOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}
+                    ring-1 ring-black/5 z-30
+                  `}
+                  onMouseLeave={() => setIsProfileMenuOpen(false)}
+                >
+                  <div className="p-4">
+                    <p className="text-[#002D37] font-semibold mb-2">{user?.name || "User"}</p>
+                    <div className="border-b border-gray-200 mb-2" />
+                    <Link
+                      href={`/profile/${user?._id}`}
+                      className="block py-2 px-2 text-[#186663] hover:bg-[#D2AF94]/10 rounded font-medium"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    > <User className="inline w-4 h-4 mr-1" /> Profile </Link>
+                    <Link
+                      href={`/my-trips/${user?._id}`}
+                      className="block py-2 px-2 text-[#186663] hover:bg-[#D2AF94]/10 rounded font-medium"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      <MapPin className="inline w-4 h-4 mr-1" /> My Adventures
+                    </Link>
+                    <Link
+                      href="/saved-places"
+                      className="block py-2 px-2 text-[#8C7361] hover:bg-[#D2AF94]/10 rounded font-medium"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      <Heart className="inline w-4 h-4 mr-1" /> Saved Places
+                    </Link>
+                    {user?.role === "admin" && (
+                      <Link
+                        href="/admin"
+                        className="block py-2 px-2 text-[#D2AF94] hover:bg-[#8C7361]/10 rounded font-medium"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        <Settings className="inline w-4 h-4 mr-1" /> Admin Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => { logout(); setIsProfileMenuOpen(false); }}
+                      className="block w-full text-left py-2 mt-2 text-red-500 hover:bg-red-50 rounded font-medium"
+                    >
+                      <LogOut className="inline w-4 h-4 mr-1" /> Sign Out
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="flex items-center px-4 py-2 bg-[#D2AF94] text-white rounded-xl hover:bg-[#cba57f] transition font-medium"
+              >
+                <User className="w-4 h-4 mr-2" />
+                Sign In
+              </Link>
+            )}
+          </div>
+        </div>
+        {/* --- MOBILE MENU BUTTON --- */}
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={() => setIsMenuOpen((open) => !open)}
+            className="p-2 rounded-lg text-white/90 bg-white/10 hover:bg-[#D2AF94]/20 transition"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+      {/* --- MOBILE FULL SCREEN MENU --- */}
+      <div className={`
+        fixed inset-0 z-40 bg-[#002D37]/95 transition-all duration-300 ease-in-out 
+        ${isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"}
+        md:hidden
+      `}>
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between p-4 border-b border-[#D2AF94]">
+            <Link href="/" onClick={() => setIsMenuOpen(false)}>
+              <Image src="/logo2.png" alt="Logo" width={110} height={40} />
+            </Link>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              aria-label="Close menu"
+              className="p-2 rounded-lg bg-white/10 text-white hover:bg-[#D2AF94]/20"
+            >
+              <X className="w-6 h-6" />
             </button>
           </div>
-        </div>
-
-        {/* Mobile Menu Dropdown */}
-        {isMenuOpen && (
-          <div className="md:hidden px-6 pt-4 pb-6 space-y-3 bg-[#002D37]/10 backdrop-blur-lg border-t border-white/10 z-10">
+          <div className="flex-grow flex flex-col gap-2 px-7 py-5">
             {menuItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="block text-white/90 py-2 border-b border-white/10"
+                className="block py-3 text-white/90 text-lg font-semibold rounded hover:bg-[#D2AF94]/10 transition"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
-            
-            {/* Mobile Premium Curate Itinerary */}
             <Link
               href="/curate"
-              className="block py-3 text-white/90 hover:text-white border-b border-white/10 font-medium"
+              className="block py-3 text-white/90 text-lg font-semibold mt-2 rounded bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-center"
               onClick={() => setIsMenuOpen(false)}
             >
-              <div className="flex items-center justify-between">
-                <span>Bespoke Itineraries</span>
-                <div className="w-1 h-1 bg-[#D2AF94] rounded-full" />
-              </div>
+              Bespoke Itineraries
             </Link>
-            
-            <div className="pt-4 border-t border-white/10">
+            {/* --- Mobile Auth/Profile --- */}
+            <div className="mt-6 border-t border-[#D2AF94] pt-4">
               {isAuthenticated ? (
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
+                <div>
+                  <div className="flex items-center gap-4 mb-3">
                     <Image
                       src="/avatar.jpeg"
                       alt="Avatar"
-                      width={36}
-                      height={36}
+                      width={48}
+                      height={48}
                       className="rounded-full ring-2 ring-[#D2AF94]/30"
                     />
                     <div>
@@ -359,31 +243,29 @@ const Navbar = () => {
                       <p className="text-xs text-[#D2AF94]">Premium Member</p>
                     </div>
                   </div>
-                  <Link href={`/my-trips/${user?._id}`} className="block text-white/80 hover:text-white" onClick={() => setIsMenuOpen(false)}>
-                    My Adventures
+                  <Link href={`/my-trips/${user?._id}`} className="block py-2 text-white/80 hover:text-white" onClick={() => setIsMenuOpen(false)}>
+                    <MapPin className="inline w-4 h-4 mr-1" /> My Adventures
                   </Link>
-                  <Link href="/wishlist" className="block text-white/80 hover:text-white" onClick={() => setIsMenuOpen(false)}>
-                    Saved Places
+                  <Link href="/saved-places" className="block py-2 text-white/80 hover:text-white" onClick={() => setIsMenuOpen(false)}>
+                    <Heart className="inline w-4 h-4 mr-1" /> Saved Places
                   </Link>
                   {user?.role === "admin" && (
-                    <Link href="/admin" className="block text-white/80 hover:text-white" onClick={() => setIsMenuOpen(false)}>
-                      Admin Dashboard
+                    <Link href="/admin" className="block py-2 text-[#D2AF94] hover:text-white" onClick={() => setIsMenuOpen(false)}>
+                      <Settings className="inline w-4 h-4 mr-1" /> Admin Dashboard
                     </Link>
                   )}
-                  <button onClick={handleLogout} className="text-red-400 hover:text-red-300 mt-2">
-                    <LogOut className="inline w-4 h-4 mr-1" />
-                    Sign Out
+                  <button onClick={() => { logout(); setIsMenuOpen(false); }} className="w-full mt-4 py-2 bg-red-500/90 hover:bg-red-600 text-white rounded-lg transition flex items-center justify-center">
+                    <LogOut className="inline w-4 h-4 mr-1" /> Sign Out
                   </button>
                 </div>
               ) : (
-                <Link href="/auth/login" className="block text-white/90 bg-[#D2AF94] text-center py-2 rounded-lg mt-4">
-                  <User className="inline h-4 w-4 mr-2" />
-                  Sign In
+                <Link href="/auth/login" className="block text-white/90 bg-[#D2AF94] py-2 text-center rounded-lg mt-1">
+                  <User className="inline h-4 w-4 mr-2" /> Sign In
                 </Link>
               )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

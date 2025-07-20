@@ -15,7 +15,11 @@ interface Package {
   places: string;
   description: string;
   rating: number;
-  images: string[];
+  images: {
+    url: string;
+    public_id: string;
+  }[];
+  OnwardPrice: number; // Assuming this is the price for onward journey
 }
 
 const PremiumLoader = () => (
@@ -138,12 +142,18 @@ const AllPackagesPage = () => {
             >
               {/* Image */}
               <div className="relative h-64 overflow-hidden w-full">
-                
-                <img
-                  src={pkg.images[0]}
-                  alt={pkg.name}
-                  className="w-full h-full object-cover object-center"
-                />
+
+                {pkg.images?.length > 0 ? (
+                  <img
+                    src={pkg.images[0].url}
+                    alt={pkg.name}
+                    className="w-full h-full object-cover object-center"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                    No image available
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
                 {/* Wishlist Button */}
@@ -152,19 +162,27 @@ const AllPackagesPage = () => {
                   className="absolute top-4 left-4 w-12 h-12 bg-[#A6B5B4]/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#A6B5B4]/30 transition-all duration-300 group/heart"
                 >
                   <Heart
-                    className={`w-5 h-5 transition-all duration-300 ${
-                      isFavorite(pkg._id)
-                        ? "text-[#D2AF94] fill-current scale-110"
-                        : "text-white group-hover/heart:text-[#D2AF94] group-hover/heart:scale-110"
-                    }`}
+                    className={`w-5 h-5 transition-all duration-300 ${isFavorite(pkg._id)
+                      ? "text-[#D2AF94] fill-current scale-110"
+                      : "text-white group-hover/heart:text-[#D2AF94] group-hover/heart:scale-110"
+                      }`}
                   />
                 </button>
 
-                {/* Duration */}
-                <div className="absolute bottom-4 left-4 flex bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
-                  <Clock className="w-4 h-4 mr-1" />
-                  {pkg.duration}
+                {/* Bottom Info Row: Duration & Price */}
+                <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center px-4">
+                  {/* Duration */}
+                  <div className="flex items-center justify-center bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
+                    <Clock className="w-4 h-4 mr-1" />
+                    {pkg.duration}
+                  </div>
+
+                  {/* OnwardPrice */}
+                  <div className="bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
+                    Onwards ₹{pkg.OnwardPrice?.toLocaleString?.() || 'N/A'}
+                  </div>
                 </div>
+
               </div>
 
               {/* Details */}
@@ -201,11 +219,10 @@ const AllPackagesPage = () => {
                   </Link>
                   <button
                     onClick={() => toggleFavorite(pkg._id)}
-                    className={`flex-1 py-3 px-6 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
-                      isFavorite(pkg._id)
-                        ? "bg-[#D2AF94] text-[#002D37] hover:bg-[#8C7361]"
-                        : "border border-[#D2AF94] text-[#D2AF94] hover:bg-[#D2AF94] hover:text-[#002D37]"
-                    }`}
+                    className={`flex-1 py-3 px-6 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 ${isFavorite(pkg._id)
+                      ? "bg-[#D2AF94] text-[#002D37] hover:bg-[#8C7361]"
+                      : "border border-[#D2AF94] text-[#D2AF94] hover:bg-[#D2AF94] hover:text-[#002D37]"
+                      }`}
                   >
                     {isFavorite(pkg._id) ? "Wishlisted ❤️" : "Add to Wishlist"}
                   </button>

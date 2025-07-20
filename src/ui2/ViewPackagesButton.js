@@ -17,10 +17,10 @@ const ViewPackagesButton = () => {
 
 const StyledWrapper = styled.div`
   button {
-    font-size: 18px;
+    font-size: 16px;
     color: #e1e1e1;
     font-family: PlayfairDisplay, sans-serif;
-    font-weight: 600;
+    font-weight: 400px;
     cursor: pointer;
     position: relative;
     border: 1px solid #e1e1e1;  /* Added border */

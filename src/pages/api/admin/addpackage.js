@@ -27,7 +27,6 @@ export default async function handler(req, res) {
   await dbConnect();
 
   try {
-    // ✅ Auth support for both Google + JWT
     const user = await getUserFromRequest(req);
     console.log("🔐 Authenticated user:", user);
 
@@ -50,10 +49,11 @@ export default async function handler(req, res) {
       availability,
       images,
       places,
+      OnwardPrice,
       cityId,
     } = req.body;
 
-    // ✅ Validate required fields
+    // ✅ Required field validation (excluding price)
     if (
       !name ||
       !description ||
@@ -71,14 +71,17 @@ export default async function handler(req, res) {
         const result = await cloudinary.uploader.upload(image, {
           folder: 'travel-packages',
         });
-        uploadedImages.push(result.secure_url);
+        uploadedImages.push({
+          url: result.secure_url,
+          public_id: result.public_id,
+        });
       } catch (uploadError) {
         console.error('❌ Cloudinary upload error:', uploadError);
         return res.status(500).json({ error: 'Image upload failed' });
       }
     }
 
-    // ✅ Save travel package
+    // ✅ Create the travel package
     const newPackage = new TravelPackage({
       name,
       description,
@@ -90,11 +93,12 @@ export default async function handler(req, res) {
       availability,
       places,
       images: uploadedImages,
+      ...(OnwardPrice && !isNaN(OnwardPrice) ? { OnwardPrice: Number(OnwardPrice) } : {}),
     });
 
     const savedPackage = await newPackage.save();
 
-    // ✅ Link to destination(s)
+    // ✅ Link the package to destination(s)
     await Promise.all(
       cityId.map(async (id) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {

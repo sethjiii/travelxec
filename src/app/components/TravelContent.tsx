@@ -38,8 +38,10 @@ interface TravelPackage {
   // price: number;
   duration: string;
   highlights: string[];
-  images: string[];
-  likes: number;
+  images: {
+    url: string;
+    public_id: string;
+  }[]; likes: number;
   destination: string;
   name: string;
   places: string;
@@ -221,15 +223,18 @@ const TravelContent = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-4 text-[#D2AF94] playfair font-sans">
               The Connoisseur's Compass
             </h1>
-            <p className="text-lg md:text-xl mb-8 text-[#FFFFFF] font-League Spartan leading-loose">
+            <p className="text-sm md:text-xl mb-8 text-[#FFFFFF] font-League Spartan leading-loose italic">
               "True Luxury isn't thread count, but the thread that weaves unforgettable stories"
             </p>
-            <div className="flex flex-col md:flex-row gap-6"> {/* Increased gap to 6 for consistent spacing */}
-              <Link href="/destinations">
+            <div className="flex flex-col sm:flex-row gap-6">
+              <Link href="/destinations" className="inline-block">
                 <ExploreButton />
               </Link>
-              <ViewPackagesButton />
+              <div className="inline-block">
+                <ViewPackagesButton />
+              </div>
             </div>
+
 
           </div>
         </div>
@@ -346,12 +351,17 @@ const TravelContent = () => {
               <SwiperSlide key={pkg._id}>
                 <div className="group bg-white/60 backdrop-blur-md rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-[#A6B5B4]/20 hover:border-[#186663]/30 hover:bg-white/70">
                   <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                      src={pkg.images[0]}
-                      alt={pkg.name}
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                      aria-describedby="package-description"
-                    />
+                    {pkg.images?.length > 0 ? (
+                      <img
+                        src={pkg.images[0].url}
+                        alt={pkg.name}
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                        No image available
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-md text-[#186663] py-2 px-4 rounded-full text-sm font-light z-10 shadow-lg border border-[#A6B5B4]/30 transition-all duration-300 group-hover:bg-white">
                       {pkg.duration}
@@ -477,11 +487,17 @@ const TravelContent = () => {
                 <div className="group bg-white/70 backdrop-blur-md rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-700 overflow-hidden border border-[#A6B5B4]/20 hover:border-[#186663]/30 hover:bg-white/85 transform hover:translate-y-[-4px] h-[440px] flex flex-col justify-between">
                   {/* Image Section */}
                   <div className="relative overflow-hidden h-48">
-                    <img
-                      src={pkg.images[0]}
-                      alt={pkg.title}
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                    />
+                    {pkg.images?.length > 0 ? (
+                      <img
+                        src={pkg.images[0].url}
+                        alt={pkg.title}
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                        No image available
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <button
                       onClick={() => toggleFavorite(pkg._id.toString())}

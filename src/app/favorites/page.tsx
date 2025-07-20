@@ -33,11 +33,17 @@ export default function FavoritesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {favorites.map(pkg => (
             <div key={pkg._id} className="border rounded-xl p-4 shadow-sm hover:shadow-md transition">
-              <img
-                src={pkg.images?.[0] || "/r1.jpeg"}
-                alt={pkg.name || "Saved place"}
-                className="w-full h-full object-cover"
-              />
+              {pkg.images?.length > 0 ? (
+                <img
+                  src={pkg.images[0].url}
+                  alt={pkg.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                  No image available
+                </div>
+              )}
               <h2 className="text-xl font-medium">{pkg.name || 'Unnamed Package'}</h2>
               <p className="text-gray-600">
                 {pkg.description ? `${pkg.description.slice(0, 100)}...` : 'No description available.'}

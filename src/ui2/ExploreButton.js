@@ -21,13 +21,14 @@ const StyledWrapper = styled.div`
     width: 180px; /* Standard width for consistency */
     height: 50px; /* Standard height for consistency */
     display: flex;
+    font-size: 16px;
     align-items: center;
     justify-content: center; /* Center both icon and text */
     gap: 12px; /* Adjusted gap to keep the elements spaced evenly */
     background-color: #A6B5B4;
     border-radius: 30px;
     color: #002D37;
-    font-weight: 600;
+    font-weight: 400px;
     border: none;
     position: relative;
     cursor: pointer;
@@ -35,6 +36,7 @@ const StyledWrapper = styled.div`
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.116);
     padding-left: 10px;
     padding-right: 10px;
+    font-family: PlayfairDisplay, sans-serif;
   }
 
   .svgIcon {

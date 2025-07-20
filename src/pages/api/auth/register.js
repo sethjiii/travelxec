@@ -1,7 +1,8 @@
-import dbConnect from '../dbConnect';  // Adjust path if needed
-import User from '../../../models/user';  // Adjust path if needed
+import dbConnect from '../dbConnect';
+import User from '../../../models/user';
+import UserProfile from '../../../models/userProfile'; // ✅ Import profile model
 import bcrypt from 'bcrypt';
-import { sendWelcomeEmail } from '@/lib/mail'; // ✅ Make sure this path is correct
+import { sendWelcomeEmail } from '@/lib/mail';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,21 +10,17 @@ export default async function handler(req, res) {
   }
 
   const { fullName, email, phone, password } = req.body;
-  console.log(req.body);
 
   try {
     await dbConnect();
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
     const newUser = new User({
       name: fullName,
       email,
@@ -34,6 +31,15 @@ export default async function handler(req, res) {
     });
 
     await newUser.save();
+
+    // ✅ Automatically create user profile
+    await UserProfile.create({
+      userId: newUser._id,
+      fullName,
+      email,
+      phoneNumber: phone,
+      // Optional: You can prefill other fields or leave blank
+    });
 
     // ✅ Send welcome email
     await sendWelcomeEmail(email, fullName);

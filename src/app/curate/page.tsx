@@ -64,14 +64,33 @@ export default function CurateItineraryPage() {
     <>
       <div className="bg-[#002D37] min-h-screen py-24 relative" style={{ backgroundImage: 'url(/bkgc.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
         <div className="absolute inset-0 opacity-20 bg-[#186663]"></div>
-       
+
 
         <div className="max-w-2xl mx-auto p-8 bg-white rounded-xl shadow-lg z-10 relative">
 
           <h1 className="text-3xl font-semibold mb-8 text-[#186663]">Curate Your Own Itinerary</h1>
-          <button className="absolute top-4 right-4 text-sm text-[#186663] bg-white border border-[#A6B5B4] py-2 px-4 rounded-md hover:bg-[#F5F5F5]" onClick={() => window.location.href = '/'}>
+          <button
+            className="
+    absolute
+    top-2 right-2
+    sm:top-4 sm:right-4
+    text-xs sm:text-sm md:text-base
+    text-[#186663]
+    bg-white
+    border border-[#A6B5B4]
+    py-2 px-3
+    sm:px-4
+    rounded-md
+    hover:bg-[#F5F5F5]
+    transition-colors
+    min-w-[96px]   // Ensures button is large enough to tap on mobile
+    focus:outline-none focus:ring-2 focus:ring-[#186663]
+  "
+            onClick={() => window.location.href = '/'}
+          >
             Back to Home
           </button>
+
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-2 gap-8">

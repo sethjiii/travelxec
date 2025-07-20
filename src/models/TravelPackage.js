@@ -11,6 +11,12 @@ const travelPackageSchema = new mongoose.Schema(
       type: String,
       required: true, // Ensures places is mandatory
     },
+    OnwardPrice: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+
     description: {
       type: String,
       required: true, // Ensures description is mandatory
@@ -90,9 +96,12 @@ const travelPackageSchema = new mongoose.Schema(
         type: Date, // End date for the package availability
       },
     },
-    images: {
-      type: [String], // URLs of images showcasing the package or destinations
-    },
+    images: [
+      {
+        url: String,
+        public_id: String,
+      }
+    ],
     reviews: [
       {
         userId: {

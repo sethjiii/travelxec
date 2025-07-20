@@ -20,8 +20,10 @@ interface Booking {
   packageId: {
     name: string;
     places: string;
-    images: string[];
-    duration: string;
+    images: {
+      url: string;
+      public_id: string;
+    }[]; duration: string;
   };
   userId: {
     name: string;
@@ -152,7 +154,7 @@ const MyBookingsPage = () => {
                       {booking.packageId.images?.[0] && (
                         <div className="w-32 h-24 rounded-xl overflow-hidden border-2 border-slate-200">
                           <img
-                            src={booking.packageId.images[0]}
+                            src={booking.packageId.images[0].url}
                             alt={booking.packageId.name}
                             className="w-full h-full object-cover"
                           />

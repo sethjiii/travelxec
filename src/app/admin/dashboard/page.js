@@ -25,7 +25,7 @@ const AdminTravelPackage = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    //price: "",
+    OnwardPrice: "",
     places: "",
     cityId: [],
     // currency: "USD",
@@ -219,7 +219,7 @@ const AdminTravelPackage = () => {
     setLoading(true);
     setError("");
     setSuccess("");
-    
+
 
     try {
       const token = localStorage.getItem("token");
@@ -247,11 +247,12 @@ const AdminTravelPackage = () => {
         throw new Error(data.error || "Failed to add travel package");
       }
 
-      
+
 
       setSuccess("Travel package added successfully!");
       setFormData({
         name: "",
+        OnwardPrice: "",
         description: "",
         places: "",
         cityId: [],
@@ -302,7 +303,7 @@ const AdminTravelPackage = () => {
             Travel Package Management
           </h1>
           <p className="text-gray-600 mt-2">
-            Create and manage travel packages for your customers
+            Create travel packages for your customers
           </p>
         </div>
 
@@ -398,20 +399,21 @@ const AdminTravelPackage = () => {
 
                   <div className="grid grid-cols-1 gap-4">
                     <div className="relative">
-                      {/* <IndianRupee className="absolute left-3 top-3 h-5 w-5 text-gray-400" /> */}
-                      {/* <input
+                      <IndianRupee className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      <input
                         type="number"
-                        placeholder="Price"
-                        value={formData.price}
+                        min="0"
+                        step="any"
+                        placeholder="Onward Price"
+                        value={formData.OnwardPrice}
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,
-                            price: e.target.value,
+                            OnwardPrice: e.target.value,
                           }))
                         }
-                        className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                         required
-                      /> */}
+                      />
                     </div>
 
                     {/* <select
