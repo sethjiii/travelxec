@@ -155,11 +155,12 @@ const TravelPackageDisplay = () => {
   };
 
   useEffect(() => {
-    if (packageData) {
+    if (Array.isArray(packageData?.reviews)) {
       setVisibleReviews(packageData.reviews.slice(0, 5));
+    } else {
+      setVisibleReviews([]); // Prevent crash on undefined
     }
   }, [packageData]);
-
   const handleReview = async () => {
     if (!newReview.review.trim() || !newReview.rating || !packageData) return;
     setIsSubmitting(true);
@@ -912,21 +913,20 @@ const TravelPackageDisplay = () => {
         </div>
 
         {/* View More Button */}
-        {visibleReviews.length < packageData.reviews.length && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() =>
-                setVisibleReviews(prev => [
-                  ...prev,
-                  ...packageData.reviews.slice(prev.length, prev.length + 5)
-                ])
-              }
-              className="px-4 py-2 bg-gray-100 text-sm rounded-md hover:bg-gray-200"
-            >
-              View More
-            </button>
-          </div>
-        )}
+        {Array.isArray(visibleReviews) &&
+          Array.isArray(packageData?.reviews) &&
+          visibleReviews.length < packageData.reviews.length && (
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={() =>
+                  setVisibleReviews(packageData.reviews.slice(0, visibleReviews.length + 5))
+                }
+                className="px-6 py-2 rounded-full text-sm bg-[#002D37] text-white hover:bg-[#004c5a] transition"
+              >
+                View More
+              </button>
+            </div>
+          )}
       </div>
       <footer className="w-full bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent">
         <Footer />

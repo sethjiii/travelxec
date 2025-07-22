@@ -119,7 +119,7 @@ const Navbar = () => {
                 {/* PROFILE MENU */}
                 <div
                   className={`
-                    absolute right-0 mt-2 w-52 rounded-xl bg-white/90 shadow-2xl border
+                    absolute right-0 mt-2 w-52 rounded-xl bg-white/90 shadow-2xl border py-24
                     transition-all duration-150
                     ${isProfileMenuOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}
                     ring-1 ring-black/5 z-30
@@ -130,7 +130,7 @@ const Navbar = () => {
                     <p className="text-[#002D37] font-semibold mb-2">{user?.name || "User"}</p>
                     <div className="border-b border-gray-200 mb-2" />
                     <Link
-                      href={`/profile/${user?._id}`}
+                      href={`/profile`}
                       className="block py-2 px-2 text-[#186663] hover:bg-[#D2AF94]/10 rounded font-medium"
                       onClick={() => setIsProfileMenuOpen(false)}
                     > <User className="inline w-4 h-4 mr-1" /> Profile </Link>

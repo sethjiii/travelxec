@@ -22,16 +22,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Invalid ID format" });
   }
 
-  // ✅ Admin Auth Check
-  try {
-    const user = await getUserFromRequest(req);
-    if (!user) return res.status(401).json({ error: "Unauthorized" });
-    if (user.role !== "admin") {
-      return res.status(403).json({ error: "Access denied: Admins only" });
+  // ✅ Admin Auth only for PUT & DELETE
+  if (method !== "GET") {
+    try {
+      const user = await getUserFromRequest(req);
+      if (!user) return res.status(401).json({ error: "Unauthorized" });
+      if (user.role !== "admin") {
+        return res.status(403).json({ error: "Access denied: Admins only" });
+      }
+    } catch (authErr) {
+      console.error("Auth error:", authErr);
+      return res.status(401).json({ error: "Authentication failed" });
     }
-  } catch (authErr) {
-    console.error("Auth error:", authErr);
-    return res.status(401).json({ error: "Authentication failed" });
   }
 
   switch (method) {
@@ -41,7 +43,16 @@ export default async function handler(req, res) {
         if (!travelPackage) {
           return res.status(404).json({ error: "Package not found" });
         }
-        return res.status(200).json(travelPackage);
+
+        // ✅ Safe fallback defaults
+        const safePackage = {
+          ...travelPackage.toObject(),
+          reviews: Array.isArray(travelPackage.reviews) ? travelPackage.reviews : [],
+          comments: Array.isArray(travelPackage.comments) ? travelPackage.comments : [],
+          likes: typeof travelPackage.likes === "number" ? travelPackage.likes : 0,
+        };
+
+        return res.status(200).json(safePackage);
       } catch (error) {
         console.error("❌ Error fetching package:", error);
         return res.status(500).json({ error: "Failed to fetch package" });
@@ -62,7 +73,7 @@ export default async function handler(req, res) {
           "exclusions",
           "availability",
           "OnwardPrice",
-          "images", // Full array replacement
+          "images",
         ];
 
         const filteredUpdate = {};
