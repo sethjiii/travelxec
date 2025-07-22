@@ -347,18 +347,20 @@ const TravelPackageDisplay = () => {
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {packageData.highlights.map((highlight, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-4 bg-white/70 border border-[#D2AF94]/40 backdrop-blur-md rounded-2xl px-6 py-4 shadow-md hover:shadow-[0_0_20px_rgba(210,175,148,0.3)] transition-all duration-300 hover:scale-[1.015]"
-                  >
-                    <Rocket className="w-5 h-5 text-[#D2AF94]" />
-                    <span className="text-[#002D37] text-[15px] tracking-wider font-light leading-relaxed playfair">
-                      {highlight}
-                    </span>
-                  </div>
-                ))}
+                {Array.isArray(packageData?.highlights) &&
+                  packageData.highlights.map((highlight, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-4 bg-white/70 border border-[#D2AF94]/40 backdrop-blur-md rounded-2xl px-6 py-4 shadow-md hover:shadow-[0_0_20px_rgba(210,175,148,0.3)] transition-all duration-300 hover:scale-[1.015]"
+                    >
+                      <Rocket className="w-5 h-5 text-[#D2AF94]" />
+                      <span className="text-[#002D37] text-[15px] tracking-wider font-light leading-relaxed playfair">
+                        {highlight}
+                      </span>
+                    </div>
+                  ))}
               </div>
+
             </div>
 
             {/* Inclusions & Exclusions */}
@@ -373,24 +375,25 @@ const TravelPackageDisplay = () => {
                   </h2>
                 </div>
                 <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {packageData.inclusions.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#f8f6f3] text-[#002D37] tracking-wide text-sm playfair border border-[#D2AF94]/20 shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="#186663" viewBox="0 0 24 24" className="w-5 h-5">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          stroke="#186663"
-                          d="M9 12.75 11.25 15 15 9.75"
-                        />
-                        <circle cx="12" cy="12" r="9" stroke="#186663" strokeWidth="1.5" fill="none" />
-                      </svg>
-                      {item}
-                    </li>
-                  ))}
+                  {Array.isArray(packageData?.inclusions) &&
+                    packageData.inclusions.map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#f8f6f3] text-[#002D37] tracking-wide text-sm playfair border border-[#D2AF94]/20 shadow-sm hover:shadow-md transition-all duration-300"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#186663" viewBox="0 0 24 24" className="w-5 h-5">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            stroke="#186663"
+                            d="M9 12.75 11.25 15 15 9.75"
+                          />
+                          <circle cx="12" cy="12" r="9" stroke="#186663" strokeWidth="1.5" fill="none" />
+                        </svg>
+                        {item}
+                      </li>
+                    ))}
                 </ul>
               </div>
 
@@ -403,24 +406,25 @@ const TravelPackageDisplay = () => {
                   </h2>
                 </div>
                 <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {packageData.exclusions.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#fcf8f4] text-[#333] tracking-wide text-sm playfair border border-[#D2AF94]/20 shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="#8C7361" viewBox="0 0 24 24" className="w-5 h-5">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          stroke="#8C7361"
-                          d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5"
-                        />
-                        <circle cx="12" cy="12" r="9" stroke="#8C7361" strokeWidth="1.5" fill="none" />
-                      </svg>
-                      {item}
-                    </li>
-                  ))}
+                  {Array.isArray(packageData?.exclusions) &&
+                    packageData.exclusions.map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#fcf8f4] text-[#333] tracking-wide text-sm playfair border border-[#D2AF94]/20 shadow-sm hover:shadow-md transition-all duration-300"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#8C7361" viewBox="0 0 24 24" className="w-5 h-5">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            stroke="#8C7361"
+                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5"
+                          />
+                          <circle cx="12" cy="12" r="9" stroke="#8C7361" strokeWidth="1.5" fill="none" />
+                        </svg>
+                        {item}
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -452,99 +456,103 @@ const TravelPackageDisplay = () => {
             {/* Timeline */}
             {/* Timeline */}
             <div className="relative z-10 max-w-6xl mx-auto space-y-24 px-4 sm:px-6 lg:px-8">
-              {packageData.itinerary.map((day, index) => (
-                <div key={index} className="relative group">
+              {Array.isArray(packageData?.itinerary) &&
+                packageData.itinerary.map((day, index) => (
+                  <div key={index} className="relative group">
 
-                  {/* Vertical Line */}
-                  <div className="absolute left-4 sm:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#D2AF94]/40 via-[#A6B5B4]/30 to-[#D2AF94]/40"></div>
+                    {/* Vertical Line */}
+                    <div className="absolute left-4 sm:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#D2AF94]/40 via-[#A6B5B4]/30 to-[#D2AF94]/40"></div>
 
-                  {/* Timeline Dot */}
-                  <div className="absolute left-[7px] sm:left-4 top-8 w-5 h-5 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#D2AF94] to-[#8C7361] ring-4 sm:ring-8 ring-white/80 shadow-xl border border-white/60 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500"></div>
+                    {/* Timeline Dot */}
+                    <div className="absolute left-[7px] sm:left-4 top-8 w-5 h-5 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#D2AF94] to-[#8C7361] ring-4 sm:ring-8 ring-white/80 shadow-xl border border-white/60 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500"></div>
 
-                  {/* Day Card */}
-                  <div className="mt-10 sm:mt-0 ml-10 sm:ml-24 bg-white/90 backdrop-blur-xl rounded-3xl border border-[#D2AF94]/15 shadow-xl hover:shadow-2xl transition-all duration-700 overflow-hidden group-hover:-translate-y-2">
+                    {/* Day Card */}
+                    <div className="mt-10 sm:mt-0 ml-10 sm:ml-24 bg-white/90 backdrop-blur-xl rounded-3xl border border-[#D2AF94]/15 shadow-xl hover:shadow-2xl transition-all duration-700 overflow-hidden group-hover:-translate-y-2">
 
-                    {/* Accent Bar */}
-                    <div className="h-1.5 bg-gradient-to-r from-[#186663] via-[#A6B5B4] to-[#D2AF94]"></div>
+                      {/* Accent Bar */}
+                      <div className="h-1.5 bg-gradient-to-r from-[#186663] via-[#A6B5B4] to-[#D2AF94]"></div>
 
-                    <div className="px-5 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12">
+                      <div className="px-5 sm:px-6 md:px-10 py-8 sm:py-10 md:py-12">
 
-                      {/* Header Section */}
-                      <div className="flex flex-col sm:flex-row justify-between items-start gap-6 sm:gap-8 mb-8">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-3">
-                            <span className="text-xl sm:text-2xl text-[#A6B5B4] playfair">Day</span>
-                            <span className="text-3xl sm:text-4xl font-semibold text-[#002D37] playfair">{day.day}</span>
+                        {/* Header Section */}
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-6 sm:gap-8 mb-8">
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-3">
+                              <span className="text-xl sm:text-2xl text-[#A6B5B4] playfair">Day</span>
+                              <span className="text-3xl sm:text-4xl font-semibold text-[#002D37] playfair">{day.day}</span>
+                            </div>
+                            <h3 className="text-xl sm:text-2xl md:text-3xl playfair font-light text-[#002D37] tracking-wide leading-tight">
+                              {day.title}
+                            </h3>
                           </div>
-                          <h3 className="text-xl sm:text-2xl md:text-3xl playfair font-light text-[#002D37] tracking-wide leading-tight">
-                            {day.title}
-                          </h3>
+
+                          <div className="flex flex-col items-start sm:items-end gap-2">
+                            <span className="px-4 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-[#186663] to-[#002D37] text-white rounded-full text-xs sm:text-sm font-medium tracking-[0.15em] uppercase shadow-md">
+                              {day.stay}
+                            </span>
+                            <div className="text-xs text-[#A6B5B4] tracking-wider uppercase">Accommodation</div>
+                          </div>
                         </div>
 
-                        <div className="flex flex-col items-start sm:items-end gap-2">
-                          <span className="px-4 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-[#186663] to-[#002D37] text-white rounded-full text-xs sm:text-sm font-medium tracking-[0.15em] uppercase shadow-md">
-                            {day.stay}
-                          </span>
-                          <div className="text-xs text-[#A6B5B4] tracking-wider uppercase">Accommodation</div>
+                        {/* Description */}
+                        <div className="mb-8">
+                          <p className="text-[#4a4a4a] text-sm sm:text-base md:text-lg leading-relaxed font-light tracking-wide">
+                            {day.description}
+                          </p>
                         </div>
-                      </div>
 
-                      {/* Description */}
-                      <div className="mb-8">
-                        <p className="text-[#4a4a4a] text-sm sm:text-base md:text-lg leading-relaxed font-light tracking-wide">
-                          {day.description}
-                        </p>
-                      </div>
+                        {/* Activities */}
+                        <div className="space-y-6">
+                          {Array.isArray(day.activities) &&
+                            day.activities.map((activity, actIndex) => (
+                              <div
+                                key={actIndex}
+                                className="group/activity relative bg-gradient-to-br from-[#fcfbf9] to-[#f8f6f3] rounded-2xl border border-[#D2AF94]/15 shadow-sm hover:shadow-md transition-all duration-500 overflow-hidden hover:-translate-y-1"
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/3 to-transparent opacity-0 group-hover/activity:opacity-100 transition-opacity duration-500"></div>
 
-                      {/* Activities */}
-                      <div className="space-y-6">
-                        {day.activities.map((activity, actIndex) => (
-                          <div
-                            key={actIndex}
-                            className="group/activity relative bg-gradient-to-br from-[#fcfbf9] to-[#f8f6f3] rounded-2xl border border-[#D2AF94]/15 shadow-sm hover:shadow-md transition-all duration-500 overflow-hidden hover:-translate-y-1"
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/3 to-transparent opacity-0 group-hover/activity:opacity-100 transition-opacity duration-500"></div>
+                                <div className="relative p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-start gap-4">
 
-                            <div className="relative p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-start gap-4">
+                                  {/* Time Badge */}
+                                  <div className="flex-shrink-0">
+                                    <div className="relative">
+                                      <div className="w-20 h-12 sm:w-24 sm:h-14 bg-gradient-to-br from-[#186663] to-[#002D37] rounded-xl shadow-md flex flex-col items-center justify-center text-white text-center px-2 py-1 transform group-hover/activity:scale-105 transition-transform duration-300">
+                                        <span className="text-[10px] sm:text-xs font-semibold leading-snug break-words">
+                                          {activity.time === "arrival"
+                                            ? "As per\nArrival"
+                                            : activity.time.split(':')[0]}
+                                        </span>
+                                        {activity.time !== "arrival" && (
+                                          <span className="text-[10px] opacity-80">
+                                            :{activity.time.split(':')[1]}
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-[#D2AF94] rounded-full"></div>
+                                    </div>
+                                  </div>
 
-                              {/* Time Badge */}
-                              <div className="flex-shrink-0">
-                                <div className="relative">
-                                  <div className="w-20 h-12 sm:w-24 sm:h-14 bg-gradient-to-br from-[#186663] to-[#002D37] rounded-xl shadow-md flex flex-col items-center justify-center text-white text-center px-2 py-1 transform group-hover/activity:scale-105 transition-transform duration-300">
-                                    <span className="text-[10px] sm:text-xs font-semibold leading-snug break-words">
-                                      {activity.time === "arrival" ? "As per\nArrival" : activity.time.split(':')[0]}
-                                    </span>
-                                    {activity.time !== "arrival" && (
-                                      <span className="text-[10px] opacity-80">
-                                        :{activity.time.split(':')[1]}
-                                      </span>
+                                  {/* Activity Content */}
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="text-sm sm:text-base md:text-lg font-semibold text-[#002D37] tracking-wide mb-1 group-hover/activity:text-[#186663] transition-colors duration-300">
+                                      {activity.name}
+                                    </h4>
+                                    {activity.additionalDetails && (
+                                      <p className="text-sm text-[#555] font-light tracking-wide leading-relaxed opacity-80">
+                                        {activity.additionalDetails}
+                                      </p>
                                     )}
                                   </div>
-                                  <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-[#D2AF94] rounded-full"></div>
                                 </div>
                               </div>
-
-                              {/* Activity Content */}
-                              <div className="flex-1 min-w-0">
-                                <h4 className="text-sm sm:text-base md:text-lg font-semibold text-[#002D37] tracking-wide mb-1 group-hover/activity:text-[#186663] transition-colors duration-300">
-                                  {activity.name}
-                                </h4>
-                                {activity.additionalDetails && (
-                                  <p className="text-sm text-[#555] font-light tracking-wide leading-relaxed opacity-80">
-                                    {activity.additionalDetails}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                            ))}
+                        </div>
                       </div>
-
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
+
 
           </div>
         )}
@@ -572,62 +580,65 @@ const TravelPackageDisplay = () => {
             {/* Luxury Gallery Grid */}
             <div className="relative z-10 max-w-7xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {packageData.images.map((image, index) => (
-                  <div
-                    key={index}
-                    className="group relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3"
-                  >
-                    {/* Premium Frame */}
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border-4 border-white/50 backdrop-blur-sm">
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                {Array.isArray(packageData?.images) &&
+                  packageData.images.map((image, index) => (
+                    <div
+                      key={index}
+                      className="group relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3"
+                    >
+                      {/* Premium Frame */}
+                      <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border-4 border-white/50 backdrop-blur-sm">
 
-                      {/* Luxury Corner Accents */}
-                      <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
-                      <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
-                      <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
-                      <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
 
-                      {/* Premium Image */}
-                      {packageData.images?.length > 0 ? (
-                        <img
-                          src={packageData.images[0].url}
-                          alt={`${packageData.name} - Luxury Experience ${index + 1}`}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                          width={800}
-                          height={600}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
-                          No image available
-                        </div>
-                      )}
+                        {/* Luxury Corner Accents */}
+                        <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+                        <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+                        <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+                        <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-[#D2AF94] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
 
-                      {/* Elegant Hover Content */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-30">
-                        <div className="bg-white/90 backdrop-blur-md rounded-2xl px-6 py-4 shadow-xl border border-[#A6B5B4] transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-gradient-to-br from-[#186663] to-[#002D37] rounded-full flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                              </svg>
+                        {/* Premium Image */}
+                        {image?.url ? (
+                          <img
+                            src={image.url}
+                            alt={`${packageData.name} - Luxury Experience ${index + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                            width={800}
+                            height={600}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                            No image available
+                          </div>
+                        )}
+
+                        {/* Elegant Hover Content */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-30">
+                          <div className="bg-white/90 backdrop-blur-md rounded-2xl px-6 py-4 shadow-xl border border-[#A6B5B4] transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-gradient-to-br from-[#186663] to-[#002D37] rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                              </div>
+                              <span className="text-[#002D37] font-medium tracking-wide">View Experience</span>
                             </div>
-                            <span className="text-[#002D37] font-medium tracking-wide">View Experience</span>
                           </div>
                         </div>
                       </div>
+
+                      {/* Premium Shadow Enhancement */}
+                      <div className="absolute inset-0 rounded-3xl shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+                      {/* Luxury Bottom Accent */}
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-12 h-1 bg-gradient-to-r from-[#186663] to-[#D2AF94] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
-
-                    {/* Premium Shadow Enhancement */}
-                    <div className="absolute inset-0 rounded-3xl shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-                    {/* Luxury Bottom Accent */}
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-12 h-1 bg-gradient-to-r from-[#186663] to-[#D2AF94] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
+
 
             {/* Premium Gallery Stats */}
             <div className="relative z-10 mt-20 flex justify-center">
@@ -649,7 +660,7 @@ const TravelPackageDisplay = () => {
                       4K
                     </div>
                     <div className="text-sm text-[#A6B5B4] tracking-wider uppercase">
-                      Ultra HD Quality
+                      Ultra Premium Experience
                     </div>
                   </div>
 
@@ -810,58 +821,59 @@ const TravelPackageDisplay = () => {
 
                 {/* Reviews Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {packageData.reviews.map((review, index) => (
-                    <div
-                      key={index}
-                      className="group relative bg-gradient-to-br from-[#fcfbf9] to-white rounded-2xl border border-[#D2AF94]/15 p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
-                    >
-                      {/* Luxury Quote Accent */}
-                      <div className="absolute top-6 right-6 text-4xl text-[#D2AF94]/20 playfair font-bold">"</div>
+                  {Array.isArray(packageData?.reviews) &&
+                    packageData.reviews.map((review, index) => (
+                      <div
+                        key={index}
+                        className="group relative bg-gradient-to-br from-[#fcfbf9] to-white rounded-2xl border border-[#D2AF94]/15 p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
+                      >
+                        {/* Luxury Quote Accent */}
+                        <div className="absolute top-6 right-6 text-4xl text-[#D2AF94]/20 playfair font-bold">"</div>
 
-                      {/* Review Header */}
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-gradient-to-br from-[#186663] to-[#002D37] rounded-full flex items-center justify-center text-white font-bold text-lg">
-                            {review.username.charAt(0)}
+                        {/* Review Header */}
+                        <div className="flex items-start justify-between mb-6">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-gradient-to-br from-[#186663] to-[#002D37] rounded-full flex items-center justify-center text-white font-bold text-lg">
+                              {review.username.charAt(0)}
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-[#002D37] tracking-wide">
+                                {review.username}
+                              </h4>
+                              <p className="text-sm text-[#A6B5B4] tracking-wider">
+                                Verified Guest
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <h4 className="font-semibold text-[#002D37] tracking-wide">
-                              {review.username}
-                            </h4>
-                            <p className="text-sm text-[#A6B5B4] tracking-wider">
-                              Verified Guest
-                            </p>
+
+                          {/* Premium Rating Display */}
+                          <div className="flex flex-col items-end gap-1">
+                            <div className="flex gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <svg
+                                  key={i}
+                                  className={`w-4 h-4 ${i < review.rating ? 'text-[#D2AF94]' : 'text-[#A6B5B4]/30'} fill-current`}
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                              ))}
+                            </div>
+                            <span className="text-xs text-[#A6B5B4] tracking-wider">
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </span>
                           </div>
                         </div>
 
-                        {/* Premium Rating Display */}
-                        <div className="flex flex-col items-end gap-1">
-                          <div className="flex gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <svg
-                                key={i}
-                                className={`w-4 h-4 ${i < review.rating ? 'text-[#D2AF94]' : 'text-[#A6B5B4]/30'} fill-current`}
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            ))}
-                          </div>
-                          <span className="text-xs text-[#A6B5B4] tracking-wider">
-                            {new Date(review.createdAt).toLocaleDateString()}
-                          </span>
-                        </div>
+                        {/* Review Content */}
+                        <p className="text-[#4a4a4a] leading-relaxed font-light tracking-wide italic">
+                          "{review.review}"
+                        </p>
+
+                        {/* Premium Bottom Accent */}
+                        <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#D2AF94]/30 to-transparent"></div>
                       </div>
-
-                      {/* Review Content */}
-                      <p className="text-[#4a4a4a] leading-relaxed font-light tracking-wide italic">
-                        "{review.review}"
-                      </p>
-
-                      {/* Premium Bottom Accent */}
-                      <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#D2AF94]/30 to-transparent"></div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </div>
@@ -870,32 +882,33 @@ const TravelPackageDisplay = () => {
 
         {/* Scrollable Container */}
         <div className="space-y-6 max-h-[400px] overflow-y-auto pr-2">
-          {visibleReviews.map((review: Review, index: number) => (
-            <div key={index} className="border-b last:border-0 pb-4">
-              <div className="flex justify-between items-start mb-1">
-                <div>
-                  <p className="font-medium text-gray-800">{review.username}</p>
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <span
-                        key={i}
-                        className={`text-lg ${i < review.rating ? "text-yellow-400" : "text-gray-300"
-                          }`}
-                      >
-                        ★
-                      </span>
-                    ))}
+          {Array.isArray(visibleReviews) &&
+            visibleReviews.map((review, index) => (
+              <div key={index} className="border-b last:border-0 pb-4">
+                <div className="flex justify-between items-start mb-1">
+                  <div>
+                    <p className="font-medium text-gray-800">{review.username}</p>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className={`text-lg ${i < review.rating ? "text-yellow-400" : "text-gray-300"
+                            }`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
                   </div>
+                  <span className="text-sm text-gray-500">
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </span>
                 </div>
-                <span className="text-sm text-gray-500">
-                  {new Date(review.createdAt).toLocaleDateString()}
-                </span>
+                {review.review && (
+                  <p className="text-gray-600">{review.review}</p>
+                )}
               </div>
-              {review.review && (
-                <p className="text-gray-600">{review.review}</p>
-              )}
-            </div>
-          ))}
+            ))}
         </div>
 
         {/* View More Button */}

@@ -944,7 +944,7 @@ const TravelContent = () => {
 
               {/* Trust Indicators */}
               <div className="mt-16 flex justify-center items-center space-x-12 opacity-60">
-                <div className="flex items-center space-x-2 text-[#A6B5B4]">
+                <div className="flex items-center space-x-2 text-[#A6B5B4 ">
                   <div className="w-2 h-2 bg-[#D2AF94] rounded-full animate-pulse"></div>
                   <span className="text-sm font-light">Premium Content</span>
                 </div>

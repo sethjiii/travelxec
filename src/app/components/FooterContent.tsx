@@ -11,19 +11,13 @@ import {
   Heart,
   Clock,
 } from 'lucide-react';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaWhatsapp, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  const destinations = [
-    'Europe Tours',
-    'Asian Adventures',
-    'African Safaris',
-    'American Travels',
-    'Oceania Expeditions'
-  ];
+
 
   const quickLinks = [
     'Latest Deals',
@@ -121,11 +115,11 @@ const Footer = () => {
             <div className="flex items-center gap-4 pt-4">
               <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Facebook className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.facebook.com/profile.php?id=61571932697689' />
+                <FaFacebook className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.facebook.com/profile.php?id=61571932697689' />
               </button>
               <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Instagram className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.instagram.com/travel.xec/' />
+                <FaInstagram className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.instagram.com/travel.xec/' />
               </button>
               <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -133,7 +127,7 @@ const Footer = () => {
               </button>
               <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Linkedin className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.linkedin.com/company/travelxec/about/?viewAsMember=true' />
+                <FaLinkedin className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.linkedin.com/company/travelxec/about/?viewAsMember=true' />
               </button>
             </div>
           </div>
@@ -146,15 +140,15 @@ const Footer = () => {
             </h3>
             <ul className="space-y-4">
               {[
-                { name: "Rajasthan" },
-                { name: "Kerala" },
-                { name: "Kashmir" },
-                { name: "North East" },
-                { name: "Tamil Nadu" },
+                { name: "Rajasthan", id: "rajasthan" },
+                { name: "Kerala", id: "kerala" },
+                { name: "Kashmir", id: "kashmir" },
+                { name: "North East", id: "north-east" },
+                { name: "Tamil Nadu", id: "tamil-nadu" },
               ].map((dest, index) => (
-                <li key={index}>
+                <li key={dest.id}>
                   <a
-                    href={`/destinations`}
+                    href={`#${dest.id}`}  
                     className="group text-[#A6B5B4] hover:text-[#D2AF94] transition-all duration-300 flex items-center gap-3 py-2"
                   >
                     <div className="relative">
@@ -170,6 +164,7 @@ const Footer = () => {
               ))}
             </ul>
           </div>
+
 
           {/* Quick Links */}
           {/* <div className="space-y-6">
