@@ -97,9 +97,9 @@ const AllPackagesPage = () => {
       {/* Header */}
       <div className="relative z-10 pt-24 pb-12 px-6 text-center">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center mb-6 px-4 sm:px-6 md:px-8">
             <Sparkles className="text-[#D2AF94] w-8 h-8 mr-3 animate-pulse" />
-            <h1 className="text-5xl md:text-6xl font-light text-white tracking-wide">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-light text-white tracking-wide text-center sm:text-left">
               Exclusive
               <span className="bg-gradient-to-r from-[#D2AF94] to-[#8C7361] bg-clip-text text-transparent font-normal ml-4">
                 Escapes
@@ -107,9 +107,10 @@ const AllPackagesPage = () => {
             </h1>
             <Sparkles className="text-[#D2AF94] w-8 h-8 ml-3 animate-pulse" />
           </div>
-          <p className="text-[#A6B5B4] text-xl font-light max-w-2xl mx-auto leading-relaxed">
-            Discover handcrafted journeys to the world's most extraordinary destinations
+          <p className="text-[#A6B5B4] text-lg sm:text-xl md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-8">
+            Discover our handpicked collection of extraordinary travel packages
           </p>
+          
         </div>
       </div>
 
