@@ -211,7 +211,7 @@ const TravelContent = () => {
       <section className="relative h-[650px] md:h-[750px] lg:h-[800px] overflow-hidden">
 
         <video
-          src="/hero-section.mp4"  // put the video inside /public
+          src="https://res.cloudinary.com/dgbhkfp0r/video/upload/v1753425241/hero-section_hisbsx.mp4"  // put the video inside /public
           autoPlay
           muted
           loop

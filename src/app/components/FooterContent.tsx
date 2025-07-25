@@ -113,23 +113,48 @@ const Footer = () => {
             </p>
 
             <div className="flex items-center gap-4 pt-4">
-              <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
+              {/* Facebook */}
+              <a
+                href="https://www.facebook.com/profile.php?id=61571932697689"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <FaFacebook className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.facebook.com/profile.php?id=61571932697689' />
-              </button>
-              <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
+                <FaFacebook className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
+              </a>
+              {/* Instagram */}
+              <a
+                href="https://www.instagram.com/travel.xec/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <FaInstagram className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.instagram.com/travel.xec/' />
-              </button>
-              <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
+                <FaInstagram className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
+              </a>
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/your-number"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <FaWhatsapp className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
-              </button>
-              <button className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110">
+              </a>
+              {/* LinkedIn */}
+              <a
+                href="https://www.linkedin.com/company/travelxec/about/?viewAsMember=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <FaLinkedin className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" href='https://www.linkedin.com/company/travelxec/about/?viewAsMember=true' />
-              </button>
+                <FaLinkedin className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
+              </a>
             </div>
+
           </div>
 
           {/* Destinations */}
@@ -148,7 +173,7 @@ const Footer = () => {
               ].map((dest, index) => (
                 <li key={dest.id}>
                   <a
-                    href={`#${dest.id}`}  
+                    href={`#${dest.id}`}
                     className="group text-[#A6B5B4] hover:text-[#D2AF94] transition-all duration-300 flex items-center gap-3 py-2"
                   >
                     <div className="relative">

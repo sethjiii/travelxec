@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "../components/FooterContent";
 
 export default function TermsAndConditionsPage() {
   return (
@@ -123,5 +124,8 @@ export default function TermsAndConditionsPage() {
         </p>
       </section>
     </main>
+      <footer className="w-full bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent mt-8 sm:mt-0">
+        <Footer />
+      </footer>
   );
 }
