@@ -18,7 +18,7 @@ const TravelerSchema = new Schema({
 
 // ✅ Add priceRange Sub-Schema
 const PriceRangeSchema = new Schema({
-  min: { type: Number, required: true },
+  // min: { type: Number, required: true },
   max: { type: Number, required: true },
 });
 
@@ -30,7 +30,7 @@ const BookingSchema = new Schema(
     numberOfTravelers: { type: Number, required: true },
     startDate: { type: String, required: true },
     specialRequests: { type: String, default: "" },
-    emergencyContact: { type: EmergencyContactSchema, required: true },
+    emergencyContact: { type: EmergencyContactSchema, required: false },
     travelers: { type: [TravelerSchema], required: true },
     priceRange: { type: PriceRangeSchema, required: true }, // ✅ Added
   },

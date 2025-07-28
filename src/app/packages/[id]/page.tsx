@@ -106,9 +106,13 @@ const TravelPackageDisplay = () => {
     fetchPackageData();
   }, [id]);
 
+  // const handleBookNow = () => {
+  //   router.push(`/confirmation/${id}`); // Redirect to confirmation page
+  // };
+
   const handleBookNow = () => {
-    router.push(`/confirmation/${id}`); // Redirect to confirmation page
-  };
+  router.push(`/PackageLead/${id}`); // Redirect to Package Lead form
+};
 
 
   const handleLike = async () => {
@@ -289,6 +293,7 @@ const TravelPackageDisplay = () => {
             >
               Book Now
             </button>
+            
           </div>
         </div>
 
@@ -327,7 +332,7 @@ const TravelPackageDisplay = () => {
         <div
           className="relative rounded-3xl border border-gray-200/50 p-6 sm:p-10 mt-8 overflow-hidden shadow-xl"
           style={{
-            backgroundImage: "url('/decor/map-texture-beige.png')",
+            backgroundImage: "url('https://res.cloudinary.com/dgbhkfp0r/image/upload/v1753716395/tlvg6sapxznfjdzutylu.avif')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",

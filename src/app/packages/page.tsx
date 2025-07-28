@@ -180,7 +180,7 @@ const AllPackagesPage = () => {
 
                   {/* OnwardPrice */}
                   <div className="bg-[#002D37]/60 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm">
-                    Onwards ₹{pkg.OnwardPrice?.toLocaleString?.() || 'N/A'}
+                    ₹{pkg.OnwardPrice?.toLocaleString?.() || 'N/A'} Onwards
                   </div>
                 </div>
 

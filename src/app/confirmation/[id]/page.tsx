@@ -232,12 +232,12 @@ const ConfirmationPage = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#faf9f7' }}>
       {/* Elegant Header */}
-      <div className="relative h-24 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #002D37 0%, #186663 100%)' }}>
+      {/* <div className="relative h-24 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #002D37 0%, #186663 100%)' }}>
         <div className="text-center">
           <h1 className="text-2xl font-light tracking-widest text-white playfair">TRAVELXEC</h1>
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-white to-transparent mt-2"></div>
         </div>
-      </div>
+      </div> */}
 
       <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Hero Section */}

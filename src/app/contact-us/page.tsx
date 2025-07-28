@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Star } from 'lucide-react';
-import Footer from '../components/FooterContent'; 
-
+import Footer from '../components/FooterContent';
+import { FaWhatsapp, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
 const ContactUsPage = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -25,11 +25,7 @@ const ContactUsPage = () => {
       'Support: contact@travelxec.com',
       'General: ankit@travelxec.com',
     ],
-    socialMedia: [
-      { name: 'Facebook', url: 'https://facebook.com', icon: 'f' },
-      { name: 'WhatsApp', url: 'https://whatsapp.com', icon: 'FaWhatsapp' },
-      { name: 'LinkedIn', url: 'https://linkedin.com', icon: 'in' },
-    ],
+    
     address: '114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana, India, 122102',
     hours: [
       'Tuesday-Sunday: 9am - 7pm',
@@ -41,7 +37,7 @@ const ContactUsPage = () => {
     <div className="flex flex-col min-h-screen">
       {/* Main Content */}
       <main className="flex-grow bg-gradient-to-br from-[#002D37] via-[#003A47] to-[#002D37] text-white px-4 sm:px-6 md:px-12 py-24 relative overflow-x-hidden font-sans">
-        <div 
+        <div
           className="hidden md:block fixed pointer-events-none z-50 w-6 h-6 rounded-full bg-[#186663]/30 blur-sm"
           style={{ left: mousePosition.x - 12, top: mousePosition.y - 12 }}
         />
@@ -62,19 +58,19 @@ const ContactUsPage = () => {
         <section className="grid gap-12 md:grid-cols-2 mb-20">
           {[{
             title: 'Phone',
-            icon: <Phone className="w-6 h-6 text-[#8C7361]" />, 
+            icon: <Phone className="w-6 h-6 text-[#8C7361]" />,
             content: contactData.phoneNumbers
           }, {
             title: 'Emails',
-            icon: <Mail className="w-6 h-6 text-[#8C7361]" />, 
+            icon: <Mail className="w-6 h-6 text-[#8C7361]" />,
             content: contactData.emailAddresses
           }, {
             title: 'Address',
-            icon: <MapPin className="w-6 h-6 text-[#8C7361]" />, 
+            icon: <MapPin className="w-6 h-6 text-[#8C7361]" />,
             content: [contactData.address]
           }, {
             title: 'Business Hours',
-            icon: <Clock className="w-6 h-6 text-[#8C7361]" />, 
+            icon: <Clock className="w-6 h-6 text-[#8C7361]" />,
             content: contactData.hours
           }].map((section, i) => (
             <div key={i} className="bg-[#003A47]/30 backdrop-blur-xl rounded-3xl p-8 border border-[#A6B5B4]/20 shadow-xl">
@@ -91,19 +87,47 @@ const ContactUsPage = () => {
 
         <section className="text-center mb-16">
           <h2 className="text-3xl font-medium text-[#D2AF94] mb-4 tracking-wide">Follow Us</h2>
-          <div className="flex justify-center gap-5">
-            {contactData.socialMedia.map((sm, i) => (
-              <a
-                key={i}
-                href={sm.url}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Follow us on ${sm.name}`}
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-[#A6B5B4]/10 border border-[#D2AF94]/30 text-white hover:bg-[#D2AF94]/20 hover:scale-110 transition duration-300"
-              >
-                <span className="text-lg font-bold">{sm.icon}</span>
-              </a>
-            ))}
+          <div className="flex justify-center items-center w-full gap-4">
+            {/* Facebook */}
+            <a
+              href="https://www.facebook.com/profile.php?id=61571932697689"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <FaFacebook className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
+            </a>
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com/travel.xec/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <FaInstagram className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
+            </a>
+            {/* WhatsApp */}
+            <a
+              href="https://wa.me/your-number"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <FaWhatsapp className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
+            </a>
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/company/travelxec/about/?viewAsMember=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group p-3 bg-gradient-to-br from-[#186663]/30 to-[#002D37]/50 backdrop-blur-sm border border-[#A6B5B4]/20 hover:border-[#D2AF94]/50 rounded-full transition-all duration-300 hover:scale-110"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D2AF94]/20 to-[#8C7361]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <FaLinkedin className="relative h-5 w-5 text-[#A6B5B4] group-hover:text-[#D2AF94] transition-colors duration-300" />
+            </a>
           </div>
         </section>
       </main>
