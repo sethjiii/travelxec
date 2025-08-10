@@ -3,6 +3,9 @@
 import { getPackageByTypeAndId } from '@/lib/getPackageByTypeAndId';
 import TravelPackageDisplay from '@/app/components/TravelPackageDisplay';
 
+// Add this to prevent static-to-dynamic runtime errors
+export const dynamic = 'force-dynamic';
+
 export default async function Page({
   params,
 }: {
