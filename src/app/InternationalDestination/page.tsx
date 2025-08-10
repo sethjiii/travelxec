@@ -12,7 +12,7 @@ import Footer from "../components/FooterContent";
 import { url } from "inspector/promises";
 import Image from 'next/image';
 
-interface Package {
+interface intrternationalPackage {
   _id: string;
   type: string;
   name: string;
@@ -23,16 +23,16 @@ interface Package {
   duration: string;
 }
 
-interface Destination {
+interface InternationalDestination {
   _id: string;
   city: string;
   description: string;
   image: string;
-  packages?: Package[];
+  packages?: intrternationalPackage[];
 }
 
-export default function DestinationsList() {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
+export default function InternationalDestinationsList() {
+  const [destinations, setInternationalDestinations] = useState<InternationalDestination[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -40,19 +40,19 @@ export default function DestinationsList() {
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     if (!mounted) return;
-    async function fetchDestinations() {
+    async function fetchInternationalDestinations() {
       try {
-        const res = await fetch("/api/destinations");
-        if (!res.ok) throw new Error("Failed to fetch destinations");
+        const res = await fetch("/api/internationaldestinations");
+        if (!res.ok) throw new Error("Failed to fetch international destinations");
         const data = await res.json();
-        setDestinations(data.destinations || []);
+        setInternationalDestinations(data.internationalDestination || []);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Something went wrong");
       } finally {
         setLoading(false);
       }
     }
-    fetchDestinations();
+    fetchInternationalDestinations();
   }, [mounted]);
 
   if (!mounted) return null;
@@ -108,11 +108,11 @@ export default function DestinationsList() {
 
         {/* DESTINATION LIST */}
         <div className="space-y-16 sm:space-y-32">
-          {destinations.map((destination, index) => {
-            const destImg = destination.image && typeof destination.image === "string" ? destination.image : "/placeholder.jpg";
+          {destinations.map((InternationalDestination, index) => {
+            const destImg = InternationalDestination.image && typeof InternationalDestination.image === "string" ? InternationalDestination.image : "/placeholder.jpg";
             return (
               <div
-                key={destination._id || index}
+                key={InternationalDestination._id || index}
                 className="group relative flex flex-col lg:flex-row gap-8 sm:gap-12 items-center"
               >
                 {/* Image Section */}
@@ -121,13 +121,13 @@ export default function DestinationsList() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/80 via-transparent to-transparent z-10"></div>
                     <img
                       src={destImg}
-                      alt={destination.city}
+                      alt={InternationalDestination.city}
                       className="w-full h-[180px] xs:h-[240px] sm:h-[300px] md:h-[350px] lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute top-3 sm:top-6 left-3 sm:left-6 z-20 bg-white/20 backdrop-blur-md rounded-full px-2 sm:px-4 py-1 sm:py-2 border border-white/30">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D2AF94]" />
-                        <span className="text-white text-xs sm:text-sm font-light tracking-wide">{destination.city}</span>
+                        <span className="text-white text-xs sm:text-sm font-light tracking-wide">{InternationalDestination.city}</span>
                       </div>
                     </div>
                   </div>
@@ -139,16 +139,16 @@ export default function DestinationsList() {
                     <div className="flex items-center gap-2 sm:gap-4">
                       <div className="w-8 sm:w-12 h-px bg-gradient-to-r from-[#D2AF94] to-transparent"></div>
                       <h2 className="text-2xl sm:text-5xl font-light text-white tracking-wide group-hover:text-[#D2AF94] transition-colors duration-500 playfair">
-                        {destination.city}
+                        {InternationalDestination.city}
                       </h2>
                     </div>
                     <p className="text-[#A6B5B4] text-sm sm:text-lg leading-relaxed font-light tracking-wide">
-                      {destination.description}
+                      {InternationalDestination.description}
                     </p>
                   </div>
 
                   {/* Packages Section */}
-                  {destination.packages && destination.packages.length > 0 ? (
+                  {InternationalDestination.packages && InternationalDestination.packages.length > 0 ? (
                     <div className="space-y-5 sm:space-y-8">
                       <div className="flex items-center gap-2 sm:gap-3">
                         <div className="bg-[#186663] p-1.5 sm:p-2 rounded-full">
@@ -178,7 +178,7 @@ export default function DestinationsList() {
                           }}
                           className="pb-8 sm:pb-12"
                         >
-                          {destination.packages.map((pkg) => {
+                          {InternationalDestination.packages.map((pkg: intrternationalPackage) => {
                             const pkgImg =
                               Array.isArray(pkg.images) && pkg.images[0] && typeof pkg.images[0] === "string"
                                 ? pkg.images[0]
@@ -192,8 +192,10 @@ export default function DestinationsList() {
                                         <img
                                           src={pkg.images[0].url}
                                           alt={pkg.name}
-                                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                                          loading="lazy"
+                                          className="w-full h-[180px] xs:h-[240px] sm:h-[300px] md:h-[350px] lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
                                         />
+
                                       ) : (
                                         <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
                                           No image available

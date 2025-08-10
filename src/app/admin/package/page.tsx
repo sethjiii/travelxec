@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 interface TravelPackage {
   _id: string;
@@ -60,9 +61,11 @@ export default function AdminPackagesPage() {
             <div key={pkg._id} className="border rounded-xl p-5 shadow bg-white space-y-3">
               {/* ✅ Optional image preview */}
               {pkg.images && pkg.images[0] && (
-                <img
+                <Image
                   src={pkg.images[0].url}
                   alt={pkg.title}
+                  width={500}
+                  height={300}
                   className="w-full h-48 object-cover rounded-md"
                 />
               )}

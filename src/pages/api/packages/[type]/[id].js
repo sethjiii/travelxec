@@ -1,28 +1,48 @@
-import dbConnect from "../../dbConnect";
-import TravelPackage from "../../../../models/TravelPackage";
-import DestinationModel from "../../../../models/Destination";
+import dbConnect from '../../dbConnect';
+import TravelPackage from '@/models/TravelPackage';
+import interTravelPackage from "@/models/interTravelPackage";
+import DestinationModel from "@/models/Destination";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 import { getUserFromRequest } from "@/lib/getUserFromRequest";
 
-// Cloudinary setup
+// Cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Get correct model based on type
+function getModelByType(type) {
+  switch (type) {
+    case "domestic":
+      return TravelPackage;
+    case "international":
+      return interTravelPackage;
+    // Add more cases for other types like "luxury", "fest", etc.
+    default:
+      throw new Error("Invalid package type");
+  }
+}
+
 export default async function handler(req, res) {
   await dbConnect();
 
   const { method } = req;
-  const { id } = req.query;
+  const { id, type } = req.query;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid ID format" });
   }
 
-  // ✅ Admin Auth only for PUT & DELETE
+  let PackageModel;
+  try {
+    PackageModel = getModelByType(type);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+
   if (method !== "GET") {
     try {
       const user = await getUserFromRequest(req);
@@ -39,12 +59,11 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const travelPackage = await TravelPackage.findById(id);
+        const travelPackage = await PackageModel.findById(id);
         if (!travelPackage) {
           return res.status(404).json({ error: "Package not found" });
         }
 
-        // ✅ Safe fallback defaults
         const safePackage = {
           ...travelPackage.toObject(),
           reviews: Array.isArray(travelPackage.reviews) ? travelPackage.reviews : [],
@@ -83,7 +102,7 @@ export default async function handler(req, res) {
           }
         }
 
-        const existingPackage = await TravelPackage.findById(id);
+        const existingPackage = await PackageModel.findById(id);
         if (!existingPackage) {
           return res.status(404).json({ error: "Package not found" });
         }
@@ -107,7 +126,7 @@ export default async function handler(req, res) {
           }
         }
 
-        const updatedPackage = await TravelPackage.findByIdAndUpdate(
+        const updatedPackage = await PackageModel.findByIdAndUpdate(
           id,
           { $set: filteredUpdate },
           { new: true, runValidators: true }
@@ -124,7 +143,7 @@ export default async function handler(req, res) {
 
     case "DELETE":
       try {
-        const deleted = await TravelPackage.findByIdAndDelete(id);
+        const deleted = await PackageModel.findByIdAndDelete(id);
         if (!deleted) {
           return res.status(404).json({ error: "Package not found" });
         }

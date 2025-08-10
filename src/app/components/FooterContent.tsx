@@ -12,6 +12,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { FaWhatsapp, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import Image from 'next/image';
 
 
 const Footer = () => {

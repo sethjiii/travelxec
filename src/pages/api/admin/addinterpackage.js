@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
-import TravelPackage from '../../../models/TravelPackage';
-import DestinationModel from '../../../models/Destination';
+import interTravelPackage from '../../../models/interTravelPackage';
+import InternationalDestinationModel from '../../../models/InternationalDestination';
 import dbConnect from '../dbConnect';
 import mongoose from 'mongoose';
 import { getUserFromRequest } from '@/lib/getUserFromRequest';
@@ -50,6 +50,7 @@ export default async function handler(req, res) {
       images,
       places,
       OnwardPrice,
+      
       cityId,
     } = req.body;
 
@@ -82,8 +83,9 @@ export default async function handler(req, res) {
     }
 
     // ✅ Create the travel package
-    const newPackage = new TravelPackage({
+    const newinterTravelPackage = new interTravelPackage({
       name,
+      type: "international",
       description,
       itinerary,
       duration,
@@ -93,11 +95,10 @@ export default async function handler(req, res) {
       availability,
       places,
       images: uploadedImages,
-      type: "domestic", // Assuming this is a domestic package
       ...(OnwardPrice && !isNaN(OnwardPrice) ? { OnwardPrice: Number(OnwardPrice) } : {}),
     });
 
-    const savedPackage = await newPackage.save();
+    const savedinterTravelPackage = await newinterTravelPackage.save();
 
     // ✅ Link the package to destination(s)
     await Promise.all(
@@ -107,14 +108,14 @@ export default async function handler(req, res) {
           return null;
         }
 
-        const updated = await DestinationModel.findByIdAndUpdate(
+        const updated = await InternationalDestinationModel.findByIdAndUpdate(
           id,
-          { $addToSet: { packages: savedPackage._id } },
+          { $addToSet: { packages: savedinterTravelPackage._id } },
           { new: true }
         );
 
         if (!updated) {
-          console.warn(`Destination not found for ID: ${id}`);
+          console.warn(`International Destination not found for ID: ${id}`);
         }
 
         return updated;
@@ -122,8 +123,8 @@ export default async function handler(req, res) {
     );
 
     return res.status(201).json({
-      message: 'Travel package added and linked to cities successfully',
-      package: savedPackage,
+      message: 'International Travel package added and linked to cities successfully',
+      package: savedinterTravelPackage,
     });
 
   } catch (error) {

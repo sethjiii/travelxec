@@ -1,13 +1,15 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   ArrowRight, Bookmark, Star, StarHalf, StarOff, Search, MapPin, Clock, Sparkles, Heart
 } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import Footer from "../components/FooterContent";
+import Image from 'next/image';
+import Fuse from 'fuse.js';
+import debounce from 'lodash.debounce';
 
-// Define the structure of a package
 interface Package {
   _id: string;
   name: string;
@@ -19,7 +21,8 @@ interface Package {
     url: string;
     public_id: string;
   }[];
-  OnwardPrice: number; // Assuming this is the price for onward journey
+  OnwardPrice: number;
+  type: string; // Added to fix the error
 }
 
 const PremiumLoader = () => (
@@ -35,11 +38,44 @@ const PremiumLoader = () => (
 );
 
 const AllPackagesPage = () => {
+  const [page, setPage] = useState(1);
+  const [limit] = useState(6);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fuse, setFuse] = useState<Fuse<Package> | null>(null);
 
   const { isFavorite, toggleFavorite } = useFavorites();
+
+  const fetchPackages = useMemo(() => debounce(async (page) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/packages?page=${page}&limit=${limit}`);
+      const data = await res.json();
+      setPackages(data.packages);
+      setTotalPages(data.pagination.totalPages);
+
+      const newFuse = new Fuse<Package>(data.packages, {
+        keys: ["name", "places", "description"],
+        includeScore: true,
+        threshold: 0.3,
+      });
+
+      setFuse(newFuse);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+    setLoading(false);
+  }, 300), []);
+
+  useEffect(() => {
+    fetchPackages(page);
+  }, [page]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
   const renderStars = (rating = 4.5) => {
     const fullStars = Math.floor(rating);
@@ -61,29 +97,19 @@ const AllPackagesPage = () => {
     return stars;
   };
 
-  useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const response = await fetch("/api/packages");
-        const data = await response.json();
-        setPackages(data.packages);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching packages:", error);
-        setLoading(false);
-      }
-    };
+  const filteredPackages = useMemo(() => {
+    if (!searchQuery.trim()) return packages;
 
-    fetchPackages();
-  }, []);
+    if (fuse) {
+      const results = fuse.search(searchQuery);
+      return results.map(r => r.item);
+    }
 
-  const filteredPackages = packages.filter(
-    (pkg) =>
-      pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pkg.places.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    return packages;
+  }, [searchQuery, packages, fuse]);
 
   if (loading) return <PremiumLoader />;
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#002D37] via-[#186663] to-[#002D37] relative playfair">
@@ -110,7 +136,7 @@ const AllPackagesPage = () => {
           <p className="text-[#A6B5B4] text-lg sm:text-xl md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-8">
             Discover our handpicked collection of extraordinary travel packages
           </p>
-          
+
         </div>
       </div>
 
@@ -125,7 +151,10 @@ const AllPackagesPage = () => {
               type="text"
               placeholder="Search extraordinary destinations..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setPage(1); // ✅ reset to first page on new search
+              }}
               className="w-full pl-16 pr-8 py-5 bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 rounded-2xl hover:bg-[#A6B5B4]/20 focus:outline-none focus:ring-2 focus:ring-[#D2AF94]/50 focus:border-[#D2AF94]/50 transition-all duration-300 text-white placeholder-white text-lg font-light shadow-xl hover:shadow-2xl"
             />
           </div>
@@ -144,15 +173,17 @@ const AllPackagesPage = () => {
               {/* Image */}
               <div className="relative h-64 overflow-hidden w-full">
 
-                {pkg.images?.length > 0 ? (
-                  <img
+                {pkg.images?.[0]?.url?.trim() ? (
+                  <Image
                     src={pkg.images[0].url}
                     alt={pkg.name}
-                    className="w-full h-full object-cover object-center"
+                    width={500}
+                    height={300}
+                    className="w-full h-full object-cover rounded-lg"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
-                    No image available
+                  <div className="w-full h-full min-h-[300px] bg-gray-200 flex items-center justify-center text-gray-500 rounded-lg">
+                    No Image Available
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -213,7 +244,7 @@ const AllPackagesPage = () => {
 
                 <div className="flex gap-4 mt-auto w-full justify-center">
                   <Link
-                    href={`/packages/${pkg._id}`}
+                    href={`/packages/${pkg.type}/${pkg._id}`}
                     className="flex-1 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-[#002D37] py-3 px-6 rounded-xl font-medium hover:from-[#8C7361] hover:to-[#D2AF94] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
                   >
                     Explore Journey
@@ -246,6 +277,19 @@ const AllPackagesPage = () => {
             </button>
           </div>
         )}
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-8 space-x-2">
+          {Array.from({ length: totalPages }, (_, idx) => (
+            <button
+              key={idx + 1}
+              className={`px-4 py-2 rounded-md ${page === idx + 1 ? "bg-[#186663] text-white" : "bg-gray-200 text-gray-700"}`}
+              onClick={() => setPage(idx + 1)}
+            >
+              {idx + 1}
+            </button>
+          ))}
+        </div>
       </div>
 
       <style jsx>{`

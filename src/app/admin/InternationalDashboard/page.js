@@ -15,20 +15,17 @@ import { type } from "os";
 
 
 
-const AdminTravelPackage = () => {
+const AdminInterTravelPackage = () => {
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-
-
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     OnwardPrice: "",
+    type: "international",
     places: "",
-    type : "domestic",
     cityId: [],
     // currency: "USD",
     duration: "",
@@ -63,12 +60,11 @@ const AdminTravelPackage = () => {
   useEffect(() => {
     async function fetchCities() {
       try {
-        const res = await fetch('/api/destinations'); // Adjust path based on your setup
+        const res = await fetch("/api/internationaldestinations");
         const data = await res.json();
-        console.log(data.destinations)
-        setCityList(data.destinations); // assuming response is { cities: [...] }
+        setCityList(data.internationalDestination || []); // <-- Safe fallback
       } catch (error) {
-        console.error('Failed to fetch cities:', error);
+        console.error("Failed to fetch cities:", error);
       } finally {
         setLoading(false);
       }
@@ -242,16 +238,16 @@ const AdminTravelPackage = () => {
         options.credentials = "include"; // For NextAuth session cookie
       }
 
-      const response = await fetch("/api/admin/addpackage", options);
+      const response = await fetch("/api/admin/addinterpackage", options);
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to add travel package");
+        throw new Error(data.error || "Failed to add international travel package");
       }
 
 
 
-      setSuccess("Travel package added successfully!");
+      setSuccess("International Travel package added successfully!");
       setFormData({
         name: "",
         OnwardPrice: "",
@@ -302,7 +298,7 @@ const AdminTravelPackage = () => {
       <div className="max-w-6xl mx-auto p-6">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Travel Package Management
+           International Travel Package Management
           </h1>
           <p className="text-gray-600 mt-2">
             Create travel packages for your customers
@@ -794,4 +790,4 @@ const AdminTravelPackage = () => {
   );
 };
 
-export default AdminTravelPackage;
+export default AdminInterTravelPackage;

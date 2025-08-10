@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const destinationSchema = new mongoose.Schema(
+const InternationalDestinationSchema = new mongoose.Schema(
   {
     city: {
       type: String,
@@ -10,7 +10,7 @@ const destinationSchema = new mongoose.Schema(
     },
     country: {
       type: String,
-      default: 'India',
+      default: '',
       trim: true,
     },
     description: {
@@ -23,7 +23,7 @@ const destinationSchema = new mongoose.Schema(
     packages: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'TravelPackage', // Reference to TravelPackage model
+        ref: 'interTravelPackage', // Reference to TravelPackage model
       },
     ],
   },
@@ -32,7 +32,7 @@ const destinationSchema = new mongoose.Schema(
   }
 );
 
-const Destination =
-  mongoose.models.Destination || mongoose.model('Destination', destinationSchema);
+const InternationalDestination =
+  mongoose.models.InternationalDestination || mongoose.model('InternationalDestination', InternationalDestinationSchema);
 
-export default Destination;
+export default InternationalDestination;

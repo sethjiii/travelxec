@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import Image from 'next/image';
 
 export default function AddDestination() {
   const [city, setCity] = useState<string>('');
@@ -110,7 +111,7 @@ export default function AddDestination() {
             <p className="font-semibold mb-1">Preview:</p>
             <div className="flex gap-2 overflow-x-auto">
               {images.map((img, idx) => (
-                <img
+                <Image
                   key={idx}
                   src={img}
                   alt={`Preview ${idx + 1}`}

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 interface TravelPackage {
     _id: string;
     name: string;
+    type: string;
     description: string;
     duration: string;
     availability: {
@@ -55,6 +56,8 @@ interface LeadDetails {
 const PackageLeadPage = () => {
     const params = useParams();
     const id = params?.id as string;
+    const type = params?.type as string;
+
     const router = useRouter()
     const [packageData, setPackageData] = useState<TravelPackage | null>(null);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -84,7 +87,7 @@ const PackageLeadPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const packageResponse = await fetch(`/api/packages/${id}`);
+                const packageResponse = await fetch(`/api/packages/${type}/${id}`);
                 const packageData = await packageResponse.json();
                 setPackageData(packageData);
 
@@ -187,15 +190,16 @@ const PackageLeadPage = () => {
                 return;
             }
 
-            const response = await fetch(`/api/PackageLead/${id}/lead`, {
+            const response = await fetch(`/api/PackageLead/${type}/${id}/lead`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     ...LeadDetails,
-                    packageId: id, // ✅ Ensure this is passed explicitly
-                    userId: userProfile?._id || null, // ✅ Optional: pass userId if available
+                    packageId: id,             // ✅ still needed
+                    packageType: type,         // ✅ optional, if your backend expects it
+                    userId: userProfile?._id || null,
                 }),
             });
 

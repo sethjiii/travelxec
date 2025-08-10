@@ -1,4 +1,4 @@
-import dbConnect from '../../dbConnect';
+import dbConnect from '@/pages/api/dbConnect';
 import PackageLead from '@/models/PackageLead';
 // import { sendLeadThankYouEmail } from '@/lib/mail';
 // import { sendNotificationToAdmin } from '@/lib/notifications'; // ✅ Import your admin notifier
@@ -10,6 +10,11 @@ export default async function handler(req, res) {
 
   try {
     await dbConnect();
+
+    const {
+      query: { type, id }, // 👈 dynamic route: /api/PackageLead/[type]/[id]/lead
+      body,
+    } = req;
 
     const {
       packageId,
@@ -38,6 +43,7 @@ export default async function handler(req, res) {
 
     const newLead = new PackageLead({
       packageId,
+      packageType: type,
       userId: userId || null,
       name,
       email,
@@ -52,13 +58,13 @@ export default async function handler(req, res) {
 
     const savedLead = await newLead.save();
 
-    // ✅ Send confirmation to user
+    //✅ Send confirmation to user
     // await sendLeadThankYouEmail({
     //   name,
     //   email,
     // });
 
-    // ✅ Send admin notification
+    //✅ Send admin notification
     // await sendNotificationToAdmin({
     //   subject: '📩 New Travel Package Lead Submitted',
     //   body: `

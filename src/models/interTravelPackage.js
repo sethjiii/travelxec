@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 // Define the travelPackageSchema for the travel package model
-const travelPackageSchema = new mongoose.Schema(
+const intertravelPackageSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -23,7 +23,7 @@ const travelPackageSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      default: "domestic", // or whatever makes sense
+      default: "international",
       enum: ["domestic", "international", "luxury", "experience", "fest"]
     },
     itinerary: [
@@ -138,8 +138,8 @@ const travelPackageSchema = new mongoose.Schema(
 );
 
 // Ensure the model is initialized only once
-const TravelPackage =
-  mongoose.models.TravelPackage || mongoose.model('TravelPackage', travelPackageSchema);
+const interTravelPackage =
+  mongoose.models.interTravelPackage || mongoose.model('interTravelPackage', intertravelPackageSchema);
 
-export default TravelPackage;
+export default interTravelPackage;
 

@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import dbConnect from '../../dbConnect';
-import Destination from '../../../../models/Destination';
+import InternationalDestination from '../../../../models/InternationalDestination';
+
 import { getUserFromRequest } from '@/lib/getUserFromRequest'; // ✅ Update path as needed
 
 cloudinary.config({
@@ -9,14 +10,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ✅ Add this config to allow larger payloads
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '5mb', // or '20mb', '50mb' based on your need
-    },
-  },
-};
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -61,13 +54,13 @@ export default async function handler(req, res) {
     }
 
     // ✅ Check if city already exists
-    const existing = await Destination.findOne({ city: city.trim() });
+    const existing = await InternationalDestination.findOne({ city: city.trim() });
     if (existing) {
       return res.status(409).json({ error: 'City already exists' });
     }
 
     // ✅ Create and save new destination
-    const destination = new Destination({
+    const internationalDestination = new InternationalDestination({
       city: city.trim(),
       description: description.trim(),
       packages,
@@ -75,14 +68,23 @@ export default async function handler(req, res) {
       images: uploadedImages,
     });
 
-    await destination.save();
+    await internationalDestination.save();
 
     return res.status(201).json({
-      message: 'Destination added successfully',
-      destinationId: destination._id,
+      message: 'International Destination added successfully',
+      destinationId: internationalDestination._id,
     });
   } catch (error) {
     console.error('Error adding destination:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+// ✅ Add this config to allow larger payloads
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '5mb', // or '20mb', '50mb' based on your need
+    },
+  },
+};

@@ -31,7 +31,7 @@ const StyledWrapper = styled.div`
     transition-property: color, border-color;
     top: 5.5px;
     left: 5px;
-    border-radius: 1px;  /* Optional: adds rounded corners */
+    border-radius: 30px;  /* Optional: adds rounded corners */
   }
 
   button:focus,
@@ -46,19 +46,6 @@ const StyledWrapper = styled.div`
     left: 0%;
   }
 
-  button:after {
-    content: "";
-    pointer-events: none;
-    bottom: -2px;
-    left: 50%;
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    background-color: rgb(255, 255, 255);
-    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-duration: 400ms;
-    transition-property: width, left;
-  }
 `;
 
 export default ViewPackagesButton;

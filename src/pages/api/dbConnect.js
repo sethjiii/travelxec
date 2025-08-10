@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+// lib/dbConnect.js
+const mongoose = require('mongoose');
 
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -6,30 +7,33 @@ if (!MONGO_URI) {
   throw new Error('❌ Please define the MONGO_URI environment variable');
 }
 
-let isConnected = false;
+let cached = global.mongoose;
 
-export default async function dbConnect() {
-  if (isConnected) {
-    return { db: mongoose.connection }; // ✅ Return existing connection
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  try {
-    const db = await mongoose.connect(MONGO_URI, {
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGO_URI, {
+      bufferCommands: false,
       serverSelectionTimeoutMS: 30000,
       socketTimeoutMS: 30000,
     });
+  }
 
-    isConnected = db.connections[0].readyState === 1;
-
-    if (isConnected) {
-      console.log('✅ MongoDB connected using Mongoose');
-    } else {
-      console.log('⚠️ MongoDB connection failed');
-    }
-
-    return { db: mongoose.connection }; // ✅ Return the connection explicitly
-  } catch (error) {
-    console.error('❌ MongoDB connection error:', error);
-    throw error;
+  try {
+    cached.conn = await cached.promise;
+    console.log('✅ MongoDB connected');
+    return cached.conn;
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err);
+    throw err;
   }
 }
+
+module.exports = dbConnect;

@@ -27,12 +27,15 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import ExploreButton from "@/ui2/ExploreButton.js";
 import ViewPackagesButton from "@/ui2/ViewPackagesButton.js";
 import { useFavorites } from "@/hooks/useFavorites";
+import Head from 'next/head';
+import Image from 'next/image';
 
 
 
 
 interface TravelPackage {
   _id: number;
+  type: string;
   title: string;
   description: string;
   // price: number;
@@ -84,7 +87,20 @@ const testimonials: Testimonial[] = [
   }
 ];
 
+<Head>
+  <title>Luxury Travel Experiences – TravelXec</title>
+  <meta name="description" content="Explore curated travel packages across India. Luxury escapes, romantic getaways, heritage stays – all crafted by TravelXec." />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="canonical" href="https://travelxec.com/" />
 
+  {/* Social Meta */}
+  <meta property="og:title" content="Luxury Travel Experiences – TravelXec" />
+  <meta property="og:description" content="Discover curated journeys with TravelXec – exclusive packages and personalized escapes." />
+  <meta property="og:image" content="https://travelxec.com/" />
+  <meta property="og:url" content="https://travelxec.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+</Head>
 
 
 
@@ -97,7 +113,7 @@ const TravelContent = () => {
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [subscribing, setSubscribing] = useState(false);
-  const [sortBy, setSortBy] = useState<string>("popularity");
+  const [sortBy, setSortBy] = useState<string>("type");
 
   // Fetch packages from backend
   useEffect(() => {
@@ -247,7 +263,7 @@ const TravelContent = () => {
 
 
       {/* Featured Packages Section / Curated Experience  */}
-      <section className="py-24 bg-gradient-to-br from-[#A6B5B4]/10 via-[#FEFDFB] to-[#D2AF94]/15 px-6 relative overflow-hidden" aria-labelledby="curated-experiences">
+      <section className="py-24 bg-gradient-to-br from-[#A6B5B4]/10 via-[#FEFDFB] to-[#D2AF94]/15 px-6 relative overflow-visible" aria-labelledby="curated-experiences">
 
         {/* Background Radials */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0">
@@ -255,7 +271,7 @@ const TravelContent = () => {
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-radial from-[#8C7361] to-transparent rounded-full blur-3xl" />
         </div>
 
-        <div className="w-full mx-auto relative z-10">
+        <div className="w-full mx-auto relative overflow-visible z-10">
           {/* Heading and Link */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6" id="curated-experiences">
             <div className="text-center md:text-left">
@@ -283,7 +299,7 @@ const TravelContent = () => {
 
           {/* Search and Filter */}
           <div className="mb-12 bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-[#A6B5B4]/20">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
               <div className="relative md:col-span-2">
                 <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
                   <Search className="h-5 w-5 text-[#8C7361]/60" />
@@ -298,7 +314,7 @@ const TravelContent = () => {
                 />
               </div>
 
-              <select
+              {/* <select
                 className="py-4 px-6 border-0 rounded-xl bg-[#A6B5B4]/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#186663]/30 focus:bg-white/80 text-[#002D37] font-light text-lg transition-all duration-300 appearance-none cursor-pointer"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -312,24 +328,26 @@ const TravelContent = () => {
               >
                 <option value="popularity">Curated Selection</option>
                 <option value="duration">By Duration</option>
-              </select>
+              </select> */}
             </div>
           </div>
 
           {/* Swiper Carousel */}
+
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             navigation={{
-              nextEl: '.swiper-button-next-custom',
-              prevEl: '.swiper-button-prev-custom',
+              nextEl: ".swiper-button-next-custom",
+              prevEl: ".swiper-button-prev-custom",
             }}
             pagination={{
               clickable: true,
-              bulletClass: 'swiper-pagination-bullet-custom',
-              bulletActiveClass: 'swiper-pagination-bullet-active-custom',
+              bulletClass: "swiper-pagination-bullet-custom",
+              bulletActiveClass: "swiper-pagination-bullet-active-custom",
             }}
             spaceBetween={40}
             slidesPerView={1}
+            watchSlidesProgress={true}
             breakpoints={{
               640: { slidesPerView: 1 },
               768: { slidesPerView: 2 },
@@ -349,10 +367,12 @@ const TravelContent = () => {
             {/* Slides */}
             {featuredPackages.map((pkg) => (
               <SwiperSlide key={pkg._id}>
-                <div className="group bg-white/60 backdrop-blur-md rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-[#A6B5B4]/20 hover:border-[#186663]/30 hover:bg-white/70">
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="group bg-white/60 backdrop-blur-md rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-[550px] flex flex-col border border-[#A6B5B4]/20 hover:border-[#186663]/30 hover:bg-white/70">
+                  {/* Image Section */}
+                  <div className="relative h-[240px] overflow-hidden">
                     {pkg.images?.length > 0 ? (
                       <img
+                        loading="lazy"
                         src={pkg.images[0].url}
                         alt={pkg.name}
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
@@ -368,6 +388,7 @@ const TravelContent = () => {
                     </div>
                   </div>
 
+                  {/* Content */}
                   <div className="p-8 flex-1 flex flex-col">
                     <div className="mb-6">
                       <h3 className="text-xl text-[#002D37] mb-3 font-serif font-light leading-tight group-hover:text-[#186663] transition-colors duration-300">
@@ -385,24 +406,34 @@ const TravelContent = () => {
                       </div>
                     </div>
 
+                    {/* Buttons */}
                     <div className="mt-auto pt-6">
                       <div className="flex flex-col gap-3">
                         <Link
-                          href={`/packages/${pkg._id}`}
+                          href={`/packages/${pkg.type}/${pkg._id}`}
                           className="w-full text-center bg-gradient-to-r from-[#186663] to-[#002D37] hover:from-[#002D37] hover:to-[#186663] text-white py-4 px-6 rounded-xl font-light text-lg transition-all duration-500 transform hover:translate-y-[-2px] hover:shadow-lg"
                         >
                           Experience Luxury
                         </Link>
                         <button
                           onClick={() => toggleFavorite(pkg._id.toString())}
-                          className={`w-full border ${isFavorite(pkg._id.toString()) ? 'border-[#002D37] text-[#002D37]' : 'border-[#8C7361]/40 text-[#8C7361]'} 
-      hover:bg-[#D2AF94]/10 hover:border-[#8C7361] hover:text-[#002D37] py-3 px-6 
-      rounded-xl font-light transition-all duration-300 flex items-center justify-center gap-2 group/save`}
+                          className={`w-full border ${isFavorite(pkg._id.toString())
+                              ? "border-[#002D37] text-[#002D37]"
+                              : "border-[#8C7361]/40 text-[#8C7361]"
+                            } 
+                      hover:bg-[#D2AF94]/10 hover:border-[#8C7361] hover:text-[#002D37] py-3 px-6 
+                      rounded-xl font-light transition-all duration-300 flex items-center justify-center gap-2 group/save`}
                         >
-                          <Bookmark className={`w-4 h-4 transition-transform duration-300 group-hover/save:scale-110 ${isFavorite(pkg._id.toString()) ? 'fill-[#002D37]' : ''}`} />
-                          <span>{isFavorite(pkg._id.toString()) ? 'Wishlisted' : 'Wishlist'}</span>
+                          <Bookmark
+                            className={`w-4 h-4 transition-transform duration-300 group-hover/save:scale-110 ${isFavorite(pkg._id.toString())
+                                ? "fill-[#002D37]"
+                                : ""
+                              }`}
+                          />
+                          <span>
+                            {isFavorite(pkg._id.toString()) ? "Wishlisted" : "Wishlist"}
+                          </span>
                         </button>
-
                       </div>
                     </div>
                   </div>
@@ -411,15 +442,16 @@ const TravelContent = () => {
             ))}
           </Swiper>
 
+
           {/* Pagination Dots */}
-          <div className="flex justify-center mt-12 gap-3">
+          {/* <div className="flex justify-center mt-12 gap-3">
             {[...Array(4)].map((_, index) => (
               <div
                 key={index}
                 className="swiper-pagination-bullet-custom w-2.5 h-2.5 bg-[#A6B5B4]/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-[#186663]/80"
               />
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* Bottom Gradient Fade */}
@@ -685,7 +717,9 @@ const TravelContent = () => {
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover ring-2 ring-[#D2AF94]/30 transition-all duration-500 group-hover:ring-[#D2AF94]/60 group-hover:scale-105"
+                      width={64}
+                      height={64}
+                      className="w-16 h-16 rounded-full object-contain ring-2 ring-[#D2AF94]/30 transition-all duration-500 group-hover:ring-[#D2AF94]/60 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#D2AF94]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
@@ -944,16 +978,16 @@ const TravelContent = () => {
 
               {/* Trust Indicators */}
               <div className="mt-16 flex justify-center items-center space-x-12 opacity-60">
-                <div className="flex items-center space-x-2 text-[#A6B5B4 ">
+                <div className="flex items-center space-x-2 text-[#A6B5B4] ">
                   <div className="w-2 h-2 bg-[#D2AF94] rounded-full animate-pulse"></div>
                   <span className="text-sm font-light">Premium Content</span>
                 </div>
                 <div className="flex items-center space-x-2 text-[#A6B5B4]">
-                  <div className="w-2 h-2 bg-[#186663] rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-[#D2AF94] rounded-full animate-pulse"></div>
                   <span className="text-sm font-light">Weekly Updates</span>
                 </div>
                 <div className="flex items-center space-x-2 text-[#A6B5B4]">
-                  <div className="w-2 h-2 bg-[#8C7361] rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-[#D2AF94] rounded-full animate-pulse"></div>
                   <span className="text-sm font-light">Exclusive Access</span>
                 </div>
               </div>
