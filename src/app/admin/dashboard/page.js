@@ -61,6 +61,30 @@ const AdminTravelPackage = () => {
   const [cityList, setCityList] = useState([]);
 
   useEffect(() => {
+    const savedDraft = localStorage.getItem("adminTravelPackageDraft");
+    if (savedDraft) {
+      try {
+        setFormData(JSON.parse(savedDraft));
+      } catch (err) {
+        console.error("Failed to parse saved draft:", err);
+      }
+    }
+  }, []);
+
+  // Auto-save every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      localStorage.setItem(
+        "adminTravelPackageDraft",
+        JSON.stringify(formData)
+      );
+      console.log("Auto-saved form data");
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [formData]);
+
+  useEffect(() => {
     async function fetchCities() {
       try {
         const res = await fetch('/api/destinations'); // Adjust path based on your setup

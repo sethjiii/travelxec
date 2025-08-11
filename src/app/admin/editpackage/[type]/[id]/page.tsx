@@ -55,8 +55,8 @@ type EditableArrayKeys = 'highlights' | 'inclusions' | 'exclusions';
 
 export default function EditPackageForm() {
   const { id } = useParams() as { id: string };
+  const { type } = useParams() as { type: string };
   const router = useRouter();
-
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState<FormDataProps>({
@@ -79,7 +79,7 @@ export default function EditPackageForm() {
   useEffect(() => {
     async function fetchPackage() {
       try {
-        const res = await fetch(`/api/packages/${id}`);
+        const res = await fetch(`/api/packages/${type}/${id}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
 
@@ -250,7 +250,7 @@ export default function EditPackageForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/packages/${id}`, {
+      const res = await fetch(`/api/packages/${type}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

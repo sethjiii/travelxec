@@ -256,12 +256,6 @@ const TravelContent = () => {
         </div>
       </section>
 
-
-
-
-
-
-
       {/* Featured Packages Section / Curated Experience  */}
       <section className="py-24 bg-gradient-to-br from-[#A6B5B4]/10 via-[#FEFDFB] to-[#D2AF94]/15 px-6 relative overflow-visible" aria-labelledby="curated-experiences">
 
@@ -623,7 +617,7 @@ const TravelContent = () => {
                 lineHeight: '1.0',        // Adjust line height to make the lines tighter
               }}
             >
-              travelxec
+              Us
             </span>
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent mx-auto mb-4"></div>

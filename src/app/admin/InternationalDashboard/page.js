@@ -58,6 +58,30 @@ const AdminInterTravelPackage = () => {
   const [cityList, setCityList] = useState([]);
 
   useEffect(() => {
+    const savedDraft = localStorage.getItem("AdminInterTravelPackageDraft");
+    if (savedDraft) {
+      try {
+        setFormData(JSON.parse(savedDraft));
+      } catch (err) {
+        console.error("Failed to parse saved draft:", err);
+      }
+    }
+  }, []);
+
+  // Auto-save every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      localStorage.setItem(
+        "AdminInterTravelPackageDraft",
+        JSON.stringify(formData)
+      );
+      console.log("Auto-saved form data");
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [formData]);
+
+  useEffect(() => {
     async function fetchCities() {
       try {
         const res = await fetch("/api/internationaldestinations");

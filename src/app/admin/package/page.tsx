@@ -9,13 +9,14 @@ interface TravelPackage {
   _id: string;
   title: string;
   duration: string;
-  images: { url: string; public_id: string }[]; // ✅ Updated image structure
+  images: { url: string; public_id: string }[];
   likes: number;
   destination: string;
   name: string;
   places: string;
   rating: number;
   OnwardPrice?: number;
+  type: string; // ✅ Added type
 }
 
 export default function AdminPackagesPage() {
@@ -26,7 +27,7 @@ export default function AdminPackagesPage() {
     try {
       const res = await fetch('/api/packages', { cache: 'no-store' });
       const data = await res.json();
-      setPackages(data.packages); // ✅ Matches your current API response
+      setPackages(data.packages);
     } catch (error) {
       toast.error('Failed to fetch packages');
     }
@@ -59,8 +60,7 @@ export default function AdminPackagesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {packages.map((pkg) => (
             <div key={pkg._id} className="border rounded-xl p-5 shadow bg-white space-y-3">
-              {/* ✅ Optional image preview */}
-              {pkg.images && pkg.images[0] && (
+              {pkg.images?.[0] && (
                 <Image
                   src={pkg.images[0].url}
                   alt={pkg.title}
@@ -77,8 +77,9 @@ export default function AdminPackagesPage() {
                 <div>💰 Onward Price: ₹{pkg.OnwardPrice ?? 'N/A'}</div>
               </div>
               <div className="flex gap-3 mt-3">
+                {/* ✅ Pass type + id */}
                 <button
-                  onClick={() => router.push(`/admin/editpackage/${pkg._id}`)}
+                  onClick={() => router.push(`/admin/editpackage/${pkg.type}/${pkg._id}`)}
                   className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
                 >
                   Edit
