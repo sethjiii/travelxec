@@ -360,17 +360,21 @@ const TravelContent = () => {
 
             {/* Slides */}
             {featuredPackages.map((pkg) => (
-              <SwiperSlide key={pkg._id}>
-                <div className="group bg-white/60 backdrop-blur-md rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-[550px] flex flex-col border border-[#A6B5B4]/20 hover:border-[#186663]/30 hover:bg-white/70">
-                  {/* Image Section */}
-                  <div className="relative h-[240px] overflow-hidden">
+              <SwiperSlide key={pkg._id} className="h-auto">
+                <div className="group bg-white/60 backdrop-blur-md rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-[600px] flex flex-col border border-[#A6B5B4]/20 hover:border-[#186663]/30 hover:bg-white/70">
+                  {/* Image Section - Fixed height */}
+                  <div className="relative w-full h-[280px] flex-shrink-0 overflow-hidden">
                     {pkg.images?.length > 0 ? (
-                      <img
-                        loading="lazy"
-                        src={pkg.images[0].url}
-                        alt={pkg.name}
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={pkg.images[0].url}
+                          alt={pkg.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-all duration-700 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      </div>
                     ) : (
                       <div className="w-full h-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
                         No image available
@@ -382,26 +386,38 @@ const TravelContent = () => {
                     </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="p-8 flex-1 flex flex-col">
-                    <div className="mb-6">
-                      <h3 className="text-xl text-[#002D37] mb-3 font-serif font-light leading-tight group-hover:text-[#186663] transition-colors duration-300">
-                        {pkg.name}
-                      </h3>
-                      <div className="flex flex-wrap text-sm text-[#8C7361] gap-4 font-light">
-                        {pkg.places.split("-").map((place, index, arr) => (
-                          <span key={index} className="flex items-center">
-                            {place.trim()}
-                            {index < arr.length - 1 && (
-                              <ArrowRight className="mx-2 w-3 h-3 text-[#A6B5B4]" />
+                  {/* Content Section - Fixed layout structure */}
+                  <div className="flex-1 p-6 sm:p-8 flex flex-col">
+                    {/* Package Info - Fixed height area */}
+                    <div className="flex-1 flex flex-col justify-between min-h-[160px]">
+                      <div>
+                        <h3 className="text-lg sm:text-xl text-[#002D37] mb-4 font-serif font-light leading-tight group-hover:text-[#186663] transition-colors duration-300 line-clamp-2 min-h-[56px] flex items-start">
+                          {pkg.name}
+                        </h3>
+
+                        {/* Places with consistent height */}
+                        <div className="min-h-[60px] flex items-start">
+                          <div className="flex flex-wrap text-sm text-[#8C7361] gap-2 font-light leading-relaxed">
+                            {pkg.places.split("-").slice(0, 4).map((place, index, arr) => (
+                              <span key={index} className="flex items-center">
+                                <span className="whitespace-nowrap">{place.trim()}</span>
+                                {index < arr.length - 1 && index < 3 && (
+                                  <ArrowRight className="mx-1.5 w-3 h-3 text-[#A6B5B4] flex-shrink-0" />
+                                )}
+                              </span>
+                            ))}
+                            {pkg.places.split("-").length > 4 && (
+                              <span className="text-[#8C7361]/60 text-xs">
+                                +{pkg.places.split("-").length - 4} more
+                              </span>
                             )}
-                          </span>
-                        ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Buttons */}
-                    <div className="mt-auto pt-6">
+                    {/* Buttons Section - Fixed at bottom */}
+                    <div className="border-t border-[#A6B5B4]/20">
                       <div className="flex flex-col gap-3">
                         <Link
                           href={`/packages/${pkg.type}/${pkg._id}`}
@@ -415,13 +431,11 @@ const TravelContent = () => {
                               ? "border-[#002D37] text-[#002D37]"
                               : "border-[#8C7361]/40 text-[#8C7361]"
                             } 
-                      hover:bg-[#D2AF94]/10 hover:border-[#8C7361] hover:text-[#002D37] py-3 px-6 
-                      rounded-xl font-light transition-all duration-300 flex items-center justify-center gap-2 group/save`}
+                hover:bg-[#D2AF94]/10 hover:border-[#8C7361] hover:text-[#002D37] py-3 px-6 
+                rounded-xl font-light transition-all duration-300 flex items-center justify-center gap-2 group/save`}
                         >
                           <Bookmark
-                            className={`w-4 h-4 transition-transform duration-300 group-hover/save:scale-110 ${isFavorite(pkg._id.toString())
-                                ? "fill-[#002D37]"
-                                : ""
+                            className={`w-4 h-4 transition-transform duration-300 group-hover/save:scale-110 ${isFavorite(pkg._id.toString()) ? "fill-[#002D37]" : ""
                               }`}
                           />
                           <span>
@@ -449,7 +463,7 @@ const TravelContent = () => {
         </div>
 
         {/* Bottom Gradient Fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#FEFDFB] z-20 pointer-events-none" />
+        {/* <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#FEFDFB] z-20 pointer-events-none" /> */}
 
       </section>
 

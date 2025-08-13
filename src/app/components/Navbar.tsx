@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../Auth/AuthProvider";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false);
@@ -151,23 +153,59 @@ const Navbar = () => {
 
             {/* Dropdown: only when open */}
             {isDestDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-56 bg-white shadow-xl rounded-xl z-30 border ring-1 ring-black/10">
-                <Link
-                  href="/destinations"
-                  className="block px-5 py-3 text-[#002D37] font-medium hover:bg-[#D2AF94]/10 rounded-t-xl transition-colors"
-                  onClick={closeAllDropdowns}
-                >
-                  All Destinations
-                </Link>
-                <Link
-                  href="/InternationalDestination"
-                  className="block px-5 py-3 text-[#8C7361] font-medium hover:bg-[#D2AF94]/10 rounded-b-xl transition-colors"
-                  onClick={closeAllDropdowns}
-                >
-                  International Destinations
-                </Link>
+              <div className="absolute left-0 mt-3 w-64 bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl z-30 border border-white/20 ring-1 ring-black/5 overflow-hidden">
+                {/* Decorative gradient top border */}
+                <div className="h-1 bg-gradient-to-r from-[#D2AF94] via-[#186663] to-[#D2AF94]"></div>
+
+                {/* Menu items container */}
+                <div className="py-2">
+                  <Link
+                    href="/destinations"
+                    className="group flex items-center justify-between px-6 py-4 text-[#002D37] font-medium hover:bg-gradient-to-r hover:from-[#D2AF94]/10 hover:to-[#186663]/10 transition-all duration-300 ease-in-out relative overflow-hidden"
+                    onClick={closeAllDropdowns}
+                  >
+                    <div className="flex items-center gap-3">
+                      {/* Icon */}
+                      <div className="w-2 h-2 bg-[#D2AF94] rounded-full group-hover:scale-125 transition-transform duration-300"></div>
+                      <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
+                        All Destinations
+                      </span>
+                    </div>
+                    {/* Hover arrow */}
+                    <ArrowRight className="w-4 h-4 text-[#D2AF94] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+
+                    {/* Subtle hover background effect */}
+                    <div className="absolute left-0 top-0 h-full w-0 bg-gradient-to-r from-[#D2AF94]/5 to-transparent group-hover:w-full transition-all duration-500 ease-out"></div>
+                  </Link>
+
+                  {/* Elegant separator */}
+                  <div className="mx-6 h-px bg-gradient-to-r from-transparent via-[#A6B5B4]/30 to-transparent"></div>
+
+                  <Link
+                    href="/InternationalDestination"
+                    className="group flex items-center justify-between px-6 py-4 text-[#002D37] font-medium hover:bg-gradient-to-r hover:from-[#D2AF94]/10 hover:to-[#186663]/10 transition-all duration-300 ease-in-out relative overflow-hidden"
+                    onClick={closeAllDropdowns}
+                  >
+                    <div className="flex items-center gap-3">
+                      {/* Icon */}
+                      <div className="w-2 h-2 bg-[#186663] rounded-full group-hover:scale-125 transition-transform duration-300"></div>
+                      <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
+                        International Destinations
+                      </span>
+                    </div>
+                    {/* Hover arrow */}
+                    <ArrowRight className="w-4 h-4 text-[#D2AF94] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+
+                    {/* Subtle hover background effect */}
+                    <div className="absolute left-0 top-0 h-full w-0 bg-gradient-to-r from-[#186663]/5 to-transparent group-hover:w-full transition-all duration-500 ease-out"></div>
+                  </Link>
+                </div>
+
+                {/* Decorative bottom element */}
+                <div className="h-px bg-gradient-to-r from-transparent via-[#D2AF94]/20 to-transparent"></div>
               </div>
             )}
+
           </div>
 
           {/* The rest of the menu items */}
