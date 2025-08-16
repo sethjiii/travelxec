@@ -168,7 +168,7 @@ const Navbar = () => {
                       {/* Icon */}
                       <div className="w-2 h-2 bg-[#D2AF94] rounded-full group-hover:scale-125 transition-transform duration-300"></div>
                       <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
-                        All Destinations
+                        Indian Destinations
                       </span>
                     </div>
                     {/* Hover arrow */}
