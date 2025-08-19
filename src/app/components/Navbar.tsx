@@ -166,9 +166,9 @@ const Navbar = () => {
                   >
                     <div className="flex items-center gap-3">
                       {/* Icon */}
-                      <div className="w-2 h-2 bg-[#D2AF94] rounded-full group-hover:scale-125 transition-transform duration-300"></div>
+                      
                       <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
-                        Indian Destinations
+                        Domestic Destinations
                       </span>
                     </div>
                     {/* Hover arrow */}
@@ -188,7 +188,7 @@ const Navbar = () => {
                   >
                     <div className="flex items-center gap-3">
                       {/* Icon */}
-                      <div className="w-2 h-2 bg-[#186663] rounded-full group-hover:scale-125 transition-transform duration-300"></div>
+                      
                       <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
                         International Destinations
                       </span>

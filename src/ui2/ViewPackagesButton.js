@@ -17,35 +17,35 @@ const ViewPackagesButton = () => {
 
 const StyledWrapper = styled.div`
   button {
+    width: 180px; /* Standard width for consistency */
+    height: 50px; /* Standard height for consistency */
+    display: flex;
     font-size: 16px;
-    color: #e1e1e1;
-    font-family: PlayfairDisplay, sans-serif;
+    align-items: center;
+    justify-content: center; /* Center both icon and text */
+    gap: 12px; /* Adjusted gap to keep the elements spaced evenly */
+    background: #A6B5B4;
+    border-radius: 30px;
+    color: #002D37;
     font-weight: 400px;
-    cursor: pointer;
+    border: none;
     position: relative;
-    border: 1px solid #e1e1e1;  /* Added border */
-    background: none;
-    padding: 10px 20px;
-    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-duration: 400ms;
-    transition-property: color, border-color;
-    top: 5.5px;
-    left: 5px;
-    border-radius: 30px;  /* Optional: adds rounded corners */
+    cursor: pointer;
+    transition-duration: 0.5s;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.116);
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: PlayfairDisplay, sans-serif;
   }
 
-  button:focus,
   button:hover {
-    color: #D2AF94;
-    border-color: #D2AF94;  /* Change border color on hover/focus */
+    background-color: #D2AF94;
   }
 
-  button:focus:after,
-  button:hover:after {
-    width: 100%;
-    left: 0%;
+  button:active {
+    transform: scale(0.97);
+    transition-duration: 0.2s;
   }
-
 `;
 
 export default ViewPackagesButton;
