@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import ClientWrapper from "./ClientWrapper";
 import { Providers } from "./providers"; // ✅ session + auth providers
 import { Toaster } from "react-hot-toast";
-import EmailPopup from "./components/Emailpopup"; // 👈 import the popup
+import EmailPopup from "./components/EmailPopup"; // 👈 import the popup
 
 export const metadata: Metadata = {
   title: "TravelXec",
