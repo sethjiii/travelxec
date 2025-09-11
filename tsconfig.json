@@ -29,6 +29,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/ui2/card.js"
-  ],
+, "src/pages/api/packages/[type]/[id]/route.js"  ],
   "exclude": ["node_modules"]
 }

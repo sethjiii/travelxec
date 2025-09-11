@@ -1,6 +1,7 @@
 import dbConnect from '../dbConnect';
 import TravelPackage from '../../../models/TravelPackage';
-import { z } from 'zod'; // You must install Zod: npm install zod
+import interTravelPackage from '../../../models/interTravelPackage';
+import { z } from 'zod';
 
 const querySchema = z.object({
   query: z.string().optional(),
@@ -10,84 +11,94 @@ const querySchema = z.object({
   maxPrice: z.coerce.number().optional(),
   minDays: z.coerce.number().optional(),
   maxDays: z.coerce.number().optional(),
-  types: z.string().optional(), // Will be split by comma later
+  types: z.string().optional(), // comma-separated types
 });
 
 const escapeRegex = (str = '') => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+// Map type string to model
+const getModelByType = (type) => {
+  switch (type) {
+    case 'domestic':
+      return TravelPackage;
+    case 'international':
+      return interTravelPackage;
+    default:
+      throw new Error(`Invalid type: ${type}`);
   }
+};
+
+export default async function handler(req, res) {
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   await dbConnect();
 
   try {
     const parsed = querySchema.safeParse(req.query);
-    if (!parsed.success) {
-      return res.status(400).json({ error: 'Invalid query parameters' });
-    }
+    if (!parsed.success) return res.status(400).json({ error: 'Invalid query parameters' });
 
-    const {
-      query = '',
-      page,
-      limit,
-      minPrice,
-      maxPrice,
-      minDays,
-      maxDays,
-      types,
-    } = parsed.data;
-
+    const { query = '', page, limit, minPrice, maxPrice, minDays, maxDays, types } = parsed.data;
     const skip = (page - 1) * limit;
     const searchRegex = new RegExp(escapeRegex(query.trim()), 'i');
 
-    const filter = {};
+    // Determine which types/models to query
+    const typeArray = types ? types.split(',').map((t) => t.trim()) : ['domestic', 'international'];
+    
+    const results = [];
+    let totalCount = 0;
 
-    if (query) {
-      filter.$or = [
-        { title: searchRegex },
-        { description: searchRegex },
-        { city: searchRegex },
-        { country: searchRegex },
-      ];
+    for (const type of typeArray) {
+      let Model;
+      try {
+        Model = getModelByType(type);
+      } catch {
+        continue; // skip invalid type
+      }
+
+      const filter = {};
+
+      if (query) {
+        filter.$or = [
+          { name: searchRegex },
+          { description: searchRegex },
+          { places: searchRegex },
+        ];
+      }
+
+      if (minPrice !== undefined || maxPrice !== undefined) {
+        filter.OnwardPrice = {};
+        if (minPrice !== undefined) filter.OnwardPrice.$gte = minPrice;
+        if (maxPrice !== undefined) filter.OnwardPrice.$lte = maxPrice;
+      }
+
+      if (minDays !== undefined || maxDays !== undefined) {
+        filter.duration = {};
+        if (minDays !== undefined) filter.duration.$gte = minDays;
+        if (maxDays !== undefined) filter.duration.$lte = maxDays;
+      }
+
+      const count = await Model.countDocuments(filter);
+      totalCount += count;
+
+      const docs = await Model.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
+
+      results.push(...docs.map((doc) => ({ ...doc.toObject(), type })));
     }
-
-    if (minPrice !== undefined || maxPrice !== undefined) {
-      filter.price = {};
-      if (minPrice !== undefined) filter.price.$gte = minPrice;
-      if (maxPrice !== undefined) filter.price.$lte = maxPrice;
-    }
-
-    if (minDays !== undefined || maxDays !== undefined) {
-      filter.duration = {};
-      if (minDays !== undefined) filter.duration.$gte = minDays;
-      if (maxDays !== undefined) filter.duration.$lte = maxDays;
-    }
-
-    if (types) {
-      const typeArray = types.split(',').map(t => t.trim());
-      filter.type = { $in: typeArray };
-    }
-
-    const total = await TravelPackage.countDocuments(filter);
-
-    const packages = await TravelPackage.find(filter)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
 
     return res.status(200).json({
-      packages,
+      packages: results,
       pagination: {
-        total,
+        total: totalCount,
         page,
         limit,
-        totalPages: Math.ceil(total / limit),
+        totalPages: Math.ceil(totalCount / limit),
       },
     });
   } catch (error) {
-    console.error('Advanced Filter API Error'); // Avoid leaking stack trace in prod
+    console.error('Package listing API error:', error);
     return res.status(500).json({ error: 'Server error' });
   }
 }

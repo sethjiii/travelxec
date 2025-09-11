@@ -5,15 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import {
   Clock,
-  Hotel,
   Image as ImageIcon,
-  IndianRupee,
-  Minus,
   PackageOpen,
-  Plus,
-  Upload,
 } from "lucide-react";
-import Image from "next/image";
 
 interface Activity {
   name: string;
@@ -51,12 +45,12 @@ interface FormDataProps {
   images: ImageData[];
 }
 
-type EditableArrayKeys = 'highlights' | 'inclusions' | 'exclusions';
+type EditableArrayKeys = "highlights" | "inclusions" | "exclusions";
 
 export default function EditPackageForm() {
-  const { id } = useParams() as { id: string };
-  const { type } = useParams() as { type: string };
+  const { id, type } = useParams() as { id: string; type: string };
   const router = useRouter();
+
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState<FormDataProps>({
@@ -69,13 +63,11 @@ export default function EditPackageForm() {
     highlights: [""],
     inclusions: [""],
     exclusions: [""],
-    availability: {
-      startDate: "",
-      endDate: "",
-    },
+    availability: { startDate: "", endDate: "" },
     images: [],
   });
 
+  // Fetch package data
   useEffect(() => {
     async function fetchPackage() {
       try {
@@ -109,44 +101,29 @@ export default function EditPackageForm() {
       }
     }
 
-    if (id) fetchPackage();
-  }, [id]);
+    if (id && type) fetchPackage();
+  }, [id, type]);
 
-  // Form utilities
-  const handleArrayChange = (field: EditableArrayKeys, index: number, value: string) => {
+  // --- Form utilities ---
+  const handleArrayChange = (field: EditableArrayKeys, index: number, value: string) =>
     setFormData((prev) => ({
       ...prev,
       [field]: prev[field].map((item, i) => (i === index ? value : item)),
     }));
-  };
 
-  const addArrayItem = (field: EditableArrayKeys) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: [...prev[field], ""],
-    }));
-  };
+  const addArrayItem = (field: EditableArrayKeys) =>
+    setFormData((prev) => ({ ...prev, [field]: [...prev[field], ""] }));
 
-  const removeArrayItem = (field: EditableArrayKeys, index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: prev[field].filter((_, i) => i !== index),
-    }));
-  };
+  const removeArrayItem = (field: EditableArrayKeys, index: number) =>
+    setFormData((prev) => ({ ...prev, [field]: prev[field].filter((_, i) => i !== index) }));
 
-  const handleItineraryChange = (field: keyof Day, idx: number, value: string) => {
+  const handleItineraryChange = (field: keyof Day, idx: number, value: string) =>
     setFormData((prev) => ({
       ...prev,
       itinerary: prev.itinerary.map((day, i) => (i === idx ? { ...day, [field]: value } : day)),
     }));
-  };
 
-  const handleActivityChange = (
-    dayIndex: number,
-    activityIndex: number,
-    field: keyof Activity,
-    value: string
-  ) => {
+  const handleActivityChange = (dayIndex: number, activityIndex: number, field: keyof Activity, value: string) =>
     setFormData((prev) => ({
       ...prev,
       itinerary: prev.itinerary.map((day, idx) =>
@@ -160,58 +137,37 @@ export default function EditPackageForm() {
           : day
       ),
     }));
-  };
 
-  const addDay = () => {
+  const addDay = () =>
     setFormData((prev) => ({
       ...prev,
       itinerary: [
         ...prev.itinerary,
-        {
-          day: prev.itinerary.length + 1,
-          title: "",
-          description: "",
-          stay: "",
-          activities: [{ name: "", time: "", additionalDetails: "" }],
-        },
+        { day: prev.itinerary.length + 1, title: "", description: "", stay: "", activities: [{ name: "", time: "", additionalDetails: "" }] },
       ],
     }));
-  };
 
-  const removeDay = (index: number) => {
+  const removeDay = (index: number) =>
     setFormData((prev) => ({
       ...prev,
       itinerary: prev.itinerary.filter((_, i) => i !== index).map((d, i) => ({ ...d, day: i + 1 })),
     }));
-  };
 
-  const addActivity = (dayIndex: number) => {
+  const addActivity = (dayIndex: number) =>
     setFormData((prev) => ({
       ...prev,
       itinerary: prev.itinerary.map((day, i) =>
-        i === dayIndex
-          ? {
-              ...day,
-              activities: [...day.activities, { name: "", time: "", additionalDetails: "" }],
-            }
-          : day
+        i === dayIndex ? { ...day, activities: [...day.activities, { name: "", time: "", additionalDetails: "" }] } : day
       ),
     }));
-  };
 
-  const removeActivity = (dayIndex: number, activityIndex: number) => {
+  const removeActivity = (dayIndex: number, activityIndex: number) =>
     setFormData((prev) => ({
       ...prev,
       itinerary: prev.itinerary.map((day, i) =>
-        i === dayIndex
-          ? {
-              ...day,
-              activities: day.activities.filter((_, aIdx) => aIdx !== activityIndex),
-            }
-          : day
+        i === dayIndex ? { ...day, activities: day.activities.filter((_, aIdx) => aIdx !== activityIndex) } : day
       ),
     }));
-  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -223,29 +179,16 @@ export default function EditPackageForm() {
       formDataUpload.append("file", file);
       formDataUpload.append("upload_preset", "txupload");
 
-      const res = await fetch("https://api.cloudinary.com/v1_1/dgbhkfp0r/image/upload", {
-        method: "POST",
-        body: formDataUpload,
-      });
-
+      const res = await fetch("https://api.cloudinary.com/v1_1/dgbhkfp0r/image/upload", { method: "POST", body: formDataUpload });
       const data = await res.json();
-      if (data.secure_url) {
-        uploads.push({ url: data.secure_url, public_id: data.public_id });
-      }
+      if (data.secure_url) uploads.push({ url: data.secure_url, public_id: data.public_id });
     }
 
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, ...uploads],
-    }));
+    setFormData((prev) => ({ ...prev, images: [...prev.images, ...uploads] }));
   };
 
-  const handleImageDelete = (public_id: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      images: prev.images.filter((img) => img.public_id !== public_id),
-    }));
-  };
+  const handleImageDelete = (public_id: string) =>
+    setFormData((prev) => ({ ...prev, images: prev.images.filter((img) => img.public_id !== public_id) }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -258,7 +201,7 @@ export default function EditPackageForm() {
 
       if (!res.ok) throw new Error();
       toast.success("Package updated!");
-      router.push("/admin/package");
+      router.push("/admin/package/");
     } catch (err) {
       toast.error("Update failed.");
     }
@@ -275,21 +218,15 @@ export default function EditPackageForm() {
   return (
     <form onSubmit={handleSubmit} className="py-24 max-w-6xl mx-auto px-4 space-y-8">
       <div className="bg-white p-6 rounded shadow">
-        {/* Tab Navigation */}
+        {/* Tabs */}
         <div className="mb-4 border-b pb-2 flex space-x-4">
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={(e) => {
-                e.preventDefault();
-                setActiveTab(tab.id);
-              }}
-              className={`flex items-center gap-2 px-4 py-2 rounded ${
-                activeTab === tab.id ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"
-              }`}
+              onClick={(e) => { e.preventDefault(); setActiveTab(tab.id); }}
+              className={`flex items-center gap-2 px-4 py-2 rounded ${activeTab === tab.id ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
             >
-              <tab.icon className="h-4 w-4" />
-              {tab.label}
+              <tab.icon className="h-4 w-4" /> {tab.label}
             </button>
           ))}
         </div>
@@ -297,37 +234,11 @@ export default function EditPackageForm() {
         {/* Basic Info */}
         {activeTab === "basic" && (
           <div className="space-y-4">
-            <input
-              placeholder="Package Name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full border px-4 py-2 rounded"
-            />
-            <input
-              placeholder="Places (e.g., Manali-Shimla)"
-              value={formData.places}
-              onChange={(e) => setFormData({ ...formData, places: e.target.value })}
-              className="w-full border px-4 py-2 rounded"
-            />
-            <textarea
-              placeholder="Description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full border px-4 py-2 rounded"
-            />
-            <input
-              placeholder="Duration"
-              value={formData.duration}
-              onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-              className="w-full border px-4 py-2 rounded"
-            />
-            <input
-              type="number"
-              placeholder="Price"
-              value={formData.OnwardPrice}
-              onChange={(e) => setFormData({ ...formData, OnwardPrice: Number(e.target.value) })}
-              className="w-full border px-4 py-2 rounded"
-            />
+            <input placeholder="Package Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full border px-4 py-2 rounded" />
+            <input placeholder="Places" value={formData.places} onChange={(e) => setFormData({ ...formData, places: e.target.value })} className="w-full border px-4 py-2 rounded" />
+            <textarea placeholder="Description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full border px-4 py-2 rounded" />
+            <input placeholder="Duration" value={formData.duration} onChange={(e) => setFormData({ ...formData, duration: e.target.value })} className="w-full border px-4 py-2 rounded" />
+            <input type="number" placeholder="Price" value={formData.OnwardPrice} onChange={(e) => setFormData({ ...formData, OnwardPrice: Number(e.target.value) })} className="w-full border px-4 py-2 rounded" />
           </div>
         )}
 
@@ -339,61 +250,25 @@ export default function EditPackageForm() {
                 <h3 className="font-semibold capitalize">{field}</h3>
                 {formData[field].map((item, index) => (
                   <div key={index} className="flex gap-2 mb-2">
-                    <input
-                      className="flex-1 border px-4 py-2 rounded"
-                      value={item}
-                      onChange={(e) => handleArrayChange(field, index, e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem(field, index)}
-                      className="text-red-500"
-                    >
-                      ✕
-                    </button>
+                    <input className="flex-1 border px-4 py-2 rounded" value={item} onChange={(e) => handleArrayChange(field, index, e.target.value)} />
+                    <button type="button" onClick={() => removeArrayItem(field, index)} className="text-red-500">✕</button>
                   </div>
                 ))}
-                <button
-                  type="button"
-                  onClick={() => addArrayItem(field)}
-                  className="text-blue-500 text-sm"
-                >
-                  + Add {field.slice(0, -1)}
-                </button>
+                <button type="button" onClick={() => addArrayItem(field)} className="text-blue-500 text-sm">+ Add {field.slice(0, -1)}</button>
               </div>
             ))}
 
             <div>
               <h3 className="font-semibold">Availability</h3>
               <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="date"
-                  value={formData.availability.startDate}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      availability: { ...prev.availability, startDate: e.target.value },
-                    }))
-                  }
-                  className="border px-4 py-2 rounded"
-                />
-                <input
-                  type="date"
-                  value={formData.availability.endDate}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      availability: { ...prev.availability, endDate: e.target.value },
-                    }))
-                  }
-                  className="border px-4 py-2 rounded"
-                />
+                <input type="date" value={formData.availability.startDate} onChange={(e) => setFormData((prev) => ({ ...prev, availability: { ...prev.availability, startDate: e.target.value } }))} className="border px-4 py-2 rounded" />
+                <input type="date" value={formData.availability.endDate} onChange={(e) => setFormData((prev) => ({ ...prev, availability: { ...prev.availability, endDate: e.target.value } }))} className="border px-4 py-2 rounded" />
               </div>
             </div>
           </div>
         )}
 
-        {/* Image Upload */}
+        {/* Media */}
         {activeTab === "media" && (
           <div>
             <h3 className="font-semibold mb-2">Images</h3>
@@ -402,27 +277,15 @@ export default function EditPackageForm() {
               {formData.images.map((img) => (
                 <div key={img.public_id} className="relative group">
                   <img src={img.url} alt="uploaded" className="w-full h-32 object-cover rounded" />
-                  <button
-                    type="button"
-                    onClick={() => handleImageDelete(img.public_id)}
-                    className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1 py-0.5 rounded"
-                  >
-                    ✕
-                  </button>
+                  <button type="button" onClick={() => handleImageDelete(img.public_id)} className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1 py-0.5 rounded">✕</button>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Save Button */}
         <div className="mt-8 text-right">
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-700 text-white rounded hover:bg-blue-800"
-          >
-            Save Changes
-          </button>
+          <button type="submit" className="px-6 py-2 bg-blue-700 text-white rounded hover:bg-blue-800">Save Changes</button>
         </div>
       </div>
     </form>
