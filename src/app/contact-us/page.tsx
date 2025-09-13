@@ -22,8 +22,8 @@ const ContactUsPage = () => {
       'Sales: +91-9667909383',
     ],
     emailAddresses: [
-      'Support: contact@travelxec.com',
-      'General: ankit@travelxec.com',
+      'Support: support@travelxec.com',
+      'Contact: contact@travelxec.com',
     ],
     
     address: '114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana, India, 122102',

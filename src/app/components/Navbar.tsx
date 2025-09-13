@@ -168,7 +168,7 @@ const Navbar = () => {
                       {/* Icon */}
                       
                       <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
-                        Domestic Destinations
+                        Domestic
                       </span>
                     </div>
                     {/* Hover arrow */}
@@ -190,7 +190,7 @@ const Navbar = () => {
                       {/* Icon */}
                       
                       <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
-                        International Destinations
+                        International
                       </span>
                     </div>
                     {/* Hover arrow */}
@@ -376,7 +376,7 @@ const Navbar = () => {
                     className="block py-2 text-[#D2AF94] font-medium hover:bg-[#D2AF94]/10 rounded transition"
                     onClick={closeAllDropdowns}
                   >
-                    International Destinations
+                    International
                   </Link>
                 </div>
               </div>

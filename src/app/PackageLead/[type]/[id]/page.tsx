@@ -287,76 +287,89 @@ const PackageLeadPage = () => {
                 </div>
 
                 {/* Package Overview */}
-                <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
-                    <h2 className="text-2xl font-light mb-8 tracking-wide" style={{ color: '#002D37' }}>
+                <div className="bg-white grid grid-cols-1 md:grid-cols-2 gap-8 rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
+                    {/* Title */}
+                    <h2 className="col-span-1 md:col-span-2 text-2xl font-light mb-4 tracking-wide" style={{ color: '#002D37' }}>
                         Experience Details
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8">
-                        <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
-                            <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#D2AF94' }}>
-                                <Calendar size={20} style={{ color: '#002D37' }} />
-                            </div>
-                            <p className="text-sm font-medium opacity-70 mb-2">DURATION</p>
-                            <p className="text-lg font-light" style={{ color: '#002D37' }}>{packageData.duration}</p>
+
+                    {/* Duration */}
+                    <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
+                        <div
+                            className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center"
+                            style={{ backgroundColor: '#D2AF94' }}
+                        >
+                            <Calendar size={20} style={{ color: '#002D37' }} />
                         </div>
-                        {packageData.rating && (
-                            <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
-                                <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#8C7361' }}>
-                                    <Star size={20} style={{ color: '#002D37' }} />
-                                </div>
-                                <p className="text-sm font-medium opacity-70 mb-2">RATING</p>
-                                <p className="text-lg font-light" style={{ color: '#002D37' }}>{packageData.rating}/5.0</p>
-                            </div>
-                        )}
-                        {/* Price Range Slider */}
-                        <div className="text-center p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
-                            <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: '#D2AF94' }}>
-                                <IndianRupee size={20} style={{ color: '#002D37' }} />
-                            </div>
-                            <p className="text-sm font-medium opacity-70 mb-4">BUDGET RANGE PER PERSON</p>
-                            <div className="space-y-4">
-                                <div className="text-lg font-light" style={{ color: '#002D37' }}>
+                        <p className="text-sm font-medium opacity-70 mb-2">DURATION</p>
+                        <p className="text-lg font-light" style={{ color: '#002D37' }}>
+                            {packageData.duration}
+                        </p>
+                    </div>
+
+                    {/* Budget (only Max) */}
+                    <div className="p-6 rounded-xl" style={{ backgroundColor: '#f8f6f4' }}>
+                        <div
+                            className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center"
+                            style={{ backgroundColor: '#D2AF94' }}
+                        >
+                            <IndianRupee size={20} style={{ color: '#002D37' }} />
+                        </div>
+                        <p className="text-sm font-medium opacity-70 mb-4 text-center">
+                            BUDGET RANGE PER PERSON
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                            {/* Left: Slider */}
+                            <div className="space-y-2">
+                                <div className="text-lg font-light mb-2" style={{ color: '#002D37' }}>
                                     ₹{LeadDetails.priceRange.max.toLocaleString()}
                                 </div>
+                                <label
+                                    className="block text-xs font-medium opacity-60"
+                                    style={{ color: '#8C7361' }}
+                                >
+                                    MAX BUDGET
+                                </label>
+                                <input
+                                    type="range"
+                                    max={MAX_PRICE}
+                                    value={LeadDetails.priceRange.max}
+                                    onChange={(e) => handlePriceRangeChange('max', parseInt(e.target.value))}
+                                    className="w-full h-2 rounded-lg appearance-none cursor-pointer slider"
+                                    style={{
+                                        background: `linear-gradient(to right, #D2AF94 0%, #D2AF94 ${((LeadDetails.priceRange.max - 0) / (MAX_PRICE - 0)) * 100
+                                            }%, #186663 ${((LeadDetails.priceRange.max - 0) / (MAX_PRICE - 0)) * 100}%, #186663 100%)`,
+                                    }}
+                                />
+                            </div>
 
-
-
-                                {/* Max Price Slider */}
-                                <div className="space-y-2">
-                                    <label className="block text-xs font-medium opacity-60" style={{ color: '#8C7361' }}>
-                                        MAX BUDGET
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            type="range"
-
-                                            max={MAX_PRICE}
-                                            value={LeadDetails.priceRange.max}
-                                            onChange={(e) => handlePriceRangeChange('max', parseInt(e.target.value))}
-                                            className="w-full h-2 rounded-lg appearance-none cursor-pointer slider"
-                                            style={{
-                                                background: `linear-gradient(to right, #D2AF94 0%, #D2AF94 ${((LeadDetails.priceRange.max - 0) / (MAX_PRICE - 0)) * 100}%, #186663 ${((LeadDetails.priceRange.max - 0) / (MAX_PRICE - 0)) * 100}%, #186663 100%)`
-                                            }}
-                                        />
-                                        <div className="w-28 justify-between flex">
-                                            <input
-                                                type="number"
-                                                min={10000}
-                                                max={MAX_PRICE}
-                                                step={1000}
-                                                value={LeadDetails.priceRange.max}
-                                                onChange={(e) =>
-                                                    handlePriceRangeChange("max", parseInt(e.target.value))
-                                                }
-                                                className="w-full px-3 py-1.5 border border-[#D2AF94] text-sm rounded-lg shadow-sm focus:ring-2 focus:ring-[#D2AF94]/50 focus:outline-none"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                            {/* Right: Number Input */}
+                            <div className="flex flex-col items-start">
+                                <label
+                                    className="block text-xs font-medium opacity-60 mb-2"
+                                    style={{ color: '#8C7361' }}
+                                >
+                                    ENTER MAX VALUE
+                                </label>
+                                <input
+                                    type="number"
+                                    min={10000}
+                                    max={MAX_PRICE}
+                                    step={1000}
+                                    value={LeadDetails.priceRange.max}
+                                    onChange={(e) =>
+                                        handlePriceRangeChange('max', parseInt(e.target.value))
+                                    }
+                                    className="w-full px-3 py-1.5 border border-[#D2AF94] text-sm rounded-lg shadow-sm focus:ring-2 focus:ring-[#D2AF94]/50 focus:outline-none"
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
 
                 {/* Lead Form */}
                 <div className="space-y-8">
