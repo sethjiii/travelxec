@@ -43,6 +43,7 @@ const AboutUsPage = () => {
 
       {/* Story Section */}
       <section className="py-24 px-6 max-w-6xl mx-auto">
+        {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-light font-serif mb-4">Our Story</h2>
           <p className="text-lg text-[#8C7361] max-w-3xl mx-auto font-light leading-relaxed">
@@ -52,24 +53,43 @@ const AboutUsPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center mt-12">
-          <div>
-            <Globe className="mx-auto h-10 w-10 text-[#186663]" />
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center mt-12">
+          {/* Global Access */}
+          <div className="flex flex-col items-center">
+            <Globe className="h-10 w-10 text-[#186663]" />
             <h3 className="mt-4 text-xl font-medium">Global Access</h3>
-            <p className="text-[#8C7361] text-sm mt-2">Elite gateways to the world's rarest destinations.</p>
+            <p className="text-[#8C7361] text-sm mt-2">
+              Elite gateways to the world's rarest destinations.
+            </p>
           </div>
-          <div>
-            <Heart className="mx-auto h-10 w-10 text-[#186663]" />
+
+          {/* Personal Touch */}
+          <div className="flex flex-col items-center">
+            <Heart className="h-10 w-10 text-[#186663]" />
             <h3 className="mt-4 text-xl font-medium">Personal Touch</h3>
-            <p className="text-[#8C7361] text-sm mt-2">Each journey is tailored with heart and precision.</p>
+            <p className="text-[#8C7361] text-sm mt-2">
+              Each journey is tailored with heart and precision.
+            </p>
           </div>
-          <div>
-            <Star className="mx-auto h-10 w-10 text-[#186663]" />
-            <h3 className="mt-4 text-xl font-medium">Uncompromised Luxury</h3>
-            <p className="text-[#8C7361] text-sm mt-2">We define luxury through experience, not just amenities.</p>
+
+          {/* Uncompromised Luxury with Stars */}
+          <div className="flex flex-col items-center">
+            <div className="flex justify-center space-x-1 mb-4">
+              <Star fill="currentColor" className="h-8 w-8 text-[#186663]" />
+              <Star fill="currentColor" className="h-8 w-8 text-[#186663]" />
+              <Star fill="currentColor" className="h-8 w-8 text-[#186663]" />
+              <Star fill="currentColor" className="h-8 w-8 text-[#186663]" />
+              <Star fill="currentColor" className="h-8 w-8 text-[#186663]" />
+            </div>
+            <h3 className="text-xl font-medium">Uncompromised Luxury</h3>
+            <p className="text-[#8C7361] text-sm mt-2">
+              We define luxury through experience, not just amenities.
+            </p>
           </div>
         </div>
       </section>
+
 
       {/* Mission Section */}
       <section className="relative py-24 bg-gradient-to-br from-[#002D37]/90 via-[#003a47]/85 to-[#186663]/80 text-white px-6 overflow-hidden">
@@ -100,11 +120,11 @@ const AboutUsPage = () => {
             {/* Card 3 */}
             <div className="w-50 bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10">
               <div className="flex justify-center space-x-2">
-                <Star className="w-8 h-8 text-white" />
-                <Star className="w-8 h-8 text-white" />
-                <Star className="w-8 h-8 text-white" />
-                <Star className="w-8 h-8 text-white" />
-                <Star className="w-8 h-8 text-white" />
+                <Star fill="white" className="w-8 h-8 text-white" />
+                <Star fill="white" className="w-8 h-8 text-white" />
+                <Star fill="white" className="w-8 h-8 text-white" />
+                <Star fill="white" className="w-8 h-8 text-white" />
+                <Star fill="white" className="w-8 h-8 text-white" />
               </div>
               <p className=" py-2 text-white font-light text-lg">Rated 5-stars in experience & luxury</p>
             </div>
