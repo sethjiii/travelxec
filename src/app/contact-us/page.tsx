@@ -4,8 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Star } from 'lucide-react';
 import Footer from '../components/FooterContent';
 import { FaWhatsapp, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { toast } from 'sonner';
+
 const ContactUsPage = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [destination, setDestination] = useState("");
+  const [budget, setBudget] = useState("");
+  const [consent, setConsent] = useState(true);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -15,17 +23,49 @@ const ContactUsPage = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("/api/popuplead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          destination,
+          budget: Number(budget),
+          consent,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success("Thanks for sharing your trip details!");
+        setName("");
+        setEmail("");
+        setPhone("");
+        setDestination("");
+        setBudget("");
+      } else {
+        const { error } = await res.json();
+        toast.error(error || "Something went wrong.");
+      }
+    } catch (err) {
+      toast.error("Network error!");
+    }
+  };
+
   const contactData = {
     phoneNumbers: [
-      'General Inquiries: +91-9667909383',
-      'Support: +91-9667909383',
-      'Sales: +91-9667909383',
+      'General Inquiries: +91-9910583345',
+      'Support: +91-9910583345',
+      'Sales: +91-9910583345',
     ],
     emailAddresses: [
       'Support: support@travelxec.com',
       'Contact: contact@travelxec.com',
     ],
-    
     address: '114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana, India, 122102',
     hours: [
       'Tuesday-Sunday: 9am - 7pm',
@@ -84,6 +124,144 @@ const ContactUsPage = () => {
             </div>
           ))}
         </section>
+
+        <section className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-semibold text-[#D2AF94] mb-6 tracking-wide">
+            Get In Touch
+          </h2>
+
+          <form
+            onSubmit={handleSubmit}
+            className="mt-6 flex flex-col gap-6 max-w-xl mx-auto bg-[#003A47]/40 backdrop-blur-lg rounded-2xl p-8 border border-[#D2AF94]/30 shadow-2xl"
+          >
+            {/* Full Name */}
+            <div className="relative">
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder=" " /* <— IMPORTANT: single space */
+                className="peer w-full px-4 pt-6 pb-2 rounded-lg bg-white/90 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#D2AF94] transition"
+              />
+              <label
+                htmlFor="name"
+                className="pointer-events-none absolute left-4 top-4 text-base text-gray-500 transition-all duration-200
+                   peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-[#D2AF94]
+                   peer-not-placeholder-shown:top-2.5 peer-not-placeholder-shown:text-sm"
+              >
+                Full Name / Business Name
+              </label>
+            </div>
+
+            {/* Phone */}
+            <div className="relative">
+              <input
+                type="tel"
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                placeholder=" "
+                className="peer w-full px-4 pt-6 pb-2 rounded-lg bg-white/90 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#D2AF94] transition"
+              />
+              <label
+                htmlFor="phone"
+                className="pointer-events-none absolute left-4 top-4 text-base text-gray-500 transition-all duration-200
+                   peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-[#D2AF94]
+                   peer-not-placeholder-shown:top-2.5 peer-not-placeholder-shown:text-sm"
+              >
+                Phone Number
+              </label>
+            </div>
+
+            {/* Email */}
+            <div className="relative">
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder=" "
+                className="peer w-full px-4 pt-6 pb-2 rounded-lg bg-white/90 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#D2AF94] transition"
+              />
+              <label
+                htmlFor="email"
+                className="pointer-events-none absolute left-4 top-4 text-base text-gray-500 transition-all duration-200
+                   peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-[#D2AF94]
+                   peer-not-placeholder-shown:top-2.5 peer-not-placeholder-shown:text-sm"
+              >
+                Email Address
+              </label>
+            </div>
+
+            {/* Destination */}
+            <div className="relative">
+              <input
+                type="text"
+                id="destination"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                required
+                placeholder=" "
+                className="peer w-full px-4 pt-6 pb-2 rounded-lg bg-white/90 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#D2AF94] transition"
+              />
+              <label
+                htmlFor="destination"
+                className="pointer-events-none absolute left-4 top-4 text-base text-gray-500 transition-all duration-200
+                   peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-[#D2AF94]
+                   peer-not-placeholder-shown:top-2.5 peer-not-placeholder-shown:text-sm"
+              >
+                Destination (Paris, Bali, etc.)
+              </label>
+            </div>
+
+            {/* Budget */}
+            <div className="relative">
+              <input
+                type="number"
+                id="budget"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                required
+                placeholder=" "
+                className="peer w-full px-4 pt-6 pb-2 rounded-lg bg-white/90 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#D2AF94] transition"
+              />
+              <label
+                htmlFor="budget"
+                className="pointer-events-none absolute left-4 top-4 text-base text-gray-500 transition-all duration-200
+                   peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-[#D2AF94]
+                   peer-not-placeholder-shown:top-2.5 peer-not-placeholder-shown:text-sm"
+              >
+                Budget (e.g. 50000)
+              </label>
+            </div>
+
+            {/* Consent */}
+            <div className="flex items-center gap-2 justify-center text-sm text-gray-200">
+              <input
+                type="checkbox"
+                id="consent"
+                checked={consent}
+                onChange={() => setConsent(!consent)}
+                className="h-4 w-4 accent-[#186663]"
+              />
+              <label htmlFor="consent">I’d like to receive information about special offers and newsletters.</label>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 mt-2 bg-gradient-to-r from-[#D2AF94] to-[#8C7361] text-white font-semibold rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300"
+            >
+              Submit
+            </button>
+          </form>
+        </section>
+
+
+
 
         <section className="text-center mb-16">
           <h2 className="text-3xl font-medium text-[#D2AF94] mb-4 tracking-wide">Follow Us</h2>

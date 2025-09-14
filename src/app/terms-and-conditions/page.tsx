@@ -119,7 +119,7 @@ export default function TermsAndConditionsPage() {
           <p>
             TravelXec <br />
             Email: <a href="mailto:contact@travelxec.com" className="text-[#186663] underline">contact@travelxec.com</a><br />
-            Phone: 9667909383 <br />
+            Phone: 9910583345 <br />
             Address: 114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana,
             India, 122102
           </p>

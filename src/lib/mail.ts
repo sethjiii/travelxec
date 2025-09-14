@@ -45,7 +45,7 @@ export const sendBookingConfirmationEmail = async (to: string, name: string, boo
       </ul>
       <p>We will reach out with more updates soon. Meanwhile, feel free to contact us if you have any questions.</p>
       <hr style="margin-top:24px; border:none; border-top:1px solid #ccc;" />
-      <p style="font-size:13px; color:#999;">TravelXec | contact@travelxec.com | +91 9667909383</p>
+      <p style="font-size:13px; color:#999;">TravelXec | contact@travelxec.com | +91 9910583345</p>
     </div>
   `;
 

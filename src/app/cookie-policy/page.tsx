@@ -102,7 +102,7 @@ export default function CookiePolicyPage() {
               contact@travelxec.com
             </a>
             <br />
-            Phone: 9667909383 <br />
+            Phone: 9910583345 <br />
             Address: 114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana,
             India, 122102
           </p>

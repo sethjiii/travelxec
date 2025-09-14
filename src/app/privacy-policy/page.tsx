@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
         <h2 className="text-xl font-semibold mt-6 mb-2">9. Contact Us</h2>
         <p className="mb-1"><strong>TravelXec</strong></p>
         <p>Email: <a href="mailto:contact@travelxec.com" className="text-blue-600">contact@travelxec.com</a></p>
-        <p>Phone: +91-9667909383</p>
+        <p>Phone: +91-9910583345</p>
         <p>Address: 114, Pyramid Urban Square, Sector 67A, Gurgaon, Haryana, India, 122102</p>
       </div>
 

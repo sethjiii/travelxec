@@ -239,7 +239,7 @@ const Footer = () => {
                   <Phone className="h-5 w-5 transition-all duration-300 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-[#D2AF94]/30 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-                <a className="font-light" href="tel:+91-9667909383">+91-9667909383</a>
+                <a className="font-light" href="tel:+91-9910583345">+91-9910583345</a>
               </div>
 
               <div className="group flex items-center gap-4 text-[#A6B5B4] hover:text-[#D2AF94] transition-colors duration-300">
