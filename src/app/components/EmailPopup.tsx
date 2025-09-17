@@ -74,10 +74,10 @@ export default function EmailPopup() {
       {/* Modal */}
       <div className="relative bg-white rounded-lg p-8 max-w-lg w-full mx-auto shadow-2xl text-center">
         <Dialog.Description className="mt-4 text-lg font-semibold text-gray-800">
-          Planning a trip? We're here to help!
+          Dreaming of your next trip? Let us make it happen!
         </Dialog.Description>
         <p className="text-gray-600 mt-1">
-          Share a few details and we'll craft the perfect holiday just for you. ✨
+          A few details from you, a dream escape crafted by us.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
