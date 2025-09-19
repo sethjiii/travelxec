@@ -68,18 +68,33 @@ const AdminInterTravelPackage = () => {
     }
   }, []);
 
-  // Auto-save every 5 seconds
+  // ✅ Hydrate once
+  useEffect(() => {
+    const saved = localStorage.getItem("interPackageDraft");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setFormData((prev) => ({
+          ...prev,
+          ...parsed,
+          images: prev.images || [], // keep images untouched
+        }));
+      } catch (err) {
+        console.error("Failed to parse saved draft:", err);
+      }
+    }
+  }, []);
+
+  // ✅ Autosave only form fields (not images)
   useEffect(() => {
     const interval = setInterval(() => {
-      localStorage.setItem(
-        "AdminInterTravelPackageDraft",
-        JSON.stringify(formData)
-      );
-      console.log("Auto-saved form data");
+      const { images, ...rest } = formData;
+      localStorage.setItem("interPackageDraft", JSON.stringify(rest));
+      console.log("✅ Auto-saved form data (no images)");
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [formData]);
+  }, [formData.name, formData.description, formData.places, formData.cityId, formData.duration, formData.itinerary, formData.highlights, formData.inclusions, formData.exclusions, formData.availability]);
 
   useEffect(() => {
     async function fetchCities() {
@@ -322,7 +337,7 @@ const AdminInterTravelPackage = () => {
       <div className="max-w-6xl mx-auto p-6">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-           International Travel Package Management
+            International Travel Package Management
           </h1>
           <p className="text-gray-600 mt-2">
             Create travel packages for your customers
