@@ -166,7 +166,7 @@ const Navbar = () => {
                   >
                     <div className="flex items-center gap-3">
                       {/* Icon */}
-                      
+
                       <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
                         Domestic
                       </span>
@@ -188,7 +188,7 @@ const Navbar = () => {
                   >
                     <div className="flex items-center gap-3">
                       {/* Icon */}
-                      
+
                       <span className="tracking-wide group-hover:text-[#186663] transition-colors duration-300">
                         International
                       </span>
@@ -370,6 +370,17 @@ const Navbar = () => {
                 >
                   Destinations
                 </Link>
+
+                <div className="ml-4">
+                  <Link
+                    href="/destinations"
+                    className="block py-2 text-[#D2AF94] font-medium hover:bg-[#D2AF94]/10 rounded transition"
+                    onClick={closeAllDropdowns}
+                  >
+                    Domestic
+                  </Link>
+                </div>
+
                 <div className="ml-4">
                   <Link
                     href="/InternationalDestination"
