@@ -90,10 +90,10 @@ export default function DestinationsList() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16">
 
         {/* HEADER */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-20">
+        <div className="text-center py-12 mb-8 sm:mb-12 lg:mb-20">
           <div className="inline-flex items-center gap-2 bg-[#D2AF94]/20 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 mb-4 sm:mb-6 border border-[#D2AF94]/30">
             <Star className="w-3 h-3 sm:w-4 sm:h-4 text-[#D2AF94]" />
-            <span className="text-[#D2AF94] text-xs sm:text-sm font-light tracking-wider">LUXURY TRAVEL EXPERIENCES</span>
+            <span className="text-[#D2AF94] text-xs sm:text-sm font-light tracking-wider">LUXURY DOMESTIC EXPERIENCES</span>
             <Star className="w-3 h-3 sm:w-4 sm:h-4 text-[#D2AF94]" />
           </div>
           <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-light text-[#D2AF94] mb-4 sm:mb-6 tracking-wider playfair">
@@ -151,7 +151,7 @@ export default function DestinationsList() {
                     </p>
                   </div>
 
-                  {/* Packages Section */}
+                  {/* Packages Section - Now shows carousel with 2 cards on mobile */}
                   {destination.packages && destination.packages.length > 0 ? (
                     <div className="space-y-4 sm:space-y-6 lg:space-y-8">
                       <div className="flex items-center gap-2 sm:gap-3">
@@ -165,33 +165,43 @@ export default function DestinationsList() {
 
                       <div className="relative">
                         <Swiper
-                          slidesPerView={1}
-                          spaceBetween={12}
+                          slidesPerView={2}
+                          spaceBetween={10}
                           pagination={{
                             clickable: true,
                             bulletClass: "custom-bullet",
                             bulletActiveClass: "custom-bullet-active",
                           }}
                           modules={[Pagination, Autoplay]}
-                          autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                          autoplay={{ delay: 2000, disableOnInteraction: false, pauseOnMouseEnter: true }}
                           breakpoints={{
-                            480: { 
-                              slidesPerView: 1.2,
-                              spaceBetween: 14,
+                            // Mobile: Show 2 cards
+                            320: {
+                              slidesPerView: 2,
+                              spaceBetween: 8,
                             },
-                            640: { 
-                              slidesPerView: 1.5,
+                            // Small mobile: Show 2 cards with more space
+                            480: {
+                              slidesPerView: 2,
+                              spaceBetween: 10,
+                            },
+                            // Large mobile/small tablet: Show 2.2 cards
+                            640: {
+                              slidesPerView: 2.2,
+                              spaceBetween: 12,
+                            },
+                            // Tablet: Show more cards
+                            768: {
+                              slidesPerView: 1.8,
                               spaceBetween: 16,
                             },
-                            768: { 
-                              slidesPerView: 1.8,
-                              spaceBetween: 18,
-                            },
-                            1024: { 
+                            // Large tablet
+                            1024: {
                               slidesPerView: 2,
                               spaceBetween: 20,
                             },
-                            1280: { 
+                            // Desktop
+                            1280: {
                               slidesPerView: 2.2,
                               spaceBetween: 24,
                             },
@@ -204,50 +214,50 @@ export default function DestinationsList() {
                                 <div className="group/card bg-white/5 backdrop-blur-md rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 hover:border-[#D2AF94]/50 transition-all duration-500 hover:bg-white/10 h-full">
                                   <div className="relative overflow-hidden">
                                     {pkg.images?.length > 0 ? (
-                                      <div className="relative w-full h-32 xs:h-36 sm:h-40 md:h-44 lg:h-48">
+                                      <div className="relative w-full h-24 xs:h-28 sm:h-32 md:h-36 lg:h-40 xl:h-44">
                                         <Image
                                           src={pkg.images[0].url}
                                           alt={pkg.name}
                                           fill
-                                          sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                          sizes="(max-width: 480px) 50vw, (max-width: 768px) 45vw, (max-width: 1024px) 33vw, 25vw"
                                           className="object-cover transition-all duration-700 group-hover/card:scale-105"
                                         />
                                       </div>
                                     ) : (
-                                      <div className="w-full h-32 xs:h-36 sm:h-40 md:h-44 lg:h-48 bg-gray-200 flex items-center justify-center text-xs sm:text-sm text-gray-500">
+                                      <div className="w-full h-24 xs:h-28 sm:h-32 md:h-36 lg:h-40 xl:h-44 bg-gray-200 flex items-center justify-center text-xs text-gray-500">
                                         No image available
                                       </div>
                                     )}
-                                    
+
                                     {/* Aesthetic overlay with theme colors */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/95 via-[#002D37]/30 to-transparent"></div>
-                                    
+
                                     {/* Elegant text overlay matching theme */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
                                       {/* Decorative line */}
-                                      <div className="w-8 sm:w-12 h-px bg-gradient-to-r from-[#D2AF94] to-transparent mb-3 opacity-80"></div>
-                                      
+                                      <div className="w-6 sm:w-8 h-px bg-gradient-to-r from-[#D2AF94] to-transparent mb-2 opacity-80"></div>
+
                                       {/* Package name with luxury styling */}
-                                      <h4 className="text-white font-light text-sm sm:text-base lg:text-lg mb-2 group-hover/card:text-[#D2AF94] transition-colors duration-300 line-clamp-2 playfair tracking-wide leading-tight">
+                                      <h4 className="text-white font-light text-xs sm:text-sm lg:text-base mb-1.5 group-hover/card:text-[#D2AF94] transition-colors duration-300 line-clamp-2 playfair tracking-wide leading-tight">
                                         {pkg.name}
                                       </h4>
-                                      
+
                                       {/* Duration with elegant styling */}
-                                      <div className="flex items-center gap-2 opacity-90">
-                                        <div className="flex items-center gap-1.5 bg-[#D2AF94]/20 backdrop-blur-sm rounded-full px-2.5 py-1 border border-[#D2AF94]/30">
-                                          <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D2AF94] flex-shrink-0" />
-                                          <span className="text-[#A6B5B4] text-xs sm:text-sm font-light tracking-wide">{pkg.duration}</span>
+                                      <div className="flex items-center gap-1.5 opacity-90">
+                                        <div className="flex items-center gap-1 bg-[#D2AF94]/20 backdrop-blur-sm rounded-full px-2 py-0.5 border border-[#D2AF94]/30">
+                                          <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D2AF94] flex-shrink-0" />
+                                          <span className="text-[#A6B5B4] text-xs font-light tracking-wide">{pkg.duration}</span>
                                         </div>
                                       </div>
                                     </div>
-                                    
+
                                     {/* Subtle corner decoration */}
-                                    <div className="absolute top-3 right-3 w-2 h-2 bg-[#D2AF94]/40 rounded-full"></div>
+                                    <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-[#D2AF94]/40 rounded-full"></div>
                                   </div>
-                                  <div className="p-3 sm:p-4 lg:p-6">
+                                  <div className="p-2 sm:p-3 lg:p-4">
                                     <div className="flex items-center justify-between">
-                                      <span className="text-white text-xs sm:text-sm font-light tracking-wider">EXPLORE PACKAGE</span>
-                                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D2AF94] transform group-hover/card:translate-x-2 transition-transform duration-300 flex-shrink-0" />
+                                      <span className="text-white text-xs font-light tracking-wider">EXPLORE</span>
+                                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D2AF94] transform group-hover/card:translate-x-1 transition-transform duration-300 flex-shrink-0" />
                                     </div>
                                   </div>
                                 </div>
@@ -269,6 +279,8 @@ export default function DestinationsList() {
             );
           })}
         </div>
+
+
       </div>
 
       <footer className="w-full bg-gradient-to-r from-transparent via-[#D2AF94] to-transparent mt-8 sm:mt-12 lg:mt-16">

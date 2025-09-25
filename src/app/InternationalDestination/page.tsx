@@ -90,7 +90,7 @@ export default function InternationalDestinationsList() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16">
 
         {/* HEADER */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-20">
+        <div className="text-center py-12 mb-8 sm:mb-12 lg:mb-20">
           <div className="inline-flex items-center gap-2 bg-[#D2AF94]/20 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 mb-4 sm:mb-6 border border-[#D2AF94]/30">
             <Star className="w-3 h-3 sm:w-4 sm:h-4 text-[#D2AF94]" />
             <span className="text-[#D2AF94] text-xs sm:text-sm font-light tracking-wider">INTERNATIONAL LUXURY EXPERIENCES</span>
@@ -165,33 +165,43 @@ export default function InternationalDestinationsList() {
 
                       <div className="relative">
                         <Swiper
-                          slidesPerView={1}
-                          spaceBetween={12}
+                          slidesPerView={2}
+                          spaceBetween={10}
                           pagination={{
                             clickable: true,
                             bulletClass: "custom-bullet",
                             bulletActiveClass: "custom-bullet-active",
                           }}
                           modules={[Pagination, Autoplay]}
-                          autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                          autoplay={{ delay: 2000, disableOnInteraction: false, pauseOnMouseEnter: true }}
                           breakpoints={{
-                            480: { 
-                              slidesPerView: 1.2,
-                              spaceBetween: 14,
+                            // Mobile: Show 2 cards
+                            320: {
+                              slidesPerView: 2,
+                              spaceBetween: 8,
                             },
-                            640: { 
-                              slidesPerView: 1.5,
+                            // Small mobile: Show 2 cards with more space
+                            480: {
+                              slidesPerView: 2,
+                              spaceBetween: 10,
+                            },
+                            // Large mobile/small tablet: Show 2.2 cards
+                            640: {
+                              slidesPerView: 2.2,
+                              spaceBetween: 12,
+                            },
+                            // Tablet: Show more cards
+                            768: {
+                              slidesPerView: 1.8,
                               spaceBetween: 16,
                             },
-                            768: { 
-                              slidesPerView: 1.8,
-                              spaceBetween: 18,
-                            },
-                            1024: { 
+                            // Large tablet
+                            1024: {
                               slidesPerView: 2,
                               spaceBetween: 20,
                             },
-                            1280: { 
+                            // Desktop
+                            1280: {
                               slidesPerView: 2.2,
                               spaceBetween: 24,
                             },
@@ -218,20 +228,20 @@ export default function InternationalDestinationsList() {
                                         No image available
                                       </div>
                                     )}
-                                    
+
                                     {/* Aesthetic overlay with theme colors */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#002D37]/95 via-[#002D37]/30 to-transparent"></div>
-                                    
+
                                     {/* Elegant text overlay matching theme */}
                                     <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
                                       {/* Decorative line */}
                                       <div className="w-8 sm:w-12 h-px bg-gradient-to-r from-[#D2AF94] to-transparent mb-3 opacity-80"></div>
-                                      
+
                                       {/* Package name with luxury styling */}
                                       <h4 className="text-white font-light text-sm sm:text-base lg:text-lg mb-2 group-hover/card:text-[#D2AF94] transition-colors duration-300 line-clamp-2 playfair tracking-wide leading-tight">
                                         {pkg.name}
                                       </h4>
-                                      
+
                                       {/* Duration with elegant styling */}
                                       <div className="flex items-center gap-2 opacity-90">
                                         <div className="flex items-center gap-1.5 bg-[#D2AF94]/20 backdrop-blur-sm rounded-full px-2.5 py-1 border border-[#D2AF94]/30">
@@ -240,7 +250,7 @@ export default function InternationalDestinationsList() {
                                         </div>
                                       </div>
                                     </div>
-                                    
+
                                     {/* Subtle corner decoration */}
                                     <div className="absolute top-3 right-3 w-2 h-2 bg-[#D2AF94]/40 rounded-full"></div>
                                   </div>
