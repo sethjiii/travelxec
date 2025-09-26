@@ -90,7 +90,7 @@ export default function DestinationsList() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16">
 
         {/* HEADER */}
-        <div className="text-center py-12 mb-8 sm:mb-12 lg:mb-20">
+        <div className="text-center py-12 mb-8 sm:mb-12 lg:mb-20">               
           <div className="inline-flex items-center gap-2 bg-[#D2AF94]/20 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 mb-4 sm:mb-6 border border-[#D2AF94]/30">
             <Star className="w-3 h-3 sm:w-4 sm:h-4 text-[#D2AF94]" />
             <span className="text-[#D2AF94] text-xs sm:text-sm font-light tracking-wider">LUXURY DOMESTIC EXPERIENCES</span>

@@ -276,6 +276,10 @@ const Footer = () => {
                 Privacy Policy
                 <div className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-px bg-[#D2AF94] transition-all duration-300"></div>
               </a>
+              <a href="/Refund-Policy" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
+                Refund Policy
+                <div className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-px bg-[#D2AF94] transition-all duration-300"></div>
+              </a>
               <a href="/terms-and-conditions" className="text-[#A6B5B4] hover:text-[#D2AF94] text-sm font-light transition-colors duration-300 relative group">
                 Terms of Service
                 <div className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-px bg-[#D2AF94] transition-all duration-300"></div>

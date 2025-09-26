@@ -4,6 +4,7 @@ import interTravelPackage from '../../../models/interTravelPackage';
 import { z } from 'zod';
 
 const querySchema = z.object({
+  id: z.string().optional(), // 👈 add id
   query: z.string().optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(10),
@@ -16,7 +17,6 @@ const querySchema = z.object({
 
 const escapeRegex = (str = '') => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-// Map type string to model
 const getModelByType = (type) => {
   switch (type) {
     case 'domestic':
@@ -37,13 +37,32 @@ export default async function handler(req, res) {
     const parsed = querySchema.safeParse(req.query);
     if (!parsed.success) return res.status(400).json({ error: 'Invalid query parameters' });
 
-    const { query = '', page, limit, minPrice, maxPrice, minDays, maxDays, types } = parsed.data;
+    const { id, query = '', page, limit, minPrice, maxPrice, minDays, maxDays, types } = parsed.data;
     const skip = (page - 1) * limit;
-    const searchRegex = new RegExp(escapeRegex(query.trim()), 'i');
 
-    // Determine which types/models to query
+    // 🔹 Handle single package fetch
+    if (id) {
+      const typeArray = types ? types.split(',').map((t) => t.trim()) : ['domestic', 'international'];
+      for (const type of typeArray) {
+        let Model;
+        try {
+          Model = getModelByType(type);
+        } catch {
+          continue;
+        }
+
+        const pkg = await Model.findById(id);
+        if (pkg) {
+          return res.status(200).json({ package: { ...pkg.toObject(), type } });
+        }
+      }
+      return res.status(404).json({ error: 'Package not found' });
+    }
+
+    // 🔹 Otherwise: handle listing
+    const searchRegex = new RegExp(escapeRegex(query.trim()), 'i');
     const typeArray = types ? types.split(',').map((t) => t.trim()) : ['domestic', 'international'];
-    
+
     const results = [];
     let totalCount = 0;
 
@@ -52,7 +71,7 @@ export default async function handler(req, res) {
       try {
         Model = getModelByType(type);
       } catch {
-        continue; // skip invalid type
+        continue;
       }
 
       const filter = {};
