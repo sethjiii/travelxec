@@ -94,9 +94,9 @@ const Footer = () => {
             <div className="flex items-center gap-3 mb-8">
               <div className="relative">
                 <div className="absolute inset-0 bg-[#D2AF94]/30 rounded-full blur-sm"></div>
-                <div className="relative p-2 bg-gradient-to-br from-[#D2AF94] to-[#8C7361] rounded-full">
+                {/* <div className="relative p-2 bg-gradient-to-br from-[#D2AF94] to-[#8C7361] rounded-full">
                   <Plane className="h-6 w-6 text-[#002D37]" />
-                </div>
+                </div> */}
               </div>
 
               {/* Replace the text with the company logo */}

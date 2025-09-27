@@ -29,19 +29,19 @@ const RefundCancellationPage = () => {
               Cancellation requests must be made{" "}
               <strong>within 1 day of placing the order</strong>.
             </li>
-            <li>
+            {/* <li>
               Cancellations may not be accepted if the order has already been
               communicated to the seller/merchant and shipping has started, or
               the product/service is out for delivery.
             </li>
             <li>
               In such cases, you may <strong>reject the product at delivery</strong>.
-            </li>
+            </li> */}
           </ul>
         </section>
 
         {/* Section 2 */}
-        <section className="mb-6">
+        {/* <section className="mb-6">
           <h2 className="text-xl font-semibold text-[#186663] mb-2">
             2. Exceptions to Cancellation
           </h2>
@@ -55,10 +55,10 @@ const RefundCancellationPage = () => {
               that the quality of the delivered product is not satisfactory.
             </li>
           </ul>
-        </section>
+        </section> */}
 
         {/* Section 3 */}
-        <section className="mb-6">
+        {/* <section className="mb-6">
           <h2 className="text-xl font-semibold text-[#186663] mb-2">
             3. Damaged or Defective Products
           </h2>
@@ -68,10 +68,10 @@ const RefundCancellationPage = () => {
             request will be processed only after the seller/merchant verifies
             the claim.
           </p>
-        </section>
+        </section> */}
 
         {/* Section 4 */}
-        <section className="mb-6">
+        {/* <section className="mb-6">
           <h2 className="text-xl font-semibold text-[#186663] mb-2">
             4. Product Not as Expected
           </h2>
@@ -82,10 +82,10 @@ const RefundCancellationPage = () => {
             complaint, our team will take an appropriate decision
             (refund/replacement, if applicable).
           </p>
-        </section>
+        </section> */}
 
         {/* Section 5 */}
-        <section className="mb-6">
+        {/* <section className="mb-6">
           <h2 className="text-xl font-semibold text-[#186663] mb-2">
             5. Manufacturer Warranty
           </h2>
@@ -93,7 +93,7 @@ const RefundCancellationPage = () => {
             For products covered under a manufacturer’s warranty, please contact
             the manufacturer directly for service or replacement.
           </p>
-        </section>
+        </section> */}
 
         {/* Section 6 */}
         <section className="mb-6">
