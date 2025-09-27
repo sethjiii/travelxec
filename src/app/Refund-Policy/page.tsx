@@ -100,8 +100,8 @@ const RefundCancellationPage = () => {
           <h2 className="text-xl font-semibold text-[#186663] mb-2">6. Refunds</h2>
           <p className="text-gray-700">
             Once approved by <strong>Ashish Trivedi / TravelXec</strong>,
-            refunds will be initiated within{" "}
-            <strong>10 working days</strong> and credited to the original
+            refunds will be credited within{" "}
+            <strong>10 working days</strong> and to the original
             payment method used during booking/purchase.
           </p>
         </section>
