@@ -1,19 +1,19 @@
 // src/app/packages/[type]/[id]/page.tsx
 
-import { getPackageByTypeAndId } from '@/lib/getPackageByTypeAndId';
-import TravelPackageDisplay from '@/app/components/TravelPackageDisplay';
+import { getPackageByTypeAndId } from "@/lib/getPackageByTypeAndId";
+import TravelPackageDisplay from "@/app/components/TravelPackageDisplay";
 
 // Add this to prevent static-to-dynamic runtime errors
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page({
   params,
 }: {
   params: Promise<{ type: string; id: string }>;
 }) {
-  // Await the params since it's now a Promise in Next.js 15
+  // Await the params (Next.js 15 behavior)
   const { type, id } = await params;
-  
+
   const travelPackage = await getPackageByTypeAndId(type, id);
 
   return (
@@ -23,28 +23,41 @@ export default async function Page({
   );
 }
 
-// If you have generateMetadata function, update it similarly:
+// ✅ Dynamic metadata with brand name
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ type: string; id: string }>;
 }) {
   const { type, id } = await params;
-  
+
+  const travelPackage = await getPackageByTypeAndId(type, id);
+
+  const packageName = travelPackage?.name || "Travel Package";
+  const description =
+    travelPackage?.description || "Explore our curated travel packages with TravelXec.";
+
   return {
-    title: `Package ${id} - ${type}`,
-    description: `Details for ${type} package ${id}`,
-    // Add other metadata as needed
+    title: `${packageName} | TravelXec`,
+    description,
+    openGraph: {
+      title: `${packageName} | TravelXec`,
+      description,
+      images: travelPackage?.image ? [travelPackage.image] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${packageName} | TravelXec`,
+      description,
+      images: travelPackage?.image ? [travelPackage.image] : [],
+    },
   };
 }
 
-// If you need generateStaticParams for static generation:
+// Optional: Pre-generate some params
 export async function generateStaticParams() {
-  // Return the static params you want to pre-generate
   return [
-    // Example:
-    // { type: 'adventure', id: '1' },
-    // { type: 'luxury', id: '2' },
-    // etc.
+    // { type: "luxury", id: "123" },
+    // { type: "adventure", id: "456" },
   ];
 }
