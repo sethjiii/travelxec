@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Heart, MapPin, Sparkles } from "lucide-react";
 import Link from "next/link";
@@ -6,10 +7,14 @@ import Link from "next/link";
 interface Package {
   _id: string;
   name: string;
+  type: string;
   description: string;
   duration: string;
   places: string;
-  images: string[];
+  images: {
+    url: string;
+    public_id: string;
+  }[];
   rating: number;
 }
 
@@ -61,18 +66,20 @@ export default function SavedPlacesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {favorites.map((pkg) => (
-            <div
+            <Link
               key={pkg._id}
-              className="rounded-3xl overflow-hidden bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 transition duration-300 hover:bg-[#A6B5B4]/20 hover:scale-[1.01]"
+              href={`/packages/${pkg.type}/${pkg._id}`}
+              className="rounded-3xl overflow-hidden bg-[#A6B5B4]/10 backdrop-blur-xl border border-[#A6B5B4]/30 transition duration-300 hover:bg-[#A6B5B4]/20 hover:scale-[1.01] block"
             >
               <div className="relative h-60">
                 <img
-                  src={pkg.images[0]}
+                  src={pkg.images?.[0]?.url || "/placeholder.jpg"}
                   alt={pkg.name}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
+
               <div className="p-6">
                 <h2 className="text-2xl text-[#D2AF94] mb-2">{pkg.name}</h2>
                 <div className="flex items-center text-[#A6B5B4] mb-3 text-sm">
@@ -82,15 +89,12 @@ export default function SavedPlacesPage() {
                 <p className="text-[#A6B5B4] text-sm mb-4 line-clamp-3">
                   {pkg.description}
                 </p>
-                <Link
-                  href={`/packages/${pkg._id}`}
-                  className="inline-flex items-center gap-2 text-sm font-medium text-[#D2AF94] hover:underline"
-                >
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-[#D2AF94] hover:underline">
                   View Details
-                  <Heart className="w-4 h-4" />
-                </Link>
+                  <Heart className="w-4 h-4 fill-[#D2AF94]" />
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
