@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.travelxec.com";
 
-  // --- Static pages ---
+  // --- 1️⃣ Static Routes ---
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
     "/about-us",
@@ -23,35 +23,71 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // --- Fetch dynamic packages ---
-  let packages: any[] = [];
-  try {
-    const res = await fetch(`${baseUrl}/api/packages`, { next: { revalidate: 60 } });
-    if (res.ok) {
-      const data = await res.json();
-      packages = data.packages || data || [];
+  // --- 2️⃣ Fetch All Package Categories Dynamically ---
+  const packageTypes = [
+    "packages",
+    "interpackages",
+    "luxurypackages",
+    "experiencepackages",
+    "musicfestpackages",
+  ];
+
+  const allPackages: any[] = [];
+
+  for (const type of packageTypes) {
+    try {
+      const res = await fetch(`${baseUrl}/api/${type}`, {
+        next: { revalidate: 120 },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+
+        // Detect array type automatically
+        const pkgArray = Array.isArray(data.packages)
+          ? data.packages
+          : Array.isArray(data)
+          ? data
+          : [];
+
+        // Add type info (fallback if missing)
+        pkgArray.forEach((pkg: any) =>
+          allPackages.push({
+            ...pkg,
+            type: pkg.type || type.replace("packages", "") || "default",
+          })
+        );
+      }
+    } catch (err) {
+      console.error(`❌ Failed to fetch ${type}:`, err);
     }
-  } catch (error) {
-    console.error("❌ Failed to fetch packages:", error);
   }
 
-  const packageRoutes: MetadataRoute.Sitemap = packages.map((pkg: any) => ({
-    url: `${baseUrl}/packages/${pkg.type || "default"}/${pkg._id}`,
+  const packageRoutes: MetadataRoute.Sitemap = allPackages.map((pkg: any) => ({
+    url: `${baseUrl}/packages/${pkg.type}/${pkg._id}`,
     lastModified: new Date(pkg.updatedAt || Date.now()),
     changeFrequency: "weekly",
     priority: 0.9,
   }));
 
-  // --- Fetch international destinations ---
+  // --- 3️⃣ International Destinations ---
   let destinations: any[] = [];
   try {
-    const res = await fetch(`${baseUrl}/api/internationaldestinations`, { next: { revalidate: 60 } });
+    const res = await fetch(`${baseUrl}/api/internationaldestinations`, {
+      next: { revalidate: 120 },
+    });
     if (res.ok) {
       const data = await res.json();
-      destinations = data.internationalDestinations || data || [];
+      const destArray = Array.isArray(data.internationalDestinations)
+        ? data.internationalDestinations
+        : Array.isArray(data)
+        ? data
+        : [];
+
+      destinations = destArray;
     }
-  } catch (error) {
-    console.error("❌ Failed to fetch destinations:", error);
+  } catch (err) {
+    console.error("❌ Failed to fetch destinations:", err);
   }
 
   const destinationRoutes: MetadataRoute.Sitemap = destinations.map((dest: any) => ({
@@ -61,10 +97,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }));
 
-  // ✅ Correct return type
-  return [
-    ...staticRoutes,
-    ...packageRoutes,
-    ...destinationRoutes,
-  ];
+  // --- ✅ Combine and Return Everything ---
+  return [...staticRoutes, ...packageRoutes, ...destinationRoutes] as MetadataRoute.Sitemap;
 }
