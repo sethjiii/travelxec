@@ -73,6 +73,7 @@ export default async function handler(req, res) {
       packages,
       image: uploadedImages[0] || '',
       images: uploadedImages,
+      region,
     });
 
     await destination.save();

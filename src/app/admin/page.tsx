@@ -68,88 +68,127 @@ const AdminDashboard = () => {
 
 
   const actions = [
-    {
-      label: "Add Domestic Package",
-      description: "Create your domestic travel packages.",
-      href: "/admin/dashboard",
-      icon: <Package className="w-8 h-8 text-white" />,
-      color: "from-blue-500 to-cyan-600",
-      hover: "text-blue-200",
-      text: "text-blue-400",
-      buttonText: "Open"
-    },
-    {
-      label: "Manage Packages",
-      description: "Edit and delete uploaded packages.",
-      href: "/admin/package",
-      icon: <BarChart3 className="w-8 h-8 text-white" />,
-      color: "from-indigo-500 to-blue-600",
-      hover: "text-indigo-200",
-      text: "text-indigo-400",
-      buttonText: "Manage"
-    },
-    {
-      label: "Add International Packages",
-      description: "Add international travel packages.",
-      href: "/admin/InternationalDashboard",
-      icon: <BarChart3 className="w-8 h-8 text-white" />,
-      color: "from-indigo-500 to-blue-600",
-      hover: "text-indigo-200",
-      text: "text-indigo-400",
-      buttonText: "Manage"
-    },
-    {
-      label: "Add Destination",
-      description: "Add a new travel destination.",
-      href: "/admin/adddestination",
-      icon: <Plane className="w-8 h-8 text-white" />,
-      color: "from-green-500 to-emerald-600",
-      hover: "text-green-200",
-      text: "text-green-400",
-      buttonText: "Add"
-    },
-
-    {
-      label: "Add International Destination",
-      description: "Add a new travel destination.",
-      href: "/admin/addinterdestination",
-      icon: <Plane className="w-8 h-8 text-white" />,
-      color: "from-green-500 to-emerald-600",
-      hover: "text-green-200",
-      text: "text-green-400",
-      buttonText: "Add"
-    },
-    {
-      label: "Bookings",
-      description: "Monitor and manage all customer bookings.",
-      href: "/admin/bookings",
-      icon: <Calendar className="w-8 h-8 text-white" />,
-      color: "from-amber-500 to-orange-600",
-      hover: "text-amber-200",
-      text: "text-amber-400",
-      buttonText: "Open"
-    },
-    {
-      label: "Itineraries",
-      description: "Review all curated itinerary requests.",
-      href: "/admin/itineraries",
-      icon: <Sparkles className="w-8 h-8 text-white" />,
-      color: "from-green-500 to-emerald-600",
-      hover: "text-green-200",
-      text: "text-green-400",
-      buttonText: "View"
-    },
-    {
-      label: "Pop-up Leads",
-      description: "Review all pop-up leads.",
-      href: "/admin/popupleads",
-      icon: <Sparkles className="w-8 h-8 text-white" />,
-      color: "from-green-500 to-emerald-600",
-      hover: "text-green-200",
-      text: "text-green-400",
-      buttonText: "View"
-    }
-  ];
+  {
+    label: "Add Domestic Package",
+    description: "Create your domestic travel packages.",
+    href: "/admin/dashboard",
+    icon: <Package className="w-8 h-8 text-white" />,
+    color: "from-blue-500 to-cyan-600",
+    hover: "text-blue-200",
+    text: "text-blue-400",
+    buttonText: "Open"
+  },
+  {
+    label: "Manage Packages",
+    description: "Edit and delete uploaded packages.",
+    href: "/admin/package",
+    icon: <BarChart3 className="w-8 h-8 text-white" />,
+    color: "from-indigo-500 to-blue-600",
+    hover: "text-indigo-200",
+    text: "text-indigo-400",
+    buttonText: "Manage"
+  },
+  {
+    label: "Add International Packages",
+    description: "Add international travel packages.",
+    href: "/admin/InternationalDashboard",
+    icon: <BarChart3 className="w-8 h-8 text-white" />,
+    color: "from-indigo-500 to-blue-600",
+    hover: "text-indigo-200",
+    text: "text-indigo-400",
+    buttonText: "Manage"
+  },
+  {
+    label: "Add Destination",
+    description: "Add a new travel destination.",
+    href: "/admin/adddestination",
+    icon: <Plane className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "Add"
+  },
+  {
+    label: "Add International Destination",
+    description: "Add a new travel destination.",
+    href: "/admin/addinterdestination",
+    icon: <Plane className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "Add"
+  },
+  {
+    label: "Manage Destination",
+    description: "Edit or delete existing destinations.",
+    href: "/admin/manage-destinations",
+    icon: <Globe className="w-8 h-8 text-white" />,
+    color: "from-teal-500 to-emerald-500",
+    hover: "text-teal-200",
+    text: "text-teal-400",
+    buttonText: "Manage"
+  },
+  {
+    label: "Add Region",
+    description: "Add new travel regions.",
+    href: "/admin/addregion",
+    icon: <LayoutDashboard className="w-8 h-8 text-white" />,
+    color: "from-purple-500 to-pink-500",
+    hover: "text-purple-200",
+    text: "text-purple-400",
+    buttonText: "Add"
+  },
+  {
+    label: "Manage Region",
+    description: "Edit or delete existing regions.",
+    href: "/admin/manageregions",
+    icon: <LayoutDashboard className="w-8 h-8 text-white" />,
+    color: "from-purple-500 to-pink-500",
+    hover: "text-purple-200",
+    text: "text-purple-400",
+    buttonText: "Manage"
+  },
+  {
+    label: "Link Destination to Region",
+    description: "Assign destinations to their respective regions.",
+    href: "/admin/link-destination-region",
+    icon: <Globe className="w-8 h-8 text-white" />,
+    color: "from-amber-500 to-orange-500",
+    hover: "text-amber-200",
+    text: "text-amber-400",
+    buttonText: "Link"
+  },
+  {
+    label: "Bookings",
+    description: "Monitor and manage all customer bookings.",
+    href: "/admin/bookings",
+    icon: <Calendar className="w-8 h-8 text-white" />,
+    color: "from-amber-500 to-orange-600",
+    hover: "text-amber-200",
+    text: "text-amber-400",
+    buttonText: "Open"
+  },
+  {
+    label: "Itineraries",
+    description: "Review all curated itinerary requests.",
+    href: "/admin/itineraries",
+    icon: <Sparkles className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "View"
+  },
+  {
+    label: "Pop-up Leads",
+    description: "Review all pop-up leads.",
+    href: "/admin/popupleads",
+    icon: <Sparkles className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "View"
+  }
+];
 
   
 

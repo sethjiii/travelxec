@@ -1,15 +1,31 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import Image from "next/image";
 
 export default function AddInternationalDestination() {
   const [city, setCity] = useState("");
+  const [region, setRegion] = useState<string>(""); // ✅ new
+  const [regions, setRegions] = useState<any[]>([]); // ✅ new
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // ✅ Fetch available regions
+    useEffect(() => {
+      const fetchRegions = async () => {
+        try {
+          const res = await fetch("/api/admin/regions");
+          if (!res.ok) throw new Error("Failed to fetch regions");
+          const data = await res.json();
+          setRegions(data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      fetchRegions();
+    }, []);
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -41,7 +57,7 @@ export default function AddInternationalDestination() {
     setMessage("");
     setIsSuccess(false);
 
-    const payload = { city, description, images };
+    const payload = { city, description, images, region }; // ✅ include region
 
     try {
       const token = localStorage.getItem("token") ?? "";
@@ -63,6 +79,7 @@ export default function AddInternationalDestination() {
         setDescription("");
         setImages([]);
         setIsSuccess(true);
+        setRegion("");
       } else {
         setMessage(data.error || "Failed to add international destination");
         setIsSuccess(false);
@@ -82,6 +99,24 @@ export default function AddInternationalDestination() {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* ✅ Region Dropdown */}
+        <label className="block mb-2 font-semibold">
+          Select Region <span className="text-red-600">*</span>
+        </label>
+        <select
+          value={region}
+          onChange={(e) => setRegion(e.target.value)}
+          required
+          className="w-full mb-4 px-3 py-2 border rounded"
+        >
+          <option value="">-- Choose a Region --</option>
+          {regions.map((r) => (
+            <option key={r._id} value={r._id}>
+              {r.name}
+            </option>
+          ))}
+        </select>
+
         {/* City */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -145,16 +180,15 @@ export default function AddInternationalDestination() {
           disabled={loading}
           className="w-full bg-blue-600 text-white py-2.5 rounded-md font-semibold hover:bg-blue-700 transition disabled:bg-blue-300"
         >
-          {loading ? "Adding..." : "Add Destination"}
+          {loading ? "Adding..." : "Add International Destination"}
         </button>
       </form>
 
       {/* Message */}
       {message && (
         <div
-          className={`mt-6 text-center text-sm font-medium ${
-            isSuccess ? "text-green-600" : "text-red-600"
-          }`}
+          className={`mt-6 text-center text-sm font-medium ${isSuccess ? "text-green-600" : "text-red-600"
+            }`}
         >
           {message}
         </div>

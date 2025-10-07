@@ -20,6 +20,11 @@ const destinationSchema = new mongoose.Schema(
     image: {
       type: String, // Main image URL for the destination
     },
+    region: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Region", // 👈 link to Region
+      required: false,
+    },
     packages: [
       {
         type: mongoose.Schema.Types.ObjectId,
