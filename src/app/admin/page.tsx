@@ -151,7 +151,7 @@ const AdminDashboard = () => {
   {
     label: "Link Destination to Region",
     description: "Assign destinations to their respective regions.",
-    href: "/admin/link-destination-region",
+    href: "/admin/LinkDestinationToRegion",
     icon: <Globe className="w-8 h-8 text-white" />,
     color: "from-amber-500 to-orange-500",
     hover: "text-amber-200",
@@ -170,7 +170,7 @@ const AdminDashboard = () => {
   },
   {
     label: "Itineraries",
-    description: "Review all curated itinerary requests.",
+    description: "Review all 'Curated Your Itinerary' requests.",
     href: "/admin/itineraries",
     icon: <Sparkles className="w-8 h-8 text-white" />,
     color: "from-green-500 to-emerald-600",
