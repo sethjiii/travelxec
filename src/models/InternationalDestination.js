@@ -28,7 +28,7 @@ const InternationalDestinationSchema = new mongoose.Schema(
     packages: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'interTravelPackage', // Reference to TravelPackage model
+        ref: 'interTravelPackage', // Reference to interTravelPackage model
       },
     ],
   },

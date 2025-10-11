@@ -131,6 +131,25 @@ const intertravelPackageSchema = new mongoose.Schema(
         },
       },
     ],
+    accommodations: [
+      {
+        accommodationId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Accommodation",
+          required: false,
+        },
+        nights: {
+          type: Number,
+          required: false,
+          min: 1,
+        },
+        checkInDay: {
+          type: Number,
+          required: false,
+          min: 1,
+        },
+      },
+    ],
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

@@ -138,6 +138,12 @@ export default function AdminPackagesPage() {
                 >
                   Delete
                 </button>
+                <button
+                  onClick={() => router.push(`/admin/link-accommodations-to-packages/${pkg.type}/${pkg._id}`)}
+                  className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Link Accommodations
+                </button>
               </div>
             </div>
           ))}

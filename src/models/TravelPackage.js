@@ -26,6 +26,28 @@ const travelPackageSchema = new mongoose.Schema(
       default: "domestic", // or whatever makes sense
       enum: ["domestic", "international", "luxury", "experience", "fest"]
     },
+
+    // ✅ NEW FIELD: Linked accommodations
+    accommodations: [
+      {
+        accommodationId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Accommodation",
+          required: false,
+        },
+        nights: {
+          type: Number,
+          required: false,
+          min: 1,
+        },
+        checkInDay: {
+          type: Number,
+          required: false,
+          min: 1,
+        },
+      },
+    ],
+
     itinerary: [
       {
         day: {
@@ -58,6 +80,7 @@ const travelPackageSchema = new mongoose.Schema(
         ],
       },
     ],
+
     duration: {
       type: String, // Total duration of the trip, e.g., '14 days, 13 nights'
     },
@@ -105,7 +128,7 @@ const travelPackageSchema = new mongoose.Schema(
       {
         url: String,
         public_id: String,
-      }
+      },
     ],
     reviews: [
       {
@@ -142,4 +165,3 @@ const TravelPackage =
   mongoose.models.TravelPackage || mongoose.model('TravelPackage', travelPackageSchema);
 
 export default TravelPackage;
-
