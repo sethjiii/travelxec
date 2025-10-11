@@ -1,5 +1,5 @@
 import dbConnect from '../../dbConnect';
-import InterTravelPackage from "@/models/interTravelPackage";
+import interTravelPackage from "@/models/interTravelPackage";
 
 export default async function handler(req, res) {
   await dbConnect();

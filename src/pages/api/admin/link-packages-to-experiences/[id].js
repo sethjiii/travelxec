@@ -1,7 +1,7 @@
 import dbConnect from '../../dbConnect';
 import Experience from '@/models/Experience';
 import TravelPackage from '@/models/TravelPackage';
-import InterTravelPackage from '@/models/InterTravelPackage';
+import interTravelPackage from '@/models/interTravelPackage';
 import { getUserFromRequest } from '@/lib/getUserFromRequest';
 import { v2 as cloudinary } from 'cloudinary';
 

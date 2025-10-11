@@ -3,7 +3,7 @@ import dbConnect from '../../dbConnect';
 import Experience from "@/models/Experience";
 import Theme from "@/models/Theme";
 import TravelPackage from "@/models/TravelPackage"; // domestic
-import InterTravelPackage from "@/models/InterTravelPackage"; // international
+import interTravelPackage from "@/models/interTravelPackage"; // international
 import { getUserFromRequest } from "@/lib/getUserFromRequest";
 import { v2 as cloudinary } from "cloudinary";
 

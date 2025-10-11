@@ -1,7 +1,7 @@
 // src/pages/api/experiences/[id]/unlink-package.js
 import dbConnect from "@/pages/api/dbConnect";
 import Experience from "@/models/Experience";
-import InterTravelPackage from "@/models/interTravelPackage";
+import interTravelPackage from "@/models/interTravelPackage";
 import { getUserFromRequest } from "@/lib/getUserFromRequest";
 
 export default async function handler(req, res) {
