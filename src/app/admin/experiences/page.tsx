@@ -71,7 +71,7 @@ export default function ExperienceAdminPage() {
     const themesData = await themesRes.json();
     const packagesData = await packagesRes.json();
 
-    setThemes(themesData.data || []);
+    setThemes(themesData || []);
     if (packagesData.success) {
       const dom = packagesData.data.domestic || [];
       const intl = packagesData.data.international || [];

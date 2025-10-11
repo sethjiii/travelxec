@@ -1,5 +1,6 @@
 import dbConnect from '../../dbConnect';
 import Experience from "@/models/Experience";
+import Theme from "@/models/Theme";
 import { getUserFromRequest } from "@/lib/getUserFromRequest";
 import { v2 as cloudinary } from "cloudinary";
 
