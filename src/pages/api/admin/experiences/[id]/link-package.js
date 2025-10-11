@@ -1,7 +1,9 @@
 // src/pages/api/experiences/[id]/link-package.js
-import dbConnect from '../../dbConnect';
-import Experience from '../../../../models/Experience';
-import { getUserFromRequest } from "@/lib/getUserFromRequest";
+import dbConnect from '@/pages/api/dbConnect';
+import Experience from '@/models/Experience';
+import InterTravelPackage from '@/models/interTravelPackage';
+import { getUserFromRequest } from '@/lib/getUserFromRequest';
+
 export default async function handler(req, res) {
     const { id } = req.query;
 

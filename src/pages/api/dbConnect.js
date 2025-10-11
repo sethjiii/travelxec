@@ -1,4 +1,4 @@
-// lib/dbConnect.js
+// src/pages/api/dbConnect.js
 const mongoose = require('mongoose');
 
 const MONGO_URI = process.env.MONGO_URI;
