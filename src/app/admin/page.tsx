@@ -10,7 +10,8 @@ import {
   Plane,
   BarChart3,
   Globe,
-  LayoutDashboard
+  LayoutDashboard,
+  Hotel
 } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -80,7 +81,7 @@ const AdminDashboard = () => {
   },
   {
     label: "Manage Packages",
-    description: "Edit and delete uploaded packages.",
+    description: "Edit and delete uploaded packages and Link accommodations.",
     href: "/admin/package",
     icon: <BarChart3 className="w-8 h-8 text-white" />,
     color: "from-indigo-500 to-blue-600",
@@ -183,6 +184,46 @@ const AdminDashboard = () => {
     description: "Review all pop-up leads.",
     href: "/admin/popupleads",
     icon: <Sparkles className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "View"
+  },
+  {
+    label: "Theme",
+    description: "Manage - Add, edit, and delete themes.",
+    href: "/admin/themes",
+    icon: <Sparkles className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "View"
+  },
+  {
+    label: "Experiences",
+    description: "Manage - Add, edit, and delete experiences.",
+    href: "/admin/experiences",
+    icon: <Sparkles className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "View"
+  },
+  {
+    label: "Link Packages to Experiences",
+    description: "Link existing packages to experiences.",
+    href: "/admin/link-packages-to-experiences",
+    icon: <Sparkles className="w-8 h-8 text-white" />,
+    color: "from-green-500 to-emerald-600",
+    hover: "text-green-200",
+    text: "text-green-400",
+    buttonText: "View"
+  },
+  {
+    label: "Accommodations",
+    description: "Manage - Add, edit, and delete accommodations.",
+    href: "/admin/accommodations",
+    icon: <Hotel className="w-8 h-8 text-white" />,
     color: "from-green-500 to-emerald-600",
     hover: "text-green-200",
     text: "text-green-400",
